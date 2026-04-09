@@ -1,0 +1,109 @@
+info:
+  name: Create New Film
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{URL}}/api/v1/films"
+  body:
+    type: multipart-form
+    data:
+      - name: title
+        type: text
+        value: Upin Ipin
+      - name: synopsis
+        type: text
+        value: ipin ipin adalah tung tung boyak
+      - name: airing_status
+        type: text
+        value: finished_airing
+      - name: total_episodes
+        type: text
+        value: "12"
+      - name: release_date
+        type: text
+        value: 2024-01-02 15:04:00
+      - name: genres
+        type: text
+        value: 1dbbe6c6-fa67-43e4-a89d-f9a7783df8d3
+      - name: images
+        type: file
+        value:
+          - postman-cloud:///1ef47f83-0b7a-4d20-bf7a-6344b24386bf
+          - postman-cloud:///1ef47f7c-d764-4870-8445-f1af02aed8d6
+  auth:
+    type: bearer
+    token: "{{TOKEN}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Success
+    request:
+      url: "{{URL}}/api/v1/films"
+      method: POST
+      body:
+        type: multipart-form
+        data:
+          - name: title
+            type: text
+            value: Tung Tung Sahur Memakan Sapi
+          - name: synopsis
+            type: text
+            value: tung tugn gtugntugntugntugutgntugngtungutn
+          - name: airing_status
+            type: text
+            value: airing
+          - name: total_episodes
+            type: text
+            value: "12"
+          - name: release_date
+            type: text
+            value: 2024-01-02 15:04:00
+          - name: genres
+            type: text
+            value: b8aa12a7-0474-4044-ae17-d8875c9350b4,4c57d4b2-613d-4160-8175-2c98b1e4d44c
+          - name: images
+            type: file
+            value:
+              - postman-cloud:///1ef47f83-0b7a-4d20-bf7a-6344b24386bf
+              - postman-cloud:///1ef47f7c-d764-4870-8445-f1af02aed8d6
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: Access-Control-Allow-Credentials
+          value: "true"
+        - name: Access-Control-Allow-Headers
+          value: Origin, Content-Type, api_key, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization
+        - name: Access-Control-Allow-Methods
+          value: POST, GET, OPTIONS, PATCH, PUT, DELETE, UPDATE
+        - name: Access-Control-Allow-Origin
+          value: "*"
+        - name: Access-Control-Expose-Headers
+          value: Content-Length
+        - name: Access-Control-Max-Age
+          value: "86400"
+        - name: Cache-Control
+          value: no-cache
+        - name: Content-Type
+          value: application/json; charset=utf-8
+        - name: Date
+          value: Sun, 20 Apr 2025 11:01:15 GMT
+        - name: Content-Length
+          value: "105"
+      body:
+        type: json
+        data: |-
+          {
+              "success": true,
+              "message": "success create new film",
+              "data": {
+                  "id": "2279d16a-2fd1-4b7c-beaf-35e535a287a9"
+              }
+          }

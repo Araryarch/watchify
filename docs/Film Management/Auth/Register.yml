@@ -1,0 +1,141 @@
+info:
+  name: Register
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{URL}}/api/v1/auth/register"
+  body:
+    type: json
+    data: "{\r
+
+      \    \"username\":\"azka rizqullah\",\r
+
+      \    \"email\":\"azkarizqullah125@gmail.com\",\r
+
+      \    \"password\":\"Password.1\",\r
+
+      \    \"display_name\":\"Azkuun\",\r
+
+      \    \"bio\":\"Aku Sigma boy\"\r
+
+      }"
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Already Exist
+    request:
+      url: "{{URL}}/api/v1/auth/register"
+      method: POST
+      body:
+        type: json
+        data: "{\r
+
+          \    \"username\":\"azka rizqullah\",\r
+
+          \    \"email\":\"azkarizqullah99@gmail.com\",\r
+
+          \    \"password\":\"AkuSigma99\",\r
+
+          \    \"display_name\":\"Azkuun\",\r
+
+          \    \"bio\":\"Aku Sigma boy\"\r
+
+          }"
+    response:
+      status: 409
+      statusText: Conflict
+      headers:
+        - name: Access-Control-Allow-Credentials
+          value: "true"
+        - name: Access-Control-Allow-Headers
+          value: Origin, Content-Type, api_key, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization
+        - name: Access-Control-Allow-Methods
+          value: POST, GET, OPTIONS, PATCH, PUT, DELETE, UPDATE
+        - name: Access-Control-Allow-Origin
+          value: "*"
+        - name: Access-Control-Expose-Headers
+          value: Content-Length
+        - name: Access-Control-Max-Age
+          value: "86400"
+        - name: Cache-Control
+          value: no-cache
+        - name: Content-Type
+          value: application/json; charset=utf-8
+        - name: Date
+          value: Sun, 20 Apr 2025 08:01:30 GMT
+        - name: Content-Length
+          value: "107"
+      body:
+        type: json
+        data: |-
+          {
+              "code": 0,
+              "success": false,
+              "message": "failed register account",
+              "error": "user with this email already exist"
+          }
+  - name: Success
+    request:
+      url: "{{URL}}/api/v1/auth/register"
+      method: POST
+      body:
+        type: json
+        data: "{\r
+
+          \    \"username\":\"azka rizqullah\",\r
+
+          \    \"email\":\"azkarizqullah929@gmail.com\",\r
+
+          \    \"password\":\"AkuSigma99\",\r
+
+          \    \"display_name\":\"Azkuun\",\r
+
+          \    \"bio\":\"Aku Sigma boy\"\r
+
+          }"
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: Access-Control-Allow-Credentials
+          value: "true"
+        - name: Access-Control-Allow-Headers
+          value: Origin, Content-Type, api_key, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization
+        - name: Access-Control-Allow-Methods
+          value: POST, GET, OPTIONS, PATCH, PUT, DELETE, UPDATE
+        - name: Access-Control-Allow-Origin
+          value: "*"
+        - name: Access-Control-Expose-Headers
+          value: Content-Length
+        - name: Access-Control-Max-Age
+          value: "86400"
+        - name: Cache-Control
+          value: no-cache
+        - name: Content-Type
+          value: application/json; charset=utf-8
+        - name: Date
+          value: Sun, 20 Apr 2025 08:02:00 GMT
+        - name: Content-Length
+          value: "216"
+      body:
+        type: json
+        data: |-
+          {
+              "success": true,
+              "message": "failed register account",
+              "data": {
+                  "id": "32a385b9-ba3e-46e1-aa38-bbf898aa9edc",
+                  "username": "azka rizqullah",
+                  "email": "azkarizqullah929@gmail.com",
+                  "display_name": "Azkuun",
+                  "bio": "Aku Sigma boy"
+              }
+          }

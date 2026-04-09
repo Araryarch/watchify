@@ -1,0 +1,83 @@
+info:
+  name: Get Detail FIlm
+  type: http
+  seq: 3
+
+http:
+  method: GET
+  url: "{{URL}}/api/v1/films/:id"
+  params:
+    - name: id
+      value: 2279d16a-2fd1-4b7c-beaf-35e535a287a9
+      type: path
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: success
+    request:
+      url: "{{URL}}/api/v1/films/:id"
+      method: GET
+      params:
+        - name: id
+          value: 2279d16a-2fd1-4b7c-beaf-35e535a287a9
+          type: path
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: Access-Control-Allow-Credentials
+          value: "true"
+        - name: Access-Control-Allow-Headers
+          value: Origin, Content-Type, api_key, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization
+        - name: Access-Control-Allow-Methods
+          value: POST, GET, OPTIONS, PATCH, PUT, DELETE, UPDATE
+        - name: Access-Control-Allow-Origin
+          value: "*"
+        - name: Access-Control-Expose-Headers
+          value: Content-Length
+        - name: Access-Control-Max-Age
+          value: "86400"
+        - name: Cache-Control
+          value: no-cache
+        - name: Content-Type
+          value: application/json; charset=utf-8
+        - name: Date
+          value: Mon, 21 Apr 2025 01:12:48 GMT
+        - name: Content-Length
+          value: "585"
+      body:
+        type: json
+        data: |-
+          {
+              "success": true,
+              "message": "success get detail film",
+              "data": {
+                  "id": "2279d16a-2fd1-4b7c-beaf-35e535a287a9",
+                  "title": "Tung Tung Sahur Memakan Sapi",
+                  "synopsis": "tung tugn gtugntugntugntugutgntugngtungutn",
+                  "airing_status": "airing",
+                  "total_episodes": 12,
+                  "release_date": "2024-01-02 15:04:00",
+                  "images": [
+                      "film-tung-tung-sahur-memakan-sapi-01JS9DR40HCP76EFTJTKJMMYPD.png",
+                      "film-tung-tung-sahur-memakan-sapi-01JS9DR40HCP76EFTJTKRN4PFF.png"
+                  ],
+                  "genres": [
+                      {
+                          "id": "b8aa12a7-0474-4044-ae17-d8875c9350b4",
+                          "name": "funny"
+                      },
+                      {
+                          "id": "4c57d4b2-613d-4160-8175-2c98b1e4d44c",
+                          "name": "thriller"
+                      }
+                  ],
+                  "average_rating": 8.67
+              }
+          }

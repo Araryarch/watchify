@@ -1,0 +1,7 @@
+info:
+  name: Film
+  type: folder
+  seq: 4
+
+request:
+  auth: inherit

@@ -1,0 +1,72 @@
+info:
+  name: Update Genre
+  type: http
+  seq: 4
+
+http:
+  method: PUT
+  url: "{{URL}}/api/v1/genres/:id"
+  params:
+    - name: id
+      value: b8aa12a7-0474-4044-ae17-d8875c9350b4
+      type: path
+  body:
+    type: json
+    data: "{\r\n    \"name\":\"funny\"\r\n}"
+  auth:
+    type: bearer
+    token: "{{TOKEN}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Success
+    request:
+      url: "{{URL}}/api/v1/genres/:id"
+      method: PUT
+      params:
+        - name: id
+          value: b8aa12a7-0474-4044-ae17-d8875c9350b4
+          type: path
+      body:
+        type: json
+        data: "{\r\n    \"name\":\"funny\"\r\n}"
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: Access-Control-Allow-Credentials
+          value: "true"
+        - name: Access-Control-Allow-Headers
+          value: Origin, Content-Type, api_key, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization
+        - name: Access-Control-Allow-Methods
+          value: POST, GET, OPTIONS, PATCH, PUT, DELETE, UPDATE
+        - name: Access-Control-Allow-Origin
+          value: "*"
+        - name: Access-Control-Expose-Headers
+          value: Content-Length
+        - name: Access-Control-Max-Age
+          value: "86400"
+        - name: Cache-Control
+          value: no-cache
+        - name: Content-Type
+          value: application/json; charset=utf-8
+        - name: Date
+          value: Sun, 20 Apr 2025 09:46:10 GMT
+        - name: Content-Length
+          value: "117"
+      body:
+        type: json
+        data: |-
+          {
+              "success": true,
+              "message": "success update genre",
+              "data": {
+                  "id": "b8aa12a7-0474-4044-ae17-d8875c9350b4",
+                  "name": "funny"
+              }
+          }

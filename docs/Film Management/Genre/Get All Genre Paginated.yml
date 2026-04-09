@@ -1,0 +1,116 @@
+info:
+  name: Get All Genre Paginated
+  type: http
+  seq: 2
+
+http:
+  method: GET
+  url: "{{URL}}/api/v1/genres/admin?take=10&page=1"
+  params:
+    - name: take
+      value: "10"
+      type: query
+    - name: page
+      value: "1"
+      type: query
+  auth:
+    type: bearer
+    token: "{{TOKEN}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Success
+    request:
+      url: "{{URL}}/api/v1/genres/admin?take=10&page=1"
+      method: GET
+      params:
+        - name: take
+          value: "10"
+          type: query
+        - name: page
+          value: "1"
+          type: query
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: Access-Control-Allow-Credentials
+          value: "true"
+        - name: Access-Control-Allow-Headers
+          value: Origin, Content-Type, api_key, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization
+        - name: Access-Control-Allow-Methods
+          value: POST, GET, OPTIONS, PATCH, PUT, DELETE, UPDATE
+        - name: Access-Control-Allow-Origin
+          value: "*"
+        - name: Access-Control-Expose-Headers
+          value: Content-Length
+        - name: Access-Control-Max-Age
+          value: "86400"
+        - name: Cache-Control
+          value: no-cache
+        - name: Content-Type
+          value: application/json; charset=utf-8
+        - name: Date
+          value: Sun, 20 Apr 2025 09:43:22 GMT
+        - name: Content-Length
+          value: "710"
+      body:
+        type: json
+        data: |-
+          {
+              "success": true,
+              "message": "success get all genre",
+              "data": [
+                  {
+                      "id": "1dbbe6c6-fa67-43e4-a89d-f9a7783df8d3",
+                      "name": "comedy"
+                  },
+                  {
+                      "id": "4c57d4b2-613d-4160-8175-2c98b1e4d44c",
+                      "name": "thriller"
+                  },
+                  {
+                      "id": "4ff613ef-7daa-44bd-b514-56999a8283cd",
+                      "name": "horror"
+                  },
+                  {
+                      "id": "688bf268-029e-4e5e-a9ef-1a536b8af5ca",
+                      "name": "action"
+                  },
+                  {
+                      "id": "8367029e-4ed0-4d69-9c6a-3ae91de9d528",
+                      "name": "action"
+                  },
+                  {
+                      "id": "b8aa12a7-0474-4044-ae17-d8875c9350b4",
+                      "name": "horror"
+                  },
+                  {
+                      "id": "c2470a1e-a26d-4571-b515-30afd2d8e02c",
+                      "name": "cartoon"
+                  },
+                  {
+                      "id": "c7459746-f093-4a02-96ee-487dbb5e520f",
+                      "name": "thriller"
+                  },
+                  {
+                      "id": "ee80b8b6-2f66-4bc9-9a8e-2cb9154ff794",
+                      "name": "comedy"
+                  }
+              ],
+              "meta": [
+                  {
+                      "take": 10,
+                      "page": 1,
+                      "total_data": 9,
+                      "total_page": 1,
+                      "sort": "asc",
+                      "sort_by": "id"
+                  }
+              ]
+          }

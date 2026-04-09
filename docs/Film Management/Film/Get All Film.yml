@@ -1,0 +1,106 @@
+info:
+  name: Get All Film
+  type: http
+  seq: 2
+
+http:
+  method: GET
+  url: "{{URL}}/api/v1/films?take=10&page=1&filter_by=title&filter=tung tung"
+  params:
+    - name: take
+      value: "10"
+      type: query
+    - name: page
+      value: "1"
+      type: query
+    - name: filter_by
+      value: title
+      type: query
+    - name: filter
+      value: tung tung
+      type: query
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Get All Film
+    request:
+      url: "{{URL}}/api/v1/films?take=10&page=1&filter_by=title&filter=tung tung"
+      method: GET
+      params:
+        - name: take
+          value: "10"
+          type: query
+        - name: page
+          value: "1"
+          type: query
+        - name: filter_by
+          value: title
+          type: query
+        - name: filter
+          value: tung tung
+          type: query
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: Access-Control-Allow-Credentials
+          value: "true"
+        - name: Access-Control-Allow-Headers
+          value: Origin, Content-Type, api_key, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization
+        - name: Access-Control-Allow-Methods
+          value: POST, GET, OPTIONS, PATCH, PUT, DELETE, UPDATE
+        - name: Access-Control-Allow-Origin
+          value: "*"
+        - name: Access-Control-Expose-Headers
+          value: Content-Length
+        - name: Access-Control-Max-Age
+          value: "86400"
+        - name: Cache-Control
+          value: no-cache
+        - name: Content-Type
+          value: application/json; charset=utf-8
+        - name: Date
+          value: Mon, 21 Apr 2025 00:51:45 GMT
+        - name: Content-Length
+          value: "491"
+      body:
+        type: json
+        data: |-
+          {
+              "success": true,
+              "message": "success get list film",
+              "data": [
+                  {
+                      "title": "Tung Tung Sahur Memakan Sapi",
+                      "airing_status": "airing",
+                      "total_episodes": 12,
+                      "release_date": "2024-01-02T15:04:00+07:00",
+                      "average_rating": 9
+                  },
+                  {
+                      "title": "Tung Tung Sahur Memakan Sapi",
+                      "airing_status": "not_yet_aired",
+                      "total_episodes": 12,
+                      "release_date": "2024-01-02T15:04:00+07:00",
+                      "average_rating": 0
+                  }
+              ],
+              "meta": [
+                  {
+                      "take": 10,
+                      "page": 1,
+                      "total_data": 2,
+                      "total_page": 1,
+                      "sort": "asc",
+                      "sort_by": "id",
+                      "filter": "tung tung",
+                      "filter_by": "title"
+                  }
+              ]
+          }

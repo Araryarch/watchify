@@ -1,0 +1,24 @@
+info:
+  name: Update Reaction
+  type: http
+  seq: 2
+
+http:
+  method: PUT
+  url: "{{URL}}/api/v1/reactions/:id"
+  params:
+    - name: id
+      value: e1004ff9-b3ec-447e-9753-4528f47f6221
+      type: path
+  body:
+    type: json
+    data: "{\r\n    \"status\":\"like\"\r\n}"
+  auth:
+    type: bearer
+    token: "{{TOKEN}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

@@ -1,0 +1,89 @@
+info:
+  name: Login
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: "{{URL}}/api/v1/auth/login"
+  body:
+    type: json
+    data: "// {\r
+
+      //     \"email\":\"atmin@email.com\",\r
+
+      //     \"password\":\"myatmin123\"\r
+
+      // }\r
+
+      {\r
+
+      \    \"email\":\"azkarizqullah127@gmail.com\",\r
+
+      \    \"password\":\"Password.1\"\r
+
+      }\r\n"
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: after-response
+      code: "var responseJson = res.getBody();\r
+
+        bru.setEnvVar(\"TOKEN\", responseJson.data.token);"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Success
+    request:
+      url: "{{URL}}/api/v1/auth/login"
+      method: POST
+      body:
+        type: json
+        data: "{\r
+
+          \    \"email\":\"atmin@email.com\",\r
+
+          \    \"password\":\"myatmin123\"\r
+
+          }"
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: Access-Control-Allow-Credentials
+          value: "true"
+        - name: Access-Control-Allow-Headers
+          value: Origin, Content-Type, api_key, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization
+        - name: Access-Control-Allow-Methods
+          value: POST, GET, OPTIONS, PATCH, PUT, DELETE, UPDATE
+        - name: Access-Control-Allow-Origin
+          value: "*"
+        - name: Access-Control-Expose-Headers
+          value: Content-Length
+        - name: Access-Control-Max-Age
+          value: "86400"
+        - name: Cache-Control
+          value: no-cache
+        - name: Content-Type
+          value: application/json; charset=utf-8
+        - name: Date
+          value: Sun, 20 Apr 2025 08:10:59 GMT
+        - name: Content-Length
+          value: "334"
+      body:
+        type: json
+        data: |-
+          {
+              "success": true,
+              "message": "success login",
+              "data": {
+                  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImF0bWluQGVtYWlsLmNvbSIsImV4cCI6MTc0NTIyMzA1OSwiaXNzIjoiRmlsbSBNYW5hZ2VtZW50Iiwicm9sZSI6IkFETUlOIiwidXNlcl9pZCI6ImExYTJiNDczLWYzOTgtNDQ4OS1iN2VmLTY5ODRiNjBlNGYxMCJ9.igelKg3yF69t3bu8kwhIRigNSI8vIxso9JePUEb9sKw",
+                  "role": "ADMIN"
+              }
+          }

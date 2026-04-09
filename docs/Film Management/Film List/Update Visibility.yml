@@ -1,0 +1,76 @@
+info:
+  name: Update Visibility
+  type: http
+  seq: 2
+
+http:
+  method: PATCH
+  url: "{{URL}}/api/v1/film-lists/:id"
+  params:
+    - name: id
+      value: de5368bc-cec7-4b55-afa0-8e5391f19533
+      type: path
+  body:
+    type: json
+    data: "{\r
+
+      \    \"visibility\":\"public\"\r
+
+      }"
+  auth:
+    type: bearer
+    token: "{{TOKEN}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Update Visibility
+    request:
+      url: "{{URL}}/api/v1/film-lists/:id"
+      method: PATCH
+      params:
+        - name: id
+          value: de5368bc-cec7-4b55-afa0-8e5391f19533
+          type: path
+      body:
+        type: json
+        data: "{\r
+
+          \    \"visibility\":\"private\"\r
+
+          }"
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: Access-Control-Allow-Credentials
+          value: "true"
+        - name: Access-Control-Allow-Headers
+          value: Origin, Content-Type, api_key, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization
+        - name: Access-Control-Allow-Methods
+          value: POST, GET, OPTIONS, PATCH, PUT, DELETE, UPDATE
+        - name: Access-Control-Allow-Origin
+          value: "*"
+        - name: Access-Control-Expose-Headers
+          value: Content-Length
+        - name: Access-Control-Max-Age
+          value: "86400"
+        - name: Cache-Control
+          value: no-cache
+        - name: Content-Type
+          value: application/json; charset=utf-8
+        - name: Date
+          value: Mon, 21 Apr 2025 01:32:09 GMT
+        - name: Content-Length
+          value: "53"
+      body:
+        type: json
+        data: |-
+          {
+              "success": true,
+              "message": "success update film list"
+          }
