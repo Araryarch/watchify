@@ -394,7 +394,7 @@ export default function FilmDetailPage() {
   return (
     <div className="min-h-screen bg-black pt-16">
       {/* Hero */}
-      <div className="relative min-h-[85vh] sm:h-[60vh] lg:h-[70vh] overflow-hidden" style={gradient.style}>
+      <div className="relative overflow-hidden" style={gradient.style}>
         {film.images?.[0] && (
           <>
             <div
@@ -408,8 +408,8 @@ export default function FilmDetailPage() {
         <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
 
-        <div className="max-w-[1400px] mx-auto px-3 sm:px-6 lg:px-8 h-full relative z-10">
-          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 lg:gap-8 items-center sm:items-end h-full justify-end pb-6 sm:pb-10 lg:pb-12 pt-6 sm:pt-0">
+        <div className="max-w-[1400px] mx-auto px-3 sm:px-6 lg:px-8 relative z-10">
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 lg:gap-8 items-center sm:items-end py-6 sm:py-10 lg:py-12">
             {/* Poster */}
             <div className="w-32 sm:w-40 md:w-48 lg:w-64 shrink-0">
               <div className="aspect-[2/3] rounded-lg overflow-hidden shadow-2xl border border-white/10">
