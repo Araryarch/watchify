@@ -5,7 +5,7 @@ import { navLinks } from './nav-links';
 interface DesktopNavProps {
   isCategoryOpen: boolean;
   setIsCategoryOpen: (value: boolean | ((prev: boolean) => boolean)) => void;
-  categoryRef: React.RefObject<HTMLDivElement>;
+  categoryRef: React.RefObject<HTMLDivElement | null>;
   genresData: any;
 }
 
