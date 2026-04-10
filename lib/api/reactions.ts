@@ -17,12 +17,12 @@ export interface UpdateReactionPayload {
 
 export const reactionsApi = {
   create: async (payload: CreateReactionPayload) => {
-    const { data } = await apiClient.post('/reactions', payload);
+    const { data } = await apiClient.post('/api/v1/reactions', payload);
     return data;
   },
 
   update: async (id: string, payload: UpdateReactionPayload) => {
-    const { data } = await apiClient.put(`/reactions/${id}`, payload);
+    const { data } = await apiClient.put(`/api/v1/reactions/${id}`, payload);
     return data;
   },
 };

@@ -22,7 +22,7 @@ export interface UserDetail {
 
 export const usersApi = {
   getById: async (id: string) => {
-    const { data } = await apiClient.get(`/users/${id}`);
+    const { data } = await apiClient.get(`/api/v1/users/${id}`);
     return data;
   },
 };

@@ -18,12 +18,12 @@ export interface UpdateVisibilityPayload {
 
 export const filmListsApi = {
   create: async (payload: CreateFilmListPayload) => {
-    const { data } = await apiClient.post('/film-lists', payload);
+    const { data } = await apiClient.post('/api/v1/film-lists', payload);
     return data;
   },
 
   updateVisibility: async (id: string, payload: UpdateVisibilityPayload) => {
-    const { data } = await apiClient.patch(`/film-lists/${id}`, payload);
+    const { data } = await apiClient.patch(`/api/v1/film-lists/${id}`, payload);
     return data;
   },
 };

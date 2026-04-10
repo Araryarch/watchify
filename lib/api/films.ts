@@ -52,31 +52,31 @@ export function formatDateForApi(isoOrLocalDate: string): string {
 
 export const filmsApi = {
   getAll: async (params?: FilmListParams) => {
-    const { data } = await apiClient.get('/films', { params });
+    const { data } = await apiClient.get('/api/v1/films', { params });
     return data;
   },
 
   getById: async (id: string) => {
-    const { data } = await apiClient.get(`/films/${id}`);
+    const { data } = await apiClient.get(`/api/v1/films/${id}`);
     return data;
   },
 
   create: async (formData: FormData) => {
-    const { data } = await apiClient.post('/films', formData, {
+    const { data } = await apiClient.post('/api/v1/films', formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
     return data;
   },
 
   update: async (id: string, formData: FormData) => {
-    const { data } = await apiClient.put(`/films/${id}`, formData, {
+    const { data } = await apiClient.put(`/api/v1/films/${id}`, formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
     return data;
   },
 
   delete: async (id: string) => {
-    const { data } = await apiClient.delete(`/films/${id}`);
+    const { data } = await apiClient.delete(`/api/v1/films/${id}`);
     return data;
   },
 };

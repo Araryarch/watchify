@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'https://film-management-api.labse.id/api/v1';
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? 'https://film-management-api.labse.id';
 
 export const apiClient = axios.create({
-  baseURL: API_BASE_URL,
+  baseURL: BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },

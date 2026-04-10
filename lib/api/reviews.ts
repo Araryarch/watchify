@@ -12,7 +12,7 @@ export interface CreateReviewPayload {
 
 export const reviewsApi = {
   create: async (payload: CreateReviewPayload) => {
-    const { data } = await apiClient.post('/reviews', payload);
+    const { data } = await apiClient.post('/api/v1/reviews', payload);
     return data;
   },
 };

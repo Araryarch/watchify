@@ -26,17 +26,17 @@ export interface UserProfile {
 
 export const authApi = {
   login: async (credentials: LoginCredentials) => {
-    const { data } = await apiClient.post('/auth/login', credentials);
+    const { data } = await apiClient.post('/api/v1/auth/login', credentials);
     return data;
   },
 
   register: async (userData: RegisterData) => {
-    const { data } = await apiClient.post('/auth/register', userData);
+    const { data } = await apiClient.post('/api/v1/auth/register', userData);
     return data;
   },
 
   getMe: async () => {
-    const { data } = await apiClient.get('/auth/me');
+    const { data } = await apiClient.get('/api/v1/auth/me');
     return data;
   },
 

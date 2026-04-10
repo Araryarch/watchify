@@ -16,22 +16,22 @@ export interface GenreListParams {
 
 export const genresApi = {
   getAll: async () => {
-    const { data } = await apiClient.get('/genres');
+    const { data } = await apiClient.get('/api/v1/genres');
     return data;
   },
 
   getAllPaginated: async (params?: GenreListParams) => {
-    const { data } = await apiClient.get('/genres/admin', { params });
+    const { data } = await apiClient.get('/api/v1/genres/admin', { params });
     return data;
   },
 
   create: async (name: string) => {
-    const { data } = await apiClient.post('/genres', { name });
+    const { data } = await apiClient.post('/api/v1/genres', { name });
     return data;
   },
 
   update: async (id: string, name: string) => {
-    const { data } = await apiClient.put(`/genres/${id}`, { name });
+    const { data } = await apiClient.put(`/api/v1/genres/${id}`, { name });
     return data;
   },
 };
