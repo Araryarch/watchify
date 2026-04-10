@@ -1,18 +1,20 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { QueryProvider } from "@/lib/providers/query-provider";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains-mono",
   subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -31,9 +33,19 @@ export const metadata: Metadata = {
     title: "Watchify - Platform Streaming Film Terbaik",
     description: "Tonton ribuan film dan series favorit Anda di Watchify",
   },
-  viewport: "width=device-width, initial-scale=1, maximum-scale=5",
   robots: "index, follow",
 };
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+};
+
+import { TooltipProvider } from "@/components/ui/tooltip";
+
+import { HeaderWrapper } from "@/components/header-wrapper";
+import { Toaster } from "@/components/ui/sonner";
 
 export default function RootLayout({
   children,
@@ -43,13 +55,20 @@ export default function RootLayout({
   return (
     <html
       lang="id"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${inter.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col bg-black font-sans">
         <QueryProvider>
-          <Navbar />
-          <main className="flex-1">{children}</main>
-          <Footer />
+          <TooltipProvider>
+            <HeaderWrapper>
+              <Navbar />
+            </HeaderWrapper>
+            <main className="flex-1">{children}</main>
+            <HeaderWrapper>
+              <Footer />
+            </HeaderWrapper>
+          </TooltipProvider>
+          <Toaster />
         </QueryProvider>
       </body>
     </html>

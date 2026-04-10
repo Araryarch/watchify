@@ -2,125 +2,128 @@
 
 import { useState } from 'react';
 import { FilmCard } from '@/components/film-card';
+import { HeroCarousel } from '@/components/hero-carousel';
 import { useFilms } from '@/lib/hooks/useFilms';
 import { useGenres } from '@/lib/hooks/useGenres';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Search, Filter } from 'lucide-react';
+import { SlidersHorizontal, ChevronLeft, ChevronRight } from 'lucide-react';
+import Loading from '../loading';
 
 export default function FilmsPage() {
-  const [searchQuery, setSearchQuery] = useState('');
   const [selectedGenre, setSelectedGenre] = useState<string | null>(null);
   const [page, setPage] = useState(1);
+  const [showFilters, setShowFilters] = useState(false);
   
   const { data: filmsData, isLoading } = useFilms({
-    take: 12,
+    take: 18,
     page,
-    filter: searchQuery || undefined,
-    filter_by: searchQuery ? 'title' : undefined,
+    ...(selectedGenre ? { genre: selectedGenre } : {}) as any
   });
-  
   const { data: genresData } = useGenres();
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    setPage(1);
-  };
+  const heroes = filmsData?.data?.slice(0, 5) || [];
+
+  if (isLoading) return <Loading />;
 
   return (
-    <div className="min-h-screen py-8">
-      <div className="container mx-auto px-4">
-        <h1 className="text-4xl font-bold mb-8">Jelajahi Film</h1>
+    <main className="min-h-screen bg-[#0b0c0f] pb-12">
+      <HeroCarousel heroes={heroes} />
 
-        {/* Search and Filter */}
-        <div className="mb-8 space-y-4">
-          <form onSubmit={handleSearch} className="flex gap-2">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-              <Input
-                type="text"
-                placeholder="Cari film..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10"
-              />
-            </div>
-            <Button type="submit">
-              <Search className="w-4 h-4 mr-2" />
-              Cari
-            </Button>
-          </form>
+      <div className="max-w-[1600px] mx-auto px-4 lg:px-8 relative z-30 -mt-24 md:-mt-32">
+        {/* Page header + filter toggle */}
+        <header className="mb-6 flex items-center justify-between gap-4">
+          <h1 className="text-3xl font-bold text-white flex items-center gap-2 drop-shadow-lg">
+            Semua Film &amp; Drama <ChevronRight className="w-6 h-6 text-neutral-400" aria-hidden="true" />
+          </h1>
+          <button
+            onClick={() => setShowFilters(!showFilters)}
+            aria-expanded={showFilters}
+            aria-controls="genre-filter-panel"
+            className={`px-5 py-2.5 border rounded-full text-white transition-all flex items-center gap-2 shrink-0 ${
+              showFilters ? 'bg-[#00dc74]/10 border-[#00dc74] text-[#00dc74]' : 'bg-[#1b1c21] border-white/5 hover:border-white/20'
+            }`}
+          >
+            <SlidersHorizontal className="w-4 h-4" aria-hidden="true" />
+            <span className="font-medium text-sm">Filter</span>
+          </button>
+        </header>
 
-          <div className="space-y-2">
-            <div className="flex items-center gap-2">
-              <Filter className="w-4 h-4" />
-              <span className="text-sm font-medium">Genre:</span>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              <Badge
-                variant={selectedGenre === null ? 'default' : 'outline'}
-                className="cursor-pointer"
-                onClick={() => setSelectedGenre(null)}
-              >
-                Semua
-              </Badge>
+        {/* Genre filter panel */}
+        {showFilters && (
+          <section
+            id="genre-filter-panel"
+            aria-label="Filter genre"
+            className="mb-8 p-5 bg-[#1b1c21] border border-white/5 rounded-xl animate-fade-in drop-shadow-xl"
+          >
+            <p className="text-xs font-bold text-neutral-400 uppercase tracking-widest mb-3">Pilih Kategori</p>
+            <ul className="flex flex-wrap gap-2 list-none p-0 m-0">
+              <li>
+                <button
+                  onClick={() => setSelectedGenre(null)}
+                  className={`px-4 py-1.5 rounded-full font-bold transition-all text-sm ${
+                    selectedGenre === null
+                      ? 'bg-[#00dc74] text-black shadow-[0_2px_10px_rgba(0,220,116,0.3)]'
+                      : 'bg-white/5 text-neutral-300 hover:bg-white/10 hover:text-white border border-white/5'
+                  }`}
+                >
+                  Semua
+                </button>
+              </li>
               {genresData?.data?.map((genre: any) => (
-                <Badge
-                  key={genre.id}
-                  variant={selectedGenre === genre.id ? 'default' : 'outline'}
-                  className="cursor-pointer"
-                  onClick={() => setSelectedGenre(genre.id)}
-                >
-                  {genre.name}
-                </Badge>
+                <li key={genre.id}>
+                  <button
+                    onClick={() => setSelectedGenre(genre.id)}
+                    className={`px-4 py-1.5 rounded-full font-medium transition-all capitalize text-sm ${
+                      selectedGenre === genre.id
+                        ? 'bg-[#00dc74] text-black shadow-[0_2px_10px_rgba(0,220,116,0.3)]'
+                        : 'bg-white/5 text-neutral-300 hover:bg-white/10 hover:text-white border border-white/5'
+                    }`}
+                  >
+                    {genre.name}
+                  </button>
+                </li>
               ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Films Grid */}
-        {isLoading ? (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
-            {[...Array(12)].map((_, i) => (
-              <div key={i} className="aspect-[2/3] bg-muted animate-pulse rounded-lg" />
-            ))}
-          </div>
-        ) : (
-          <>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6 mb-8">
-              {filmsData?.data?.map((film: any) => (
-                <FilmCard key={film.id || film.title} film={film} />
-              ))}
-            </div>
-
-            {/* Pagination */}
-            {filmsData?.meta?.[0] && (
-              <div className="flex justify-center gap-2">
-                <Button
-                  variant="outline"
-                  onClick={() => setPage(p => Math.max(1, p - 1))}
-                  disabled={page === 1}
-                >
-                  Sebelumnya
-                </Button>
-                <div className="flex items-center gap-2 px-4">
-                  <span className="text-sm">
-                    Halaman {page} dari {filmsData.meta[0].total_page}
-                  </span>
-                </div>
-                <Button
-                  variant="outline"
-                  onClick={() => setPage(p => p + 1)}
-                  disabled={page >= filmsData.meta[0].total_page}
-                >
-                  Selanjutnya
-                </Button>
-              </div>
-            )}
-          </>
+            </ul>
+          </section>
         )}
+
+        {/* Film grid */}
+        <section aria-label="Daftar film">
+          <ol className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 md:gap-5 mb-16 list-none p-0 m-0">
+            {filmsData?.data?.map((film: any) => (
+              <li key={film.id || film.title}>
+                <FilmCard film={film} />
+              </li>
+            ))}
+          </ol>
+
+          {/* Pagination */}
+          {filmsData?.meta?.[0] && filmsData.meta[0].total_page > 1 && (
+            <nav aria-label="Navigasi halaman" className="flex items-center justify-center gap-4 mt-4">
+              <button
+                onClick={() => setPage(p => Math.max(1, p - 1))}
+                disabled={page === 1}
+                aria-label="Halaman sebelumnya"
+                className="w-10 h-10 flex items-center justify-center bg-white/5 hover:bg-white/10 disabled:opacity-30 disabled:hover:bg-white/5 rounded-full text-white transition-all"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+              <p className="flex items-center gap-2 px-5 py-2 bg-[#1b1c21] rounded-full border border-white/5 text-sm text-neutral-400">
+                Halaman <strong className="text-white">{page}</strong> dari{' '}
+                <strong className="text-white">{filmsData.meta[0].total_page}</strong>
+              </p>
+              <button
+                onClick={() => setPage(p => p + 1)}
+                disabled={page >= filmsData.meta[0].total_page}
+                aria-label="Halaman berikutnya"
+                className="w-10 h-10 flex items-center justify-center bg-white/5 hover:bg-white/10 disabled:opacity-30 disabled:hover:bg-white/5 rounded-full text-white transition-all"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            </nav>
+          )}
+        </section>
       </div>
-    </div>
+    </main>
   );
 }
+

@@ -1,45 +1,43 @@
 'use client';
 
 import { useGenres } from '@/lib/hooks/useGenres';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Film, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
-import { Film } from 'lucide-react';
+import Loading from '../loading';
 
 export default function GenresPage() {
   const { data: genresData, isLoading } = useGenres();
 
-  return (
-    <div className="min-h-screen py-8">
-      <div className="container mx-auto px-4">
-        <h1 className="text-4xl font-bold mb-8">Semua Genre</h1>
+  if (isLoading) return <Loading />;
 
-        {isLoading ? (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {[...Array(12)].map((_, i) => (
-              <div key={i} className="h-32 bg-muted animate-pulse rounded-lg" />
-            ))}
-          </div>
-        ) : (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+  return (
+    <div className="min-h-screen bg-[#0b0c0f] pt-24 pb-12">
+      <div className="max-w-[1600px] mx-auto px-4 lg:px-8">
+        <div className="mb-10">
+          <h1 className="text-3xl font-bold text-white mb-2">Semua Kategori</h1>
+          <p className="text-neutral-400">Jelajahi tayangan berdasarkan kategori favorit Anda</p>
+        </div>
+
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
             {genresData?.data?.map((genre: any) => (
               <Link key={genre.id} href={`/films?genre=${genre.id}`}>
-                <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full">
-                  <CardHeader>
-                    <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-2">
-                      <Film className="w-6 h-6 text-primary" />
+                <div className="group p-6 bg-[#1b1c21] hover:bg-[#202128] border border-white/5 hover:border-[#00dc74]/50 rounded-xl transition-all cursor-pointer h-full shadow-sm hover:shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="w-12 h-12 bg-[#00dc74]/10 group-hover:bg-[#00dc74] rounded-lg flex items-center justify-center transition-colors">
+                      <Film className="w-5 h-5 text-[#00dc74] group-hover:text-black" />
                     </div>
-                    <CardTitle className="capitalize">{genre.name}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-muted-foreground">
-                      Jelajahi film {genre.name}
-                    </p>
-                  </CardContent>
-                </Card>
+                    <ChevronRight className="w-5 h-5 text-neutral-500 group-hover:text-[#00dc74] group-hover:translate-x-1 transition-all" />
+                  </div>
+                  <h3 className="text-lg font-bold text-white capitalize mb-1">
+                    {genre.name}
+                  </h3>
+                  <p className="text-xs text-neutral-400">
+                    Jelajahi koleksi {genre.name}
+                  </p>
+                </div>
               </Link>
             ))}
           </div>
-        )}
       </div>
     </div>
   );
