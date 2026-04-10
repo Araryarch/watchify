@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { ArrowLeft, Save } from 'lucide-react';
+import { ArrowLeft, Save, CalendarIcon } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
@@ -9,15 +9,21 @@ import { toast } from 'sonner';
 import { useCreateFilm, formatDateForApi } from '@/lib/hooks/useFilms';
 import { useGenres } from '@/lib/hooks/useGenres';
 import { DropzoneUploader } from '@/components/dropzone-uploader';
+import { Calendar } from '@/components/ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Button } from '@/components/ui/button';
+import { format } from 'date-fns';
+import { id } from 'date-fns/locale';
 
 export default function CreateFilmPage() {
   const router = useRouter();
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, setValue } = useForm();
   const { mutate: createFilm, isPending } = useCreateFilm();
   const { data: genresData } = useGenres();
   
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
   const [files, setFiles] = useState<File[]>([]);
+  const [releaseDate, setReleaseDate] = useState<Date>();
 
   const toggleGenre = (id: string) => {
     if (selectedGenres.includes(id)) {
@@ -33,8 +39,8 @@ export default function CreateFilmPage() {
     formData.append('synopsis', data.synopsis);
     formData.append('airing_status', data.airing_status);
     formData.append('total_episodes', data.total_episodes);
-    if (data.release_date) {
-      formData.append('release_date', formatDateForApi(data.release_date));
+    if (releaseDate) {
+      formData.append('release_date', formatDateForApi(releaseDate.toISOString()));
     }
     
     if (selectedGenres.length > 0) {
@@ -50,7 +56,7 @@ export default function CreateFilmPage() {
     createFilm(formData, {
       onSuccess: () => {
         toast.success('Berhasil membuat Film!');
-        router.push('/dashboard/films');
+        router.push('/dashboard/admin/films');
       },
       onError: (err: any) => {
         toast.error(err.response?.data?.message || 'Gagal menambahkan film');
@@ -62,7 +68,7 @@ export default function CreateFilmPage() {
     <div className="flex-1 w-full bg-[#0b0c0f] font-sans text-white p-4 sm:p-6 lg:p-8 min-h-full">
       <div className="max-w-4xl mx-auto pb-12">
         <div className="mb-8">
-          <Link href="/dashboard/films" className="inline-flex items-center gap-2 text-sm font-bold text-neutral-400 hover:text-primary mb-4 transition-colors">
+          <Link href="/dashboard/admin/films" className="inline-flex items-center gap-2 text-sm font-bold text-neutral-400 hover:text-primary mb-4 transition-colors">
             <ArrowLeft className="w-4 h-4" /> Kembali
           </Link>
           <h1 className="text-3xl font-bold">Tambah Film Baru</h1>
@@ -89,7 +95,25 @@ export default function CreateFilmPage() {
               </div>
               <div>
                 <label className="block text-sm font-bold text-neutral-300 mb-2">Tanggal Rilis</label>
-                <input type="datetime-local" {...register('release_date')} className="w-full bg-[#0b0c0f] border border-white/10 rounded-lg px-4 py-3 text-sm focus:border-primary outline-none" />
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      className="w-full justify-start text-left font-normal bg-[#0b0c0f] border-white/10 hover:bg-[#0b0c0f] hover:border-primary text-white"
+                    >
+                      <CalendarIcon className="mr-2 h-4 w-4" />
+                      {releaseDate ? format(releaseDate, 'PPP', { locale: id }) : <span>Pilih tanggal</span>}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0 bg-[#1b1c21] border-white/10">
+                    <Calendar
+                      mode="single"
+                      selected={releaseDate}
+                      onSelect={setReleaseDate}
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
               </div>
             </div>
 

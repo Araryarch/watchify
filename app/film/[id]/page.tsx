@@ -59,14 +59,14 @@ function AddToListButton({ filmId }: { filmId: string }) {
     <div className="relative">
       <button
         onClick={() => setOpen(o => !o)}
-        className="group px-6 py-3.5 bg-white/10 hover:bg-white/15 border border-white/20 text-white rounded-lg font-medium transition-all flex items-center gap-3"
+        className="group px-4 sm:px-6 py-3 sm:py-3.5 bg-white/10 hover:bg-white/15 border border-white/20 text-white rounded-lg font-medium transition-all flex items-center justify-center gap-2 sm:gap-3 w-full sm:w-auto"
       >
-        <BookmarkPlus className="w-5 h-5 text-[#00dc74]" />
-        <span>Tambah ke Daftar</span>
-        <ChevronDown className={`w-4 h-4 transition-transform ${open ? 'rotate-180' : ''}`} />
+        <BookmarkPlus className="w-4 sm:w-5 h-4 sm:h-5 text-[#00dc74]" />
+        <span className="text-sm sm:text-base">Tambah ke Daftar</span>
+        <ChevronDown className={`w-3.5 sm:w-4 h-3.5 sm:h-4 transition-transform ${open ? 'rotate-180' : ''}`} />
       </button>
       {open && (
-        <div className="absolute top-full mt-2 left-0 z-10 w-52 bg-[#1b1c21] border border-white/10 rounded-xl shadow-2xl overflow-hidden">
+        <div className="absolute top-full mt-2 left-0 right-0 sm:left-0 sm:right-auto z-10 w-full sm:w-52 bg-[#1b1c21] border border-white/10 rounded-xl shadow-2xl overflow-hidden">
           {(Object.keys(LIST_STATUS_LABELS) as ListStatus[]).map(status => (
             <button
               key={status}
@@ -154,44 +154,44 @@ function ReviewSection({ filmId }: { filmId: string }) {
   };
 
   return (
-    <div className="space-y-8">
-      <h2 className="text-2xl font-bold text-white">Ulasan & Rating</h2>
+    <div className="space-y-6 sm:space-y-8">
+      <h2 className="text-xl sm:text-2xl font-bold text-white">Ulasan & Rating</h2>
 
       {/* Write review form */}
       {token ? (
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="bg-[#1b1c21] border border-white/5 rounded-2xl p-6 space-y-5"
+          className="bg-[#1b1c21] border border-white/5 rounded-xl sm:rounded-2xl p-4 sm:p-6 space-y-4 sm:space-y-5"
         >
-          <h3 className="text-white font-bold text-lg">Tulis Ulasan</h3>
+          <h3 className="text-white font-bold text-base sm:text-lg">Tulis Ulasan</h3>
 
           <div>
-            <label className="block text-sm text-neutral-400 mb-2 font-medium">Rating kamu</label>
+            <label className="block text-xs sm:text-sm text-neutral-400 mb-2 font-medium">Rating kamu</label>
             <StarRating value={rating} onChange={setRating} />
           </div>
 
           <div>
-            <label className="block text-sm text-neutral-400 mb-2 font-medium">Komentar</label>
+            <label className="block text-xs sm:text-sm text-neutral-400 mb-2 font-medium">Komentar</label>
             <textarea
               {...register('comment', { required: true })}
               rows={3}
               placeholder="Bagikan pendapatmu tentang tayangan ini..."
-              className="w-full bg-[#0b0c0f] border border-white/10 rounded-lg px-4 py-3 text-sm text-white focus:border-[#00dc74] outline-none resize-none"
+              className="w-full bg-[#0b0c0f] border border-white/10 rounded-lg px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm text-white focus:border-[#00dc74] outline-none resize-none"
             />
           </div>
 
           <button
             type="submit"
             disabled={isPending}
-            className="px-6 py-2.5 bg-[#00dc74] text-black font-bold rounded-lg hover:bg-[#00c266] transition-all flex items-center gap-2 disabled:opacity-50"
+            className="w-full sm:w-auto px-5 sm:px-6 py-2.5 bg-[#00dc74] text-black font-bold rounded-lg hover:bg-[#00c266] transition-all flex items-center justify-center gap-2 disabled:opacity-50 text-sm sm:text-base"
           >
-            <Send className="w-4 h-4" />
+            <Send className="w-3.5 sm:w-4 h-3.5 sm:h-4" />
             {isPending ? 'Mengirim...' : 'Kirim Ulasan'}
           </button>
         </form>
       ) : (
-        <div className="bg-[#1b1c21] border border-white/5 rounded-2xl p-6 text-center text-neutral-400">
-          <p className="text-sm">
+        <div className="bg-[#1b1c21] border border-white/5 rounded-xl sm:rounded-2xl p-4 sm:p-6 text-center text-neutral-400">
+          <p className="text-xs sm:text-sm">
             <a href="/login" className="text-[#00dc74] font-bold hover:underline">Login</a> untuk menulis ulasan.
           </p>
         </div>
@@ -230,7 +230,7 @@ export default function FilmDetailPage() {
   return (
     <div className="min-h-screen bg-black pt-16">
       {/* Hero */}
-      <div className="relative h-[70vh] overflow-hidden">
+      <div className="relative h-[50vh] sm:h-[60vh] lg:h-[70vh] overflow-hidden">
         {film.images?.[0] && (
           <>
             <div
@@ -242,10 +242,10 @@ export default function FilmDetailPage() {
           </>
         )}
 
-        <div className="max-w-[1400px] mx-auto px-4 lg:px-8 h-full relative z-10">
-          <div className="flex flex-col md:flex-row gap-8 items-end h-full pb-12">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 h-full relative z-10">
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 lg:gap-8 items-end h-full pb-8 sm:pb-10 lg:pb-12">
             {/* Poster */}
-            <div className="w-48 md:w-64 shrink-0">
+            <div className="w-32 sm:w-40 md:w-48 lg:w-64 shrink-0 mx-auto sm:mx-0">
               <div className="aspect-[2/3] rounded-lg overflow-hidden shadow-2xl border border-white/10">
                 {film.images?.[0] ? (
                   <img
@@ -262,46 +262,47 @@ export default function FilmDetailPage() {
             </div>
 
             {/* Info */}
-            <div className="flex-1 space-y-5 pb-4">
+            <div className="flex-1 space-y-3 sm:space-y-4 lg:space-y-5 pb-2 sm:pb-4 text-center sm:text-left">
               <div>
-                <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">{film.title}</h1>
-                <div className="flex flex-wrap gap-2 mb-4">
+                <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-3 sm:mb-4">{film.title}</h1>
+                <div className="flex flex-wrap gap-2 mb-3 sm:mb-4 justify-center sm:justify-start">
                   {film.genres?.map((genre: any) => (
-                    <span key={genre.id} className="px-3 py-1 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full text-sm text-gray-300 capitalize">
+                    <span key={genre.id} className="px-2.5 sm:px-3 py-1 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full text-xs sm:text-sm text-gray-300 capitalize">
                       {genre.name}
                     </span>
                   ))}
-                  <span className="px-3 py-1 bg-[#00dc74]/20 border border-[#00dc74]/30 rounded-full text-sm text-[#00dc74]">
+                  <span className="px-2.5 sm:px-3 py-1 bg-[#00dc74]/20 border border-[#00dc74]/30 rounded-full text-xs sm:text-sm text-[#00dc74]">
                     {AIRING_STATUS_MAP[film.airing_status]}
                   </span>
                 </div>
 
-                <div className="flex flex-wrap gap-6 text-sm text-gray-300">
+                <div className="flex flex-wrap gap-3 sm:gap-4 lg:gap-6 text-xs sm:text-sm text-gray-300 justify-center sm:justify-start">
                   {film.average_rating > 0 && (
-                    <div className="flex items-center gap-2">
-                      <Star className="w-5 h-5 fill-yellow-400 text-yellow-400" />
-                      <span className="text-white font-semibold text-lg">{film.average_rating.toFixed(1)}</span>
+                    <div className="flex items-center gap-1.5 sm:gap-2">
+                      <Star className="w-4 sm:w-5 h-4 sm:h-5 fill-yellow-400 text-yellow-400" />
+                      <span className="text-white font-semibold text-base sm:text-lg">{film.average_rating.toFixed(1)}</span>
                       <span className="text-gray-400">/10</span>
                     </div>
                   )}
-                  <div className="flex items-center gap-2">
-                    <FilmIcon className="w-5 h-5" />
+                  <div className="flex items-center gap-1.5 sm:gap-2">
+                    <FilmIcon className="w-4 sm:w-5 h-4 sm:h-5" />
                     <span>{film.total_episodes} Episode</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Calendar className="w-5 h-5" />
-                    <span>{new Date(film.release_date).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                  <div className="flex items-center gap-1.5 sm:gap-2">
+                    <Calendar className="w-4 sm:w-5 h-4 sm:h-5" />
+                    <span className="hidden sm:inline">{new Date(film.release_date).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                    <span className="sm:hidden">{new Date(film.release_date).toLocaleDateString('id-ID', { year: 'numeric', month: 'short' })}</span>
                   </div>
                 </div>
               </div>
 
               {/* Action buttons */}
-              <div className="flex flex-wrap gap-3">
+              <div className="flex flex-col sm:flex-row flex-wrap gap-2 sm:gap-3 justify-center sm:justify-start">
                 <Link
                   href={`/film/${film.id}/watch?ep=1`}
-                  className="group px-8 py-3.5 bg-[#00dc74] hover:bg-[#00c266] text-black rounded-lg font-bold transition-all flex items-center gap-3 shadow-[0_4px_20px_rgba(0,220,116,0.3)]"
+                  className="group px-6 sm:px-8 py-3 sm:py-3.5 bg-[#00dc74] hover:bg-[#00c266] text-black rounded-lg font-bold transition-all flex items-center justify-center gap-2 sm:gap-3 shadow-[0_4px_20px_rgba(0,220,116,0.3)] w-full sm:w-auto"
                 >
-                  <Play className="w-5 h-5 fill-black" />
+                  <Play className="w-4 sm:w-5 h-4 sm:h-5 fill-black" />
                   <span>Tonton Sekarang</span>
                 </Link>
                 <AddToListButton filmId={film.id} />
@@ -312,14 +313,14 @@ export default function FilmDetailPage() {
       </div>
 
       {/* Content */}
-      <div className="max-w-[1400px] mx-auto px-4 lg:px-8 py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 lg:py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 sm:gap-10 lg:gap-12">
           {/* Main column */}
-          <div className="lg:col-span-2 space-y-12">
+          <div className="lg:col-span-2 space-y-8 sm:space-y-10 lg:space-y-12">
             {/* Synopsis */}
             <div>
-              <h2 className="text-2xl font-bold text-white mb-4">Sinopsis</h2>
-              <p className="text-gray-300 leading-relaxed text-base">
+              <h2 className="text-xl sm:text-2xl font-bold text-white mb-3 sm:mb-4">Sinopsis</h2>
+              <p className="text-gray-300 leading-relaxed text-sm sm:text-base">
                 {film.synopsis || 'Sinopsis tidak tersedia.'}
               </p>
             </div>
@@ -327,8 +328,8 @@ export default function FilmDetailPage() {
             {/* Gallery */}
             {film.images && film.images.length > 1 && (
               <div>
-                <h2 className="text-2xl font-bold text-white mb-6">Galeri</h2>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">Galeri</h2>
+                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
                   {film.images.map((image: string, index: number) => (
                     <div key={index} className="group relative aspect-video overflow-hidden rounded-lg border border-white/10 bg-white/5">
                       <img
@@ -348,10 +349,10 @@ export default function FilmDetailPage() {
           </div>
 
           {/* Sidebar column */}
-          <div className="space-y-6">
-            <div className="bg-[#111214] border border-white/5 rounded-2xl p-6 space-y-4">
-              <h3 className="text-white font-bold text-lg mb-4">Info Tayangan</h3>
-              <div className="space-y-3 text-sm">
+          <div className="space-y-4 sm:space-y-6">
+            <div className="bg-[#111214] border border-white/5 rounded-xl sm:rounded-2xl p-4 sm:p-6 space-y-3 sm:space-y-4">
+              <h3 className="text-white font-bold text-base sm:text-lg mb-3 sm:mb-4">Info Tayangan</h3>
+              <div className="space-y-2.5 sm:space-y-3 text-xs sm:text-sm">
                 <div className="flex justify-between">
                   <span className="text-neutral-500">Status</span>
                   <span className="text-white font-medium">{AIRING_STATUS_MAP[film.airing_status]}</span>
@@ -376,11 +377,11 @@ export default function FilmDetailPage() {
             </div>
 
             {film.genres && film.genres.length > 0 && (
-              <div className="bg-[#111214] border border-white/5 rounded-2xl p-6">
-                <h3 className="text-white font-bold text-lg mb-4">Genre</h3>
+              <div className="bg-[#111214] border border-white/5 rounded-xl sm:rounded-2xl p-4 sm:p-6">
+                <h3 className="text-white font-bold text-base sm:text-lg mb-3 sm:mb-4">Genre</h3>
                 <div className="flex flex-wrap gap-2">
                   {film.genres.map((genre: any) => (
-                    <span key={genre.id} className="px-3 py-1.5 bg-[#00dc74]/10 border border-[#00dc74]/20 text-[#00dc74] rounded-full text-xs font-bold capitalize">
+                    <span key={genre.id} className="px-2.5 sm:px-3 py-1 sm:py-1.5 bg-[#00dc74]/10 border border-[#00dc74]/20 text-[#00dc74] rounded-full text-xs font-bold capitalize">
                       {genre.name}
                     </span>
                   ))}

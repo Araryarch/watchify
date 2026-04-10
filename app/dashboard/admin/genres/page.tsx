@@ -66,8 +66,8 @@ function GenreModal({
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-      <div className="bg-[#1b1c21] border border-white/10 rounded-2xl p-6 w-full max-w-md shadow-2xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+      <div className="bg-[#1b1c21] border border-white/10 rounded-2xl p-6 w-full max-w-md shadow-2xl max-h-[90vh] overflow-y-auto">
         <h2 className="text-xl font-bold text-white mb-6">
           {genre ? 'Edit Genre' : 'Tambah Genre Baru'}
         </h2>
@@ -179,28 +179,65 @@ export default function GenresPage() {
               <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white mb-1">Manajemen Genre</h1>
               <p className="text-sm font-medium text-neutral-400">Kelola kategori genre tayangan yang tersedia</p>
             </div>
-            <div className="flex items-center gap-3">
-              <div className="relative hidden sm:block">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+              <div className="relative flex-1 sm:flex-none">
                 <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-neutral-500" />
                 <input
                   type="text"
                   placeholder="Cari genre..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="bg-[#1b1c21] border border-white/10 rounded-full pl-9 pr-4 py-2 text-sm text-white focus:outline-none focus:border-primary transition-colors w-56"
+                  className="w-full sm:w-56 bg-[#1b1c21] border border-white/10 rounded-full pl-9 pr-4 py-2 text-sm text-white focus:outline-none focus:border-primary transition-colors"
                 />
               </div>
               <button
                 onClick={() => { setEditGenre(null); setModalOpen(true); }}
-                className="px-5 py-2.5 bg-primary text-black rounded-full font-bold hover:brightness-90 transition-all flex items-center gap-2 shadow-[0_4px_15px_rgba(var(--primary),0.3)]"
+                className="px-5 py-2.5 bg-primary text-black rounded-full font-bold hover:brightness-90 transition-all flex items-center justify-center gap-2 shadow-[0_4px_15px_rgba(var(--primary),0.3)] whitespace-nowrap"
               >
-                <Plus className="w-4 h-4" /> Tambah Genre
+                <Plus className="w-4 h-4" /> <span className="hidden sm:inline">Tambah Genre</span><span className="sm:hidden">Tambah</span>
               </button>
             </div>
           </div>
 
           <div className="bg-[#1b1c21] border border-white/5 rounded-2xl shadow-xl flex flex-col overflow-hidden">
-            <div className="overflow-x-auto flex-1">
+            {/* Mobile Card View */}
+            <div className="block lg:hidden">
+              {isLoading ? (
+                <div className="flex flex-col items-center justify-center text-neutral-500 gap-3 py-12">
+                  <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+                  <p className="font-medium text-sm">Memuat data genre...</p>
+                </div>
+              ) : filtered.length > 0 ? (
+                <div className="divide-y divide-white/5">
+                  {filtered.map((genre: any) => (
+                    <div key={genre.id} className="p-4 hover:bg-white/2 transition-colors flex items-center justify-between">
+                      <div className="flex items-center gap-3 flex-1 min-w-0">
+                        <div className="w-10 h-10 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center flex-shrink-0">
+                          <Tag className="w-5 h-5 text-primary" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <span className="font-bold text-white capitalize block truncate">{genre.name}</span>
+                          <span className="font-mono text-xs text-neutral-500 block truncate">{genre.id}</span>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => { setEditGenre(genre); setModalOpen(true); }}
+                        className="p-2 text-neutral-500 hover:text-primary hover:bg-primary/10 rounded-lg transition-colors flex-shrink-0"
+                      >
+                        <Pencil className="w-4 h-4" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="py-12 text-center text-neutral-500">
+                  Belum ada genre yang tersedia.
+                </div>
+              )}
+            </div>
+
+            {/* Desktop Table View */}
+            <div className="hidden lg:block overflow-x-auto flex-1">
               <Table>
                 <TableHeader className="bg-white/[0.02] border-b border-white/5">
                   {table.getHeaderGroups().map((headerGroup) => (
@@ -247,27 +284,41 @@ export default function GenresPage() {
             {totalPages > 1 && (
               <div className="p-4 border-t border-white/5 bg-white/[0.01]">
                 <Pagination>
-                  <PaginationContent className="gap-2">
+                  <PaginationContent className="gap-1 sm:gap-2 flex-wrap justify-center">
                     <PaginationItem>
                       <PaginationPrevious
                         onClick={() => setPageIndex(p => Math.max(1, p - 1))}
-                        className={`cursor-pointer bg-[#0b0c0f] border-white/10 text-neutral-300 hover:text-white hover:bg-white/10 transition-all ${pageIndex === 1 ? 'opacity-50 pointer-events-none' : ''}`}
+                        className={`cursor-pointer bg-[#0b0c0f] border-white/10 text-neutral-300 hover:text-white hover:bg-white/10 transition-all text-xs sm:text-sm ${pageIndex === 1 ? 'opacity-50 pointer-events-none' : ''}`}
                       />
                     </PaginationItem>
-                    {Array.from({ length: totalPages }).map((_, i) => (
-                      <PaginationItem key={i}>
-                        <PaginationLink
-                          onClick={() => setPageIndex(i + 1)}
-                          className={`cursor-pointer border border-white/10 transition-all ${pageIndex === i + 1 ? 'bg-primary text-black border-primary font-bold' : 'bg-[#0b0c0f] text-neutral-400 hover:bg-white/10 hover:text-white'}`}
-                        >
-                          {i + 1}
-                        </PaginationLink>
-                      </PaginationItem>
-                    ))}
+                    
+                    {/* Show limited pages on mobile */}
+                    {Array.from({ length: Math.min(totalPages, 5) }).map((_, i) => {
+                      const pageNum = i + 1;
+                      if (totalPages <= 5 || pageNum === 1 || pageNum === totalPages || Math.abs(pageIndex - pageNum) <= 1) {
+                        return (
+                          <PaginationItem key={i} className="hidden sm:block">
+                            <PaginationLink
+                              onClick={() => setPageIndex(pageNum)}
+                              className={`cursor-pointer border border-white/10 transition-all ${pageIndex === pageNum ? 'bg-primary text-black border-primary font-bold' : 'bg-[#0b0c0f] text-neutral-400 hover:bg-white/10 hover:text-white'}`}
+                            >
+                              {pageNum}
+                            </PaginationLink>
+                          </PaginationItem>
+                        );
+                      }
+                      return null;
+                    })}
+
+                    {/* Mobile: Show current page only */}
+                    <div className="sm:hidden px-3 py-2 text-sm text-neutral-300">
+                      {pageIndex} / {totalPages}
+                    </div>
+
                     <PaginationItem>
                       <PaginationNext
                         onClick={() => setPageIndex(p => Math.min(totalPages, p + 1))}
-                        className={`cursor-pointer bg-[#0b0c0f] border-white/10 text-neutral-300 hover:text-white hover:bg-white/10 transition-all ${pageIndex === totalPages ? 'opacity-50 pointer-events-none' : ''}`}
+                        className={`cursor-pointer bg-[#0b0c0f] border-white/10 text-neutral-300 hover:text-white hover:bg-white/10 transition-all text-xs sm:text-sm ${pageIndex === totalPages ? 'opacity-50 pointer-events-none' : ''}`}
                       />
                     </PaginationItem>
                   </PaginationContent>

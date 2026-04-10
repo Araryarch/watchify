@@ -102,7 +102,7 @@ export default function EditFilmPage() {
     <div className="flex-1 w-full bg-[#0b0c0f] font-sans text-white p-4 sm:p-6 lg:p-8 min-h-full">
       <div className="max-w-4xl mx-auto pb-12">
         <div className="mb-8">
-          <Link href="/dashboard/films" className="inline-flex items-center gap-2 text-sm font-bold text-neutral-400 hover:text-[#00dc74] mb-4 transition-colors">
+          <Link href="/dashboard/admin/films" className="inline-flex items-center gap-2 text-sm font-bold text-neutral-400 hover:text-[#00dc74] mb-4 transition-colors">
             <ArrowLeft className="w-4 h-4" /> Batal & Kembali
           </Link>
           <h1 className="text-3xl font-bold">Edit Film: {filmData?.data?.title}</h1>
