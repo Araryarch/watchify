@@ -36,14 +36,6 @@ const data = {
       ),
     },
     {
-      title: "Pengguna",
-      url: "/dashboard/admin/users",
-      icon: (
-        <UsersIcon
-        />
-      ),
-    },
-    {
       title: "Genre",
       url: "/dashboard/admin/genres",
       icon: (

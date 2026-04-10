@@ -55,7 +55,7 @@ export function Navbar() {
   }, []);
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-[#0b0c0f]/90 backdrop-blur-md shadow-lg shadow-black/50' : 'bg-gradient-to-b from-black/80 to-transparent'}`}>
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled || isMenuOpen ? 'bg-[#0b0c0f]/90 backdrop-blur-md shadow-lg shadow-black/50' : 'bg-gradient-to-b from-black/80 to-transparent'}`}>
       <div className="max-w-[1600px] mx-auto px-4 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           {/* Logo & Desktop Nav Group */}

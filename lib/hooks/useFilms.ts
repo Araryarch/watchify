@@ -10,6 +10,9 @@ export const useFilms = (params?: FilmListParams) =>
   useQuery({
     queryKey: ['films', params],
     queryFn: () => filmsApi.getAll(params),
+    refetchInterval: 30000, // Refetch setiap 30 detik
+    refetchOnWindowFocus: true,
+    staleTime: 20000, // Data dianggap fresh selama 20 detik
   });
 
 export const useFilmDetail = (id: string, options?: { enabled?: boolean }) =>
@@ -17,6 +20,9 @@ export const useFilmDetail = (id: string, options?: { enabled?: boolean }) =>
     queryKey: ['film', id],
     queryFn: () => filmsApi.getById(id),
     enabled: options?.enabled ?? !!id,
+    refetchInterval: 30000, // Refetch setiap 30 detik
+    refetchOnWindowFocus: true,
+    staleTime: 20000,
   });
 
 // ─── Mutations ────────────────────────────────────────────────────────────────

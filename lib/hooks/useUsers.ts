@@ -8,4 +8,7 @@ export const useUserDetail = (id: string) =>
     queryKey: ['user', id],
     queryFn: () => usersApi.getById(id),
     enabled: !!id,
+    refetchInterval: 45000, // Refetch setiap 45 detik
+    refetchOnWindowFocus: true,
+    staleTime: 30000,
   });
