@@ -67,16 +67,4 @@ export const filmsApi = {
     });
     return data;
   },
-
-  // update: async (id: string, formData: FormData) => {
-  //   const { data } = await apiClient.put(`/api/v1/films/${id}`, formData, {
-  //     headers: { 'Content-Type': 'multipart/form-data' },
-  //   });
-  //   return data;
-  // },
-
-  // delete: async (id: string) => {
-  //   const { data } = await apiClient.delete(`/api/v1/films/${id}`);
-  //   return data;
-  // },
 };

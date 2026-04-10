@@ -6,22 +6,24 @@ export { formatDateForApi };
 
 // ─── Queries ─────────────────────────────────────────────────────────────────
 
-export const useFilms = (params?: FilmListParams) =>
-  useQuery({
+export function useFilms(params?: FilmListParams) {
+  return useQuery({
     queryKey: ['films', params],
     queryFn: () => filmsApi.getAll(params),
     staleTime: 5 * 60 * 1000, // 5 minutes
     gcTime: 10 * 60 * 1000, // 10 minutes
   });
+}
 
-export const useFilmDetail = (id: string, options?: { enabled?: boolean }) =>
-  useQuery({
+export function useFilmDetail(id: string, options?: { enabled?: boolean }) {
+  return useQuery({
     queryKey: ['film', id],
     queryFn: () => filmsApi.getById(id),
     enabled: options?.enabled ?? !!id,
     staleTime: 5 * 60 * 1000, // 5 minutes
     gcTime: 10 * 60 * 1000, // 10 minutes
   });
+}
 
 // ─── Mutations ────────────────────────────────────────────────────────────────
 

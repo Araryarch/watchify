@@ -199,7 +199,7 @@ function ReviewSection({ filmId, reviews }: { filmId: string; reviews?: any[] })
           // If user already reacted in a previous session
           if (errorMsg.includes('already reacted')) {
             setAlreadyReacted(prev => new Set(prev).add(review.id));
-            toast.info('Anda sudah pernah memberi reaksi pada ulasan ini');
+            toast.info('Anda sudah memberi reaksi, reaksi hanya bisa dilakukan sekali pada 1 review');
           } else {
             toast.error(errorMsg || 'Gagal memberi reaksi');
           }

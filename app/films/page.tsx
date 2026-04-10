@@ -27,11 +27,14 @@ export default function FilmsPage() {
   const { data: filmsData, isLoading } = useFilms({ take: 100 }); // Fetch all films
   const { data: genresData } = useGenres();
 
-  // Client-side filtering
+  // Client-side filtering - now genres data is complete from enriched endpoint
   const filteredFilms = selectedGenre
-    ? filmsData?.data?.filter((film: any) => 
-        film.genres?.some((g: any) => g.id === selectedGenre)
-      ) || []
+    ? filmsData?.data?.filter((film: any) => {
+        if (!film.genres || !Array.isArray(film.genres)) return false;
+        
+        // Genres should be array of objects {id, name} from enriched endpoint
+        return film.genres.some((g: any) => g.id === selectedGenre);
+      }) || []
     : filmsData?.data || [];
 
   // Client-side pagination
@@ -121,38 +124,46 @@ export default function FilmsPage() {
 
         {/* Film grid */}
         <section aria-label="Daftar film">
-          <ol className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 md:gap-5 mb-16 list-none p-0 m-0">
-            {paginatedFilms.map((film: any) => (
-              <li key={film.id || film.title}>
-                <FilmCard film={film} />
-              </li>
-            ))}
-          </ol>
+          {paginatedFilms.length === 0 ? (
+            <div className="text-center py-16">
+              <p className="text-neutral-400 text-lg">Tidak ada film ditemukan untuk genre ini.</p>
+            </div>
+          ) : (
+            <>
+              <ol className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 md:gap-5 mb-16 list-none p-0 m-0">
+                {paginatedFilms.map((film: any) => (
+                  <li key={film.id || film.title}>
+                    <FilmCard film={film} />
+                  </li>
+                ))}
+              </ol>
 
-          {/* Pagination */}
-          {totalPages > 1 && (
-            <nav aria-label="Navigasi halaman" className="flex items-center justify-center gap-4 mt-4">
-              <button
-                onClick={() => setPage(p => Math.max(1, p - 1))}
-                disabled={page === 1}
-                aria-label="Halaman sebelumnya"
-                className="w-10 h-10 flex items-center justify-center bg-white/5 hover:bg-white/10 disabled:opacity-30 disabled:hover:bg-white/5 rounded-full text-white transition-all"
-              >
-                <ChevronLeft className="w-5 h-5" />
-              </button>
-              <p className="flex items-center gap-2 px-5 py-2 bg-[#1b1c21] rounded-full border border-white/5 text-sm text-neutral-400">
-                Halaman <strong className="text-white">{page}</strong> dari{' '}
-                <strong className="text-white">{totalPages}</strong>
-              </p>
-              <button
-                onClick={() => setPage(p => p + 1)}
-                disabled={page >= totalPages}
-                aria-label="Halaman berikutnya"
-                className="w-10 h-10 flex items-center justify-center bg-white/5 hover:bg-white/10 disabled:opacity-30 disabled:hover:bg-white/5 rounded-full text-white transition-all"
-              >
-                <ChevronRight className="w-5 h-5" />
-              </button>
-            </nav>
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <nav aria-label="Navigasi halaman" className="flex items-center justify-center gap-4 mt-4">
+                  <button
+                    onClick={() => setPage(p => Math.max(1, p - 1))}
+                    disabled={page === 1}
+                    aria-label="Halaman sebelumnya"
+                    className="w-10 h-10 flex items-center justify-center bg-white/5 hover:bg-white/10 disabled:opacity-30 disabled:hover:bg-white/5 rounded-full text-white transition-all"
+                  >
+                    <ChevronLeft className="w-5 h-5" />
+                  </button>
+                  <p className="flex items-center gap-2 px-5 py-2 bg-[#1b1c21] rounded-full border border-white/5 text-sm text-neutral-400">
+                    Halaman <strong className="text-white">{page}</strong> dari{' '}
+                    <strong className="text-white">{totalPages}</strong>
+                  </p>
+                  <button
+                    onClick={() => setPage(p => p + 1)}
+                    disabled={page >= totalPages}
+                    aria-label="Halaman berikutnya"
+                    className="w-10 h-10 flex items-center justify-center bg-white/5 hover:bg-white/10 disabled:opacity-30 disabled:hover:bg-white/5 rounded-full text-white transition-all"
+                  >
+                    <ChevronRight className="w-5 h-5" />
+                  </button>
+                </nav>
+              )}
+            </>
           )}
         </section>
       </div>
