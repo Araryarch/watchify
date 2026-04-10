@@ -32,6 +32,8 @@ import {
   PaginationPrevious,
 } from '@/components/ui/pagination';
 
+import { TableSkeleton } from '@/components/skeleton-loader';
+
 // Modal for Create / Edit genre
 function GenreModal({
   open,
@@ -203,9 +205,16 @@ export default function GenresPage() {
             {/* Mobile Card View */}
             <div className="block lg:hidden">
               {isLoading ? (
-                <div className="flex flex-col items-center justify-center text-neutral-500 gap-3 py-12">
-                  <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-                  <p className="font-medium text-sm">Memuat data genre...</p>
+                <div className="p-4 space-y-3">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <div key={i} className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-lg bg-white/5 animate-pulse" />
+                      <div className="flex-1 space-y-2">
+                        <div className="h-4 bg-white/5 rounded animate-pulse w-3/4" />
+                        <div className="h-3 bg-white/5 rounded animate-pulse w-1/2" />
+                      </div>
+                    </div>
+                  ))}
                 </div>
               ) : filtered.length > 0 ? (
                 <div className="divide-y divide-white/5">
@@ -253,11 +262,8 @@ export default function GenresPage() {
                 <TableBody>
                   {isLoading ? (
                     <TableRow className="hover:bg-transparent">
-                      <TableCell colSpan={columns.length} className="h-40 text-center">
-                        <div className="flex flex-col items-center justify-center text-neutral-500 gap-3">
-                          <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-                          <p className="font-medium text-sm">Memuat data genre...</p>
-                        </div>
+                      <TableCell colSpan={columns.length} className="h-40">
+                        <TableSkeleton rows={5} columns={3} />
                       </TableCell>
                     </TableRow>
                   ) : table.getRowModel().rows?.length ? (

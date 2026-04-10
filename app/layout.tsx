@@ -14,12 +14,16 @@ const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
   display: "swap",
+  preload: true,
+  fallback: ['system-ui', 'arial'],
 });
 
 const jetbrainsMono = JetBrains_Mono({
   variable: "--font-jetbrains-mono",
   subsets: ["latin"],
   display: "swap",
+  preload: true,
+  fallback: ['monospace'],
 });
 
 export const metadata: Metadata = {
@@ -95,6 +99,11 @@ export default function RootLayout({
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        {/* Preconnect to API domain */}
+        <link rel="preconnect" href="https://film-management-api.labse.id" />
+        <link rel="dns-prefetch" href="https://film-management-api.labse.id" />
+        {/* Preload critical resources */}
+        <link rel="preload" as="fetch" href="https://film-management-api.labse.id/api/v1/films?take=20&page=1" crossOrigin="anonymous" />
       </head>
       <body suppressHydrationWarning className="min-h-full flex flex-col bg-background font-sans">
         <QueryProvider>

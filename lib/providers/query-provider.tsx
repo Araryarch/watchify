@@ -10,8 +10,12 @@ export function QueryProvider({ children }: { children: React.ReactNode }) {
       new QueryClient({
         defaultOptions: {
           queries: {
-            staleTime: 60 * 1000,
+            staleTime: 5 * 60 * 1000, // 5 minutes - data dianggap fresh lebih lama
+            gcTime: 10 * 60 * 1000, // 10 minutes - cache disimpan lebih lama
             refetchOnWindowFocus: false,
+            refetchOnMount: false, // Tidak refetch jika data masih fresh
+            retry: 1, // Hanya retry 1x jika gagal
+            retryDelay: 1000, // Delay 1 detik sebelum retry
           },
         },
       })
@@ -20,7 +24,9 @@ export function QueryProvider({ children }: { children: React.ReactNode }) {
   return (
     <QueryClientProvider client={queryClient}>
       {children}
-      <ReactQueryDevtools initialIsOpen={false} />
+      {process.env.NODE_ENV === 'development' && (
+        <ReactQueryDevtools initialIsOpen={false} />
+      )}
     </QueryClientProvider>
   );
 }

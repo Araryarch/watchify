@@ -44,6 +44,8 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 
+import { TableSkeleton } from '@/components/skeleton-loader';
+
 export default function DashboardFilmsPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [pageIndex, setPageIndex] = useState(1);

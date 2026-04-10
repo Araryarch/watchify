@@ -17,6 +17,8 @@ import {
   Send, ThumbsUp, ThumbsDown
 } from 'lucide-react';
 
+import { FilmDetailSkeleton } from '@/components/skeleton-loader';
+
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 type ListStatus = 'watching' | 'completed' | 'plan_to_watch' | 'dropped';
@@ -143,11 +145,28 @@ function ReviewSection({ filmId, reviews }: { filmId: string; reviews?: any[] })
   const { mutate: createReaction } = useCreateReaction();
   const { mutate: updateReaction } = useUpdateReaction();
   
-  // Get current user data to check reactions
-  const { data: userData } = useMe();
-  const userId = userData?.data?.personal_info?.id;
-  const { data: userDetailData } = useUserDetail(userId || '', { enabled: !!userId });
-  const userReactions = userDetailData?.data?.reactions || [];
+  // Track user reactions locally (persisted in sessionStorage)
+  const [localReactions, setLocalReactions] = useState<Record<string, { id: string; status: 'like' | 'dislike' }>>(() => {
+    if (typeof window !== 'undefined') {
+      const stored = sessionStorage.getItem(`reactions_${filmId}`);
+      return stored ? JSON.parse(stored) : {};
+    }
+    return {};
+  });
+
+  // Track reviews that user already reacted to (but we don't have the ID)
+  const [alreadyReacted, setAlreadyReacted] = useState<Set<string>>(new Set());
+
+  // Track optimistic reaction counts
+  const [optimisticCounts, setOptimisticCounts] = useState<Record<string, { likes: number; dislikes: number }>>({});
+
+  // Save to sessionStorage whenever localReactions changes
+  const updateLocalReactions = (newReactions: Record<string, { id: string; status: 'like' | 'dislike' }>) => {
+    setLocalReactions(newReactions);
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem(`reactions_${filmId}`, JSON.stringify(newReactions));
+    }
+  };
 
   const onSubmit = (data: { comment: string }) => {
     if (rating === 0) {
@@ -159,7 +178,7 @@ function ReviewSection({ filmId, reviews }: { filmId: string; reviews?: any[] })
       {
         onSuccess: () => {
           toast.success('Ulasan berhasil dikirim!');
-          reset();
+          reset({ comment: '' }); // Explicitly reset with empty values
           setRating(0);
         },
         onError: (e: any) =>
@@ -168,8 +187,14 @@ function ReviewSection({ filmId, reviews }: { filmId: string; reviews?: any[] })
     );
   };
 
-  const getUserReactionForReview = (reviewId: string) => {
-    return userReactions.find((r: any) => r.review_id === reviewId);
+  const getReactionCounts = (review: any) => {
+    if (optimisticCounts[review.id]) {
+      return optimisticCounts[review.id];
+    }
+    return {
+      likes: review.likes || 0,
+      dislikes: review.dislikes || 0
+    };
   };
 
   const handleReaction = (review: any, status: 'like' | 'dislike') => {
@@ -178,39 +203,59 @@ function ReviewSection({ filmId, reviews }: { filmId: string; reviews?: any[] })
       return;
     }
 
-    const userReaction = getUserReactionForReview(review.id);
-    
-    if (userReaction) {
-      // User already reacted, use update
-      if (userReaction.status === status) {
-        // Same reaction, do nothing
-        toast.info('Anda sudah memberi reaksi ini');
-        return;
-      }
-      // Different reaction, update it
-      updateReaction(
-        { id: userReaction.id, payload: { status } },
-        {
-          onSuccess: () => {
-            toast.success(status === 'like' ? 'Diubah ke suka' : 'Diubah ke tidak suka');
-            window.location.reload();
-          },
-          onError: (e: any) => toast.error(e.response?.data?.message || 'Gagal mengubah reaksi'),
-        }
-      );
-    } else {
-      // User hasn't reacted, create new reaction
-      createReaction(
-        { review_id: review.id, status },
-        {
-          onSuccess: () => {
-            toast.success(status === 'like' ? 'Disukai' : 'Tidak disukai');
-            window.location.reload();
-          },
-          onError: (e: any) => toast.error(e.response?.data?.message || 'Gagal memberi reaksi'),
-        }
-      );
+    // Check if user already reacted (either locally or from previous session)
+    if (alreadyReacted.has(review.id)) {
+      toast.info('Anda sudah memberi reaksi pada ulasan ini');
+      return;
     }
+
+    const localReaction = localReactions[review.id];
+    
+    if (localReaction) {
+      toast.info('Anda sudah memberi reaksi pada ulasan ini');
+      return;
+    }
+    
+    // Optimistic update: increment count immediately
+    const currentCounts = getReactionCounts(review);
+    const newCounts = {
+      likes: status === 'like' ? currentCounts.likes + 1 : currentCounts.likes,
+      dislikes: status === 'dislike' ? currentCounts.dislikes + 1 : currentCounts.dislikes,
+    };
+    setOptimisticCounts(prev => ({ ...prev, [review.id]: newCounts }));
+    
+    // Create new reaction
+    createReaction(
+      { review_id: review.id, status },
+      {
+        onSuccess: () => {
+          toast.success(status === 'like' ? 'Disukai' : 'Tidak disukai');
+          // Store that user reacted (without ID since API doesn't return it)
+          updateLocalReactions({
+            ...localReactions,
+            [review.id]: { id: 'local', status }
+          });
+        },
+        onError: (e: any) => {
+          // Revert optimistic update on error
+          setOptimisticCounts(prev => {
+            const newCounts = { ...prev };
+            delete newCounts[review.id];
+            return newCounts;
+          });
+          
+          const errorMsg = e.response?.data?.error || e.response?.data?.message || '';
+          
+          // If user already reacted in a previous session
+          if (errorMsg.includes('already reacted')) {
+            setAlreadyReacted(prev => new Set(prev).add(review.id));
+            toast.info('Anda sudah pernah memberi reaksi pada ulasan ini');
+          } else {
+            toast.error(errorMsg || 'Gagal memberi reaksi');
+          }
+        },
+      }
+    );
   };
 
   return (
@@ -283,25 +328,33 @@ function ReviewSection({ filmId, reviews }: { filmId: string; reviews?: any[] })
                 <div className="flex items-center gap-3 pt-2 border-t border-white/5">
                   <button
                     onClick={() => handleReaction(review, 'like')}
+                    disabled={!token || alreadyReacted.has(review.id)}
                     className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border transition-colors text-xs sm:text-sm ${
-                      getUserReactionForReview(review.id)?.status === 'like'
+                      localReactions[review.id]?.status === 'like'
                         ? 'bg-primary/10 border-primary/30 text-primary'
+                        : !token || alreadyReacted.has(review.id)
+                        ? 'bg-white/5 border-white/10 text-neutral-600 cursor-not-allowed opacity-50'
                         : 'bg-white/5 hover:bg-white/10 border-white/10 text-neutral-400'
                     }`}
+                    title={!token ? 'Login untuk memberi reaksi' : alreadyReacted.has(review.id) ? 'Anda sudah memberi reaksi' : ''}
                   >
                     <ThumbsUp className="w-3.5 h-3.5" />
-                    <span>{review.likes || 0}</span>
+                    <span>{getReactionCounts(review).likes}</span>
                   </button>
                   <button
                     onClick={() => handleReaction(review, 'dislike')}
+                    disabled={!token || alreadyReacted.has(review.id)}
                     className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border transition-colors text-xs sm:text-sm ${
-                      getUserReactionForReview(review.id)?.status === 'dislike'
+                      localReactions[review.id]?.status === 'dislike'
                         ? 'bg-red-500/10 border-red-500/30 text-red-400'
+                        : !token || alreadyReacted.has(review.id)
+                        ? 'bg-white/5 border-white/10 text-neutral-600 cursor-not-allowed opacity-50'
                         : 'bg-white/5 hover:bg-white/10 border-white/10 text-neutral-400'
                     }`}
+                    title={!token ? 'Login untuk memberi reaksi' : alreadyReacted.has(review.id) ? 'Anda sudah memberi reaksi' : ''}
                   >
                     <ThumbsDown className="w-3.5 h-3.5" />
-                    <span>{review.dislikes || 0}</span>
+                    <span>{getReactionCounts(review).dislikes}</span>
                   </button>
                 </div>
               </div>
@@ -322,11 +375,7 @@ export default function FilmDetailPage() {
   const film = data?.data;
 
   if (isLoading) {
-    return (
-      <div className="min-h-screen bg-black pt-16 flex items-center justify-center">
-        <div className="w-10 h-10 border-2 border-[#00dc74] border-t-transparent rounded-full animate-spin" />
-      </div>
-    );
+    return <FilmDetailSkeleton />;
   }
 
   if (!film) {

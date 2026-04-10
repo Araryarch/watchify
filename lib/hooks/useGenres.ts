@@ -7,18 +7,16 @@ export const useGenres = () =>
   useQuery({
     queryKey: ['genres'],
     queryFn: () => genresApi.getAll(),
-    refetchInterval: 60000, // Refetch setiap 60 detik (genre jarang berubah)
-    refetchOnWindowFocus: true,
-    staleTime: 45000,
+    staleTime: 10 * 60 * 1000, // 10 minutes - genres jarang berubah
+    gcTime: 30 * 60 * 1000, // 30 minutes
   });
 
 export const useGenresPaginated = (params?: GenreListParams) =>
   useQuery({
     queryKey: ['genres-admin', params],
     queryFn: () => genresApi.getAllPaginated(params),
-    refetchInterval: 30000, // Refetch setiap 30 detik untuk admin dashboard
-    refetchOnWindowFocus: true,
-    staleTime: 20000,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    gcTime: 10 * 60 * 1000, // 10 minutes
   });
 
 // ─── Mutations ────────────────────────────────────────────────────────────────

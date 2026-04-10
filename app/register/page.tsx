@@ -16,6 +16,7 @@ const registerSchema = z.object({
   display_name: z.string().min(1, 'Display Name wajib diisi'),
   email: z.string().email('Format email tidak valid'),
   password: z.string().min(6, 'Password minimal 6 karakter'),
+  bio: z.string().optional(),
 });
 
 type RegisterFormValues = z.infer<typeof registerSchema>;
@@ -112,6 +113,17 @@ export default function RegisterPage() {
                 <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral-500" />
               </div>
               {errors.email && <Typography variant="p" className="mt-1.5 text-xs text-red-500">{errors.email.message}</Typography>}
+            </div>
+
+            <div>
+              <Typography variant="label" className="block text-sm font-medium text-neutral-300 mb-1.5">Bio (Opsional)</Typography>
+              <textarea
+                {...register('bio')}
+                rows={3}
+                className="w-full bg-[#0b0c0f] border border-white/10 focus:border-primary rounded-lg px-4 py-3 text-white text-sm focus:outline-none transition-all placeholder:text-neutral-600 resize-none"
+                placeholder="Ceritakan sedikit tentang diri Anda..."
+              />
+              {errors.bio && <Typography variant="p" className="mt-1.5 text-xs text-red-500">{errors.bio.message}</Typography>}
             </div>
 
             <div>

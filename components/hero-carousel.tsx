@@ -48,6 +48,13 @@ export function HeroCarousel({ heroes }: HeroCarouselProps) {
                 src={film.images && film.images.length > 0 ? `https://film-management-api.labse.id/uploads/${film.images[0]}` : "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=1920&q=80"}
                 alt={film.title}
                 fill
+                priority={idx === 0} // Priority load first image
+                quality={85}
+                sizes="100vw"
+                className="object-cover object-center"
+                placeholder="blur"
+                blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCwAB//2Q=="
+             />
                 priority={idx === 0}
                 sizes="100vw"
                 className="object-cover object-center md:object-right"

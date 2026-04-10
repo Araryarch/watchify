@@ -1,12 +1,14 @@
 import axios from 'axios';
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? 'https://film-management-api.labse.id';
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL
 
 export const apiClient = axios.create({
   baseURL: BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
+  timeout: 5000,
+  decompress: true,
 });
 
 import { useAuthStore } from '../store/authStore';

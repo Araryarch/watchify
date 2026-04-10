@@ -9,6 +9,8 @@ import { useGenres } from '@/lib/hooks/useGenres';
 import { SlidersHorizontal, ChevronLeft, ChevronRight } from 'lucide-react';
 import Loading from '../loading';
 
+import { CardListSkeleton } from '@/components/skeleton-loader';
+
 export default function FilmsPage() {
   const searchParams = useSearchParams();
   const genreFromUrl = searchParams.get('genre');
@@ -47,7 +49,13 @@ export default function FilmsPage() {
     setPage(1); // Reset to page 1 when changing genre
   };
 
-  if (isLoading) return <Loading />;
+  if (isLoading) return (
+    <main className="min-h-screen bg-[#0b0c0f] pb-12 pt-16">
+      <div className="max-w-[1600px] mx-auto px-4 lg:px-8 py-8">
+        <CardListSkeleton count={18} />
+      </div>
+    </main>
+  );
 
   return (
     <main className="min-h-screen bg-[#0b0c0f] pb-12">
