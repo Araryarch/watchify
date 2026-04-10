@@ -10,7 +10,7 @@ export default function SettingsPage() {
 
   const handleThemeChange = (themeKey: Theme) => {
     setTheme(themeKey);
-    toast.success(`Tema berhasil diubah ke ${themes[themeKey].name}! 🎨`);
+    toast.success(`Tema berhasil diubah ke ${themes[themeKey].name}`);
   };
 
   return (

@@ -32,7 +32,7 @@ export default function LoginPage() {
     login(data, {
       onSuccess: (res: any) => {
         if (res.success) {
-          toast.success('Login berhasil! Selamat datang kembali 🎉');
+          toast.success('Login berhasil! Selamat datang kembali');
           setTimeout(() => router.push('/'), 500);
         } else {
           setErrorMsg(res.message || 'Login gagal');

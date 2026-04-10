@@ -49,6 +49,11 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/health" className="text-sm text-neutral-400 hover:text-primary transition-colors block">
+                  System Health
+                </Link>
+              </li>
+              <li>
                 <Link href="/terms" className="text-sm text-neutral-400 hover:text-primary transition-colors block">
                   Syarat & Ketentuan
                 </Link>

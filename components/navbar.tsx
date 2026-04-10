@@ -202,7 +202,7 @@ export function Navbar() {
                          <div className="h-px bg-white/5 my-2" />
                          <button onClick={() => { 
                            logout(); 
-                           toast.success('Berhasil logout. Sampai jumpa! 👋');
+                           toast.success('Berhasil logout. Sampai jumpa!');
                            setTimeout(() => window.location.href = '/login', 500);
                          }} className="w-full text-left px-5 py-2.5 text-sm font-medium text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-colors flex items-center gap-3">
                            <LogOut className="w-4 h-4" /> Keluar
@@ -314,7 +314,7 @@ export function Navbar() {
                      className="w-full text-left px-6 py-4 text-[15px] font-medium text-red-400 hover:bg-red-500/10 transition-all flex items-center gap-3"
                      onClick={() => { 
                        logout(); 
-                       toast.success('Berhasil logout. Sampai jumpa! 👋');
+                       toast.success('Berhasil logout. Sampai jumpa!');
                        setTimeout(() => window.location.href = '/login', 500);
                      }}
                   >

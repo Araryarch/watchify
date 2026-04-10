@@ -144,7 +144,7 @@ function ReviewSection({ filmId, reviews }: { filmId: string; reviews?: any[] })
         { id: userReaction.id, payload: { status } },
         {
           onSuccess: () => {
-            toast.success(status === 'like' ? '👍 Diubah ke suka!' : '👎 Diubah ke tidak suka');
+            toast.success(status === 'like' ? 'Diubah ke suka' : 'Diubah ke tidak suka');
             window.location.reload();
           },
           onError: (e: any) => toast.error(e.response?.data?.message || 'Gagal mengubah reaksi'),
@@ -156,7 +156,7 @@ function ReviewSection({ filmId, reviews }: { filmId: string; reviews?: any[] })
         { review_id: review.id, status },
         {
           onSuccess: () => {
-            toast.success(status === 'like' ? '👍 Disukai!' : '👎 Tidak disukai');
+            toast.success(status === 'like' ? 'Disukai' : 'Tidak disukai');
             window.location.reload();
           },
           onError: (e: any) => toast.error(e.response?.data?.message || 'Gagal memberi reaksi'),

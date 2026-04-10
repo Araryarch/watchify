@@ -34,7 +34,7 @@ export default function RegisterPage() {
     registerUser(data, {
       onSuccess: (res: any) => {
         if (res.success) {
-          toast.success('Registrasi berhasil! Silakan login 🎉');
+          toast.success('Registrasi berhasil! Silakan login');
           setTimeout(() => router.push('/login'), 1000);
         } else {
           setErrorMsg(res.message || 'Registrasi gagal');

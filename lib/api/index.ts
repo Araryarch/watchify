@@ -7,3 +7,4 @@ export * from './film-lists';
 export * from './reviews';
 export * from './reactions';
 export * from './users';
+export * from './health';
