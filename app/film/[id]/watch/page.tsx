@@ -470,8 +470,8 @@ function WatchPageInner() {
 
   return (
     <div className="min-h-screen bg-[#0b0c0f] text-white font-sans">
-      {/* Top nav bar */}
-      <div className="sticky top-0 z-50 bg-[#0b0c0f]/95 border-b border-white/5 backdrop-blur-md">
+      {/* Top nav bar with gradient */}
+      <div className="sticky top-0 z-50 bg-gradient-to-r from-purple-900/20 via-blue-900/20 to-teal-900/20 backdrop-blur-md border-b border-white/10">
         <div className="max-w-[1600px] mx-auto px-4 py-3 flex items-center gap-4">
           <Link href={`/film/${filmId}`} className="flex items-center gap-2 text-neutral-400 hover:text-white transition-colors text-sm font-medium">
             <ChevronLeft className="w-4 h-4" />

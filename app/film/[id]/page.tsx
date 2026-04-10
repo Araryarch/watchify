@@ -392,17 +392,19 @@ export default function FilmDetailPage() {
   return (
     <div className="min-h-screen bg-black pt-16">
       {/* Hero */}
-      <div className="relative h-[50vh] sm:h-[60vh] lg:h-[70vh] overflow-hidden">
+      <div className="relative h-[50vh] sm:h-[60vh] lg:h-[70vh] overflow-hidden bg-gradient-to-br from-purple-800 via-blue-800 to-teal-800">
         {film.images?.[0] && (
           <>
             <div
-              className="absolute inset-0 bg-cover bg-center"
+              className="absolute inset-0 bg-cover bg-center opacity-20"
               style={{ backgroundImage: `url(https://film-management-api.labse.id/uploads/${film.images[0]})` }}
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
           </>
         )}
+        
+        {/* Dark overlays for text readability */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
 
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 h-full relative z-10">
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 lg:gap-8 items-center sm:items-end h-full justify-end pb-8 sm:pb-10 lg:pb-12">
