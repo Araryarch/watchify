@@ -21,12 +21,12 @@ export default function GenresPage() {
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
             {genresData?.data?.map((genre: any) => (
               <Link key={genre.id} href={`/films?genre=${genre.id}`}>
-                <div className="group p-6 bg-[#1b1c21] hover:bg-[#202128] border border-white/5 hover:border-[#00dc74]/50 rounded-xl transition-all cursor-pointer h-full shadow-sm hover:shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
+                <div className="group p-6 bg-[#1b1c21] hover:bg-[#202128] border border-white/5 hover:border-primary/50 rounded-xl transition-all cursor-pointer h-full shadow-sm hover:shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
                   <div className="flex items-start justify-between mb-4">
-                    <div className="w-12 h-12 bg-[#00dc74]/10 group-hover:bg-[#00dc74] rounded-lg flex items-center justify-center transition-colors">
-                      <Film className="w-5 h-5 text-[#00dc74] group-hover:text-black" />
+                    <div className="w-12 h-12 bg-primary/10 group-hover:bg-primary rounded-lg flex items-center justify-center transition-colors">
+                      <Film className="w-5 h-5 text-primary group-hover:text-black" />
                     </div>
-                    <ChevronRight className="w-5 h-5 text-neutral-500 group-hover:text-[#00dc74] group-hover:translate-x-1 transition-all" />
+                    <ChevronRight className="w-5 h-5 text-neutral-500 group-hover:text-primary group-hover:translate-x-1 transition-all" />
                   </div>
                   <h3 className="text-lg font-bold text-white capitalize mb-1">
                     {genre.name}

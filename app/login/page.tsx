@@ -45,12 +45,12 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-[#0b0c0f] flex items-center justify-center p-4 relative overflow-hidden">
       {/* Background Ornaments */}
-      <div className="absolute top-1/4 -left-32 w-96 h-96 bg-[#00dc74]/10 rounded-full blur-[120px] mix-blend-screen pointer-events-none" />
+      <div className="absolute top-1/4 -left-32 w-96 h-96 bg-primary/10 rounded-full blur-[120px] mix-blend-screen pointer-events-none" />
       <div className="absolute bottom-1/4 -right-32 w-96 h-96 bg-blue-500/10 rounded-full blur-[120px] mix-blend-screen pointer-events-none" />
 
       <div className="w-full max-w-[420px] relative z-10">
         <div className="text-center mb-8">
-          <Link href="/" className="inline-block text-3xl font-black tracking-widest text-[#00dc74] mb-2 drop-shadow-[0_0_12px_rgba(0,220,116,0.5)] hover:drop-shadow-[0_0_16px_rgba(0,220,116,0.7)] transition-all">
+          <Link href="/" className="inline-block text-3xl font-black tracking-widest text-primary mb-2 drop-shadow-[0_0_12px_rgba(0,220,116,0.5)] hover:drop-shadow-[0_0_16px_rgba(0,220,116,0.7)] transition-all">
             WATCHIFY
           </Link>
           <Typography variant="p" className="text-neutral-400 text-sm mt-0">Masuk untuk melanjutkan ke akun Anda</Typography>
@@ -71,7 +71,7 @@ export default function LoginPage() {
                 <input
                   type="email"
                   {...register('email')}
-                  className={`w-full bg-[#0b0c0f] border ${errors.email ? 'border-red-500/50 focus:border-red-500' : 'border-white/10 focus:border-[#00dc74]'} rounded-lg px-4 py-3 pl-11 text-white text-sm focus:outline-none transition-all placeholder:text-neutral-600`}
+                  className={`w-full bg-[#0b0c0f] border ${errors.email ? 'border-red-500/50 focus:border-red-500' : 'border-white/10 focus:border-primary'} rounded-lg px-4 py-3 pl-11 text-white text-sm focus:outline-none transition-all placeholder:text-neutral-600`}
                   placeholder="anda@email.com"
                 />
                 <Mail className={`absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 ${errors.email ? 'text-red-500/50' : 'text-neutral-500'}`} />
@@ -82,13 +82,13 @@ export default function LoginPage() {
             <div>
               <div className="flex items-center justify-between mb-1.5">
                 <Typography variant="label" className="text-sm font-medium text-neutral-300">Password</Typography>
-                <Link href="#" className="text-xs text-[#00dc74] hover:underline">Lupa password?</Link>
+                <Link href="#" className="text-xs text-primary hover:underline">Lupa password?</Link>
               </div>
               <div className="relative">
                 <input
                   type="password"
                   {...register('password')}
-                  className={`w-full bg-[#0b0c0f] border ${errors.password ? 'border-red-500/50 focus:border-red-500' : 'border-white/10 focus:border-[#00dc74]'} rounded-lg px-4 py-3 pl-11 text-white text-sm focus:outline-none transition-all placeholder:text-neutral-600`}
+                  className={`w-full bg-[#0b0c0f] border ${errors.password ? 'border-red-500/50 focus:border-red-500' : 'border-white/10 focus:border-primary'} rounded-lg px-4 py-3 pl-11 text-white text-sm focus:outline-none transition-all placeholder:text-neutral-600`}
                   placeholder="••••••••"
                 />
                 <Lock className={`absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 ${errors.password ? 'text-red-500/50' : 'text-neutral-500'}`} />
@@ -99,7 +99,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={isLoggingIn}
-              className="w-full mt-2 bg-[#00dc74] text-black font-bold py-3 rounded-lg hover:bg-[#00c266] transition-all flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_4px_15px_rgba(0,220,116,0.3)] hover:shadow-[0_6px_20px_rgba(0,220,116,0.4)]"
+              className="w-full mt-2 bg-primary text-black font-bold py-3 rounded-lg hover:brightness-90 transition-all flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_4px_15px_rgba(var(--primary),0.3)] hover:shadow-[0_6px_20px_rgba(var(--primary),0.4)]"
             >
               {isLoggingIn ? 'Memproses...' : 'Masuk Sekarang'}
               {!isLoggingIn && <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />}
@@ -108,7 +108,7 @@ export default function LoginPage() {
 
           <div className="mt-8 text-center text-sm text-neutral-400">
             Belum punya akun?{' '}
-            <Link href="/register" className="text-white font-bold hover:text-[#00dc74] transition-colors">
+            <Link href="/register" className="text-white font-bold hover:text-primary transition-colors">
               Daftar disini
             </Link>
           </div>

@@ -24,7 +24,7 @@ export default function DashboardIndexPage() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-[#0b0c0f]">
       <div className="flex flex-col items-center gap-4">
-        <div className="w-10 h-10 border-2 border-[#00dc74] border-t-transparent rounded-full animate-spin" />
+        <div className="w-10 h-10 border-2 border-primary border-t-transparent rounded-full animate-spin" />
         <p className="text-sm text-neutral-500 font-medium">Mengarahkan...</p>
       </div>
     </div>

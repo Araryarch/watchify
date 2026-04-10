@@ -47,11 +47,11 @@ export default function RegisterPage() {
   return (
     <div className="min-h-screen bg-[#0b0c0f] flex items-center justify-center p-4 relative overflow-hidden">
       {/* Background Ornaments */}
-      <div className="absolute -top-32 right-1/4 w-[500px] h-[500px] bg-[#00dc74]/10 rounded-full blur-[140px] mix-blend-screen pointer-events-none" />
+      <div className="absolute -top-32 right-1/4 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[140px] mix-blend-screen pointer-events-none" />
 
       <div className="w-full max-w-[460px] relative z-10">
         <div className="text-center mb-8 mt-8">
-          <Link href="/" className="inline-block text-3xl font-black tracking-widest text-[#00dc74] mb-2 drop-shadow-[0_0_12px_rgba(0,220,116,0.5)] hover:drop-shadow-[0_0_16px_rgba(0,220,116,0.7)] transition-all">
+          <Link href="/" className="inline-block text-3xl font-black tracking-widest text-primary mb-2 drop-shadow-[0_0_12px_rgba(0,220,116,0.5)] hover:drop-shadow-[0_0_16px_rgba(0,220,116,0.7)] transition-all">
             WATCHIFY
           </Link>
           <Typography variant="p" className="text-neutral-400 text-sm mt-0">Daftar untuk menikmati akses streaming tanpa batas</Typography>
@@ -73,7 +73,7 @@ export default function RegisterPage() {
                    <input
                      type="text"
                      {...register('username')}
-                     className={`w-full bg-[#0b0c0f] border ${errors.username ? 'border-red-500/50' : 'border-white/10'} focus:border-[#00dc74] rounded-lg px-4 py-3 pl-10 text-white text-sm focus:outline-none transition-all placeholder:text-neutral-600`}
+                     className={`w-full bg-[#0b0c0f] border ${errors.username ? 'border-red-500/50' : 'border-white/10'} focus:border-primary rounded-lg px-4 py-3 pl-10 text-white text-sm focus:outline-none transition-all placeholder:text-neutral-600`}
                      placeholder="john123"
                    />
                    <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500" />
@@ -86,7 +86,7 @@ export default function RegisterPage() {
                    <input
                      type="text"
                      {...register('display_name')}
-                     className={`w-full bg-[#0b0c0f] border ${errors.display_name ? 'border-red-500/50' : 'border-white/10'} focus:border-[#00dc74] rounded-lg px-4 py-3 pl-10 text-white text-sm focus:outline-none transition-all placeholder:text-neutral-600`}
+                     className={`w-full bg-[#0b0c0f] border ${errors.display_name ? 'border-red-500/50' : 'border-white/10'} focus:border-primary rounded-lg px-4 py-3 pl-10 text-white text-sm focus:outline-none transition-all placeholder:text-neutral-600`}
                      placeholder="John Doe"
                    />
                    <UserCircle className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500" />
@@ -101,7 +101,7 @@ export default function RegisterPage() {
                 <input
                   type="email"
                   {...register('email')}
-                  className={`w-full bg-[#0b0c0f] border ${errors.email ? 'border-red-500/50' : 'border-white/10'} focus:border-[#00dc74] rounded-lg px-4 py-3 pl-11 text-white text-sm focus:outline-none transition-all placeholder:text-neutral-600`}
+                  className={`w-full bg-[#0b0c0f] border ${errors.email ? 'border-red-500/50' : 'border-white/10'} focus:border-primary rounded-lg px-4 py-3 pl-11 text-white text-sm focus:outline-none transition-all placeholder:text-neutral-600`}
                   placeholder="anda@email.com"
                 />
                 <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral-500" />
@@ -115,7 +115,7 @@ export default function RegisterPage() {
                 <input
                   type="password"
                   {...register('password')}
-                  className={`w-full bg-[#0b0c0f] border ${errors.password ? 'border-red-500/50' : 'border-white/10'} focus:border-[#00dc74] rounded-lg px-4 py-3 pl-11 text-white text-sm focus:outline-none transition-all placeholder:text-neutral-600`}
+                  className={`w-full bg-[#0b0c0f] border ${errors.password ? 'border-red-500/50' : 'border-white/10'} focus:border-primary rounded-lg px-4 py-3 pl-11 text-white text-sm focus:outline-none transition-all placeholder:text-neutral-600`}
                   placeholder="••••••••"
                 />
                 <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral-500" />
@@ -126,7 +126,7 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={isRegistering}
-              className="w-full mt-4 bg-[#00dc74] text-black font-bold py-3.5 rounded-lg hover:bg-[#00c266] transition-all flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_4px_15px_rgba(0,220,116,0.3)] hover:shadow-[0_6px_20px_rgba(0,220,116,0.4)]"
+              className="w-full mt-4 bg-primary text-black font-bold py-3.5 rounded-lg hover:brightness-90 transition-all flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_4px_15px_rgba(var(--primary),0.3)] hover:shadow-[0_6px_20px_rgba(var(--primary),0.4)]"
             >
               {isRegistering ? 'Memproses...' : 'Buat Akun'}
               {!isRegistering && <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />}
@@ -135,7 +135,7 @@ export default function RegisterPage() {
 
           <div className="mt-8 text-center text-sm text-neutral-400">
             Sudah punya akun?{' '}
-            <Link href="/login" className="text-white font-bold hover:text-[#00dc74] transition-colors">
+            <Link href="/login" className="text-white font-bold hover:text-primary transition-colors">
               Masuk disini
             </Link>
           </div>

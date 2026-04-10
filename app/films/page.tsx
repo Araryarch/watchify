@@ -39,7 +39,7 @@ export default function FilmsPage() {
             aria-expanded={showFilters}
             aria-controls="genre-filter-panel"
             className={`px-5 py-2.5 border rounded-full text-white transition-all flex items-center gap-2 shrink-0 ${
-              showFilters ? 'bg-[#00dc74]/10 border-[#00dc74] text-[#00dc74]' : 'bg-[#1b1c21] border-white/5 hover:border-white/20'
+              showFilters ? 'bg-primary/10 border-primary text-primary' : 'bg-[#1b1c21] border-white/5 hover:border-white/20'
             }`}
           >
             <SlidersHorizontal className="w-4 h-4" aria-hidden="true" />
@@ -61,7 +61,7 @@ export default function FilmsPage() {
                   onClick={() => setSelectedGenre(null)}
                   className={`px-4 py-1.5 rounded-full font-bold transition-all text-sm ${
                     selectedGenre === null
-                      ? 'bg-[#00dc74] text-black shadow-[0_2px_10px_rgba(0,220,116,0.3)]'
+                      ? 'bg-primary text-black shadow-[0_2px_10px_rgba(var(--primary),0.3)]'
                       : 'bg-white/5 text-neutral-300 hover:bg-white/10 hover:text-white border border-white/5'
                   }`}
                 >
@@ -74,7 +74,7 @@ export default function FilmsPage() {
                     onClick={() => setSelectedGenre(genre.id)}
                     className={`px-4 py-1.5 rounded-full font-medium transition-all capitalize text-sm ${
                       selectedGenre === genre.id
-                        ? 'bg-[#00dc74] text-black shadow-[0_2px_10px_rgba(0,220,116,0.3)]'
+                        ? 'bg-primary text-black shadow-[0_2px_10px_rgba(var(--primary),0.3)]'
                         : 'bg-white/5 text-neutral-300 hover:bg-white/10 hover:text-white border border-white/5'
                     }`}
                   >

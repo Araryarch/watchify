@@ -68,7 +68,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               className="data-[slot=sidebar-menu-button]:p-1.5!"
             >
               <Link href="/">
-                <span className="text-xl font-black tracking-widest text-[#00dc74]">
+                <span className="text-xl font-black tracking-widest text-primary">
                   WATCHIFY
                 </span>
               </Link>

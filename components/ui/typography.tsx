@@ -23,7 +23,7 @@ const typographyVariants = cva(
       },
       color: {
         default: "text-white",
-        primary: "text-[#00dc74]",
+        primary: "text-primary",
         muted: "text-neutral-400",
         destructive: "text-red-500",
         black: "text-black",

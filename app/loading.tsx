@@ -6,9 +6,9 @@ export default function Loading() {
       <div className="relative flex flex-col items-center gap-6">
         {/* Dual Ring Spinner */}
         <div className="relative flex items-center justify-center w-20 h-20">
-          <div className="absolute inset-0 rounded-full border-t-4 border-b-4 border-[#00dc74] animate-spin shadow-[0_0_15px_rgba(0,220,116,0.5)]" />
+          <div className="absolute inset-0 rounded-full border-t-4 border-b-4 border-primary animate-spin shadow-[0_0_15px_rgba(0,220,116,0.5)]" />
           <div className="absolute inset-2 rounded-full border-l-4 border-r-4 border-white/20 animate-[spin_1.5s_reverse_infinite]" />
-          <div className="text-sm font-black italic text-[#00dc74] mix-blend-screen drop-shadow-md">
+          <div className="text-sm font-black italic text-primary mix-blend-screen drop-shadow-md">
             W
           </div>
         </div>
@@ -16,13 +16,13 @@ export default function Loading() {
         {/* Loading Text */}
         <div className="flex flex-col items-center gap-2">
           <div className="text-xl font-bold flex items-center gap-1 tracking-widest uppercase">
-            <span className="text-[#00dc74] animate-pulse">Memuat</span>
+            <span className="text-primary animate-pulse">Memuat</span>
             <span className="text-neutral-400">Pengalaman</span>
           </div>
           <div className="flex gap-1">
-            <div className="w-1.5 h-1.5 rounded-full bg-[#00dc74] animate-[bounce_1s_infinite_0ms]" />
-            <div className="w-1.5 h-1.5 rounded-full bg-[#00dc74] animate-[bounce_1s_infinite_200ms]" />
-            <div className="w-1.5 h-1.5 rounded-full bg-[#00dc74] animate-[bounce_1s_infinite_400ms]" />
+            <div className="w-1.5 h-1.5 rounded-full bg-primary animate-[bounce_1s_infinite_0ms]" />
+            <div className="w-1.5 h-1.5 rounded-full bg-primary animate-[bounce_1s_infinite_200ms]" />
+            <div className="w-1.5 h-1.5 rounded-full bg-primary animate-[bounce_1s_infinite_400ms]" />
           </div>
         </div>
       </div>

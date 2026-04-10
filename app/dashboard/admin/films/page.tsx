@@ -5,6 +5,7 @@ import { Film, Plus, Search, Trash2, Edit } from 'lucide-react';
 import { useState, useMemo } from 'react';
 import { toast } from 'sonner';
 import { useFilms } from '@/lib/hooks/useFilms';
+import Image from 'next/image';
 
 import {
   useReactTable,
@@ -76,7 +77,15 @@ export default function DashboardFilmsPage() {
         return (
           <div className="flex items-center gap-4">
             {film.images?.[0] ? (
-              <img src={`https://film-management-api.labse.id/uploads/${film.images[0]}`} className="w-12 h-16 object-cover rounded-md shadow-md bg-black/50" alt={film.title} />
+              <div className="relative w-12 h-16 rounded-md overflow-hidden shadow-md bg-black/50">
+                <Image
+                  src={`https://film-management-api.labse.id/uploads/${film.images[0]}`}
+                  alt={film.title}
+                  fill
+                  sizes="48px"
+                  className="object-cover"
+                />
+              </div>
             ) : (
               <div className="w-12 h-16 bg-[#1b1c21] rounded-md border border-white/5 flex items-center justify-center shadow-md"><Film className="w-5 h-5 text-neutral-600" /></div>
             )}
@@ -93,7 +102,7 @@ export default function DashboardFilmsPage() {
       cell: info => {
         const status = info.getValue() as string;
         return (
-          <div className={`inline-flex px-2.5 py-1 rounded text-[10px] font-bold tracking-wider uppercase border ${status === 'airing' ? 'bg-[#00dc74]/10 text-[#00dc74] border-[#00dc74]/20' : 'bg-white/5 text-neutral-300 border-white/10'}`}>
+          <div className={`inline-flex px-2.5 py-1 rounded text-[10px] font-bold tracking-wider uppercase border ${status === 'airing' ? 'bg-primary/10 text-primary border-primary/20' : 'bg-white/5 text-neutral-300 border-white/10'}`}>
             {statusMap[status] || 'Selesai'}
           </div>
         );
@@ -110,7 +119,7 @@ export default function DashboardFilmsPage() {
     //     const film = info.row.original;
     //     return (
     //       <div className="flex items-center justify-end gap-2">
-    //         <Link href={`/dashboard/films/${film.id}/edit`} className="p-2 text-neutral-500 hover:text-[#00dc74] hover:bg-[#00dc74]/10 rounded-lg transition-colors">
+    //         <Link href={`/dashboard/films/${film.id}/edit`} className="p-2 text-neutral-500 hover:text-primary hover:bg-primary/10 rounded-lg transition-colors">
     //           <Edit className="w-4 h-4" />
     //         </Link>
     //         <AlertDialog>
@@ -165,10 +174,10 @@ export default function DashboardFilmsPage() {
                      setSearchQuery(e.target.value);
                      setPageIndex(1);
                    }}
-                   className="bg-[#1b1c21] border border-white/10 rounded-full pl-9 pr-4 py-2 text-sm text-white focus:outline-none focus:border-[#00dc74] transition-colors w-64"
+                   className="bg-[#1b1c21] border border-white/10 rounded-full pl-9 pr-4 py-2 text-sm text-white focus:outline-none focus:border-primary transition-colors w-64"
                 />
              </div>
-             <Link href="/dashboard/films/create" className="px-5 py-2.5 bg-[#00dc74] text-black rounded-full font-bold hover:bg-[#00c266] transition-all flex items-center gap-2 shadow-[0_4px_15px_rgba(0,220,116,0.3)]">
+             <Link href="/dashboard/films/create" className="px-5 py-2.5 bg-primary text-black rounded-full font-bold hover:brightness-90 transition-all flex items-center gap-2 shadow-[0_4px_15px_rgba(var(--primary),0.3)]">
                <Plus className="w-4 h-4" /> Tambah 
              </Link>
           </div>
@@ -198,7 +207,7 @@ export default function DashboardFilmsPage() {
                   <TableRow className="border-b-white/5 hover:bg-transparent">
                     <TableCell colSpan={columns.length} className="h-48 text-center">
                       <div className="flex flex-col items-center justify-center text-neutral-500 gap-3">
-                         <div className="w-8 h-8 border-2 border-[#00dc74] border-t-transparent rounded-full animate-spin"></div>
+                         <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
                          <p className="font-medium text-sm">Memuat data basis...</p>
                       </div>
                     </TableCell>
@@ -244,7 +253,7 @@ export default function DashboardFilmsPage() {
                     <PaginationItem key={i}>
                       <PaginationLink 
                         onClick={() => setPageIndex(i + 1)}
-                        className={`cursor-pointer border border-white/10 transition-all ${pageIndex === i + 1 ? 'bg-[#00dc74] text-black border-[#00dc74] font-bold shadow-[0_0_15px_rgba(0,220,116,0.2)]' : 'bg-[#0b0c0f] text-neutral-400 hover:bg-white/10 hover:text-white hover:border-white/20'}`}
+                        className={`cursor-pointer border border-white/10 transition-all ${pageIndex === i + 1 ? 'bg-primary text-black border-primary font-bold shadow-[0_0_15px_rgba(0,220,116,0.2)]' : 'bg-[#0b0c0f] text-neutral-400 hover:bg-white/10 hover:text-white hover:border-white/20'}`}
                       >
                         {i + 1}
                       </PaginationLink>

@@ -49,7 +49,7 @@ export function RoleGuard({ children, requiredRole = 'ADMIN' }: RoleGuardProps) 
     return (
       <div className="flex items-center justify-center min-h-screen bg-[#0b0c0f]">
         <div className="flex flex-col items-center gap-4">
-          <div className="w-10 h-10 border-2 border-[#00dc74] border-t-transparent rounded-full animate-spin" />
+          <div className="w-10 h-10 border-2 border-primary border-t-transparent rounded-full animate-spin" />
           <p className="text-sm text-neutral-500 font-medium">Memverifikasi akses...</p>
         </div>
       </div>
@@ -62,7 +62,7 @@ export function RoleGuard({ children, requiredRole = 'ADMIN' }: RoleGuardProps) 
     return (
       <div className="flex items-center justify-center min-h-screen bg-[#0b0c0f]">
         <div className="text-center">
-          <p className="text-6xl font-black text-[#00dc74] mb-4">403</p>
+          <p className="text-6xl font-black text-primary mb-4">403</p>
           <p className="text-white font-bold text-xl mb-2">Akses Ditolak</p>
           <p className="text-neutral-400 text-sm">Anda tidak memiliki izin untuk mengakses halaman ini.</p>
         </div>

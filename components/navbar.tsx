@@ -61,7 +61,7 @@ export function Navbar() {
           {/* Logo & Desktop Nav Group */}
           <div className="flex items-center gap-8">
             <Link href="/" className="flex items-center gap-2 group">
-              <span className="text-2xl font-black tracking-widest text-[#00dc74] group-hover:drop-shadow-[0_0_8px_rgba(0,220,116,0.8)] transition-all">
+              <span className="text-2xl font-black tracking-widest text-primary group-hover:drop-shadow-[0_0_8px_rgba(var(--primary),0.8)] transition-all">
                 WATCHIFY
               </span>
             </Link>
@@ -70,13 +70,13 @@ export function Navbar() {
             <div className="hidden lg:flex items-center gap-6">
               <Link 
                 href="/" 
-                className="text-[15px] font-medium text-white hover:text-[#00dc74] transition-colors"
+                className="text-[15px] font-medium text-white hover:text-primary transition-colors"
               >
                 Beranda
               </Link>
               <Link 
                 href="/films" 
-                className="text-[15px] font-medium text-neutral-300 hover:text-[#00dc74] transition-colors"
+                className="text-[15px] font-medium text-neutral-300 hover:text-primary transition-colors"
               >
                 Film
               </Link>
@@ -85,7 +85,7 @@ export function Navbar() {
                 <button
                   onClick={() => setIsCategoryOpen(o => !o)}
                   className={`text-[15px] font-medium transition-colors flex items-center gap-1.5 ${
-                    isCategoryOpen ? 'text-[#00dc74]' : 'text-neutral-300 hover:text-[#00dc74]'
+                    isCategoryOpen ? 'text-primary' : 'text-neutral-300 hover:text-primary'
                   }`}
                 >
                   Kategori
@@ -104,7 +104,7 @@ export function Navbar() {
                           key={genre.id}
                           href={`/films?genre=${genre.id}`}
                           onClick={() => setIsCategoryOpen(false)}
-                          className="px-3 py-2.5 bg-white/5 hover:bg-[#00dc74]/10 rounded-lg text-sm font-medium text-neutral-300 hover:text-[#00dc74] transition-all capitalize truncate"
+                          className="px-3 py-2.5 bg-white/5 hover:bg-primary/10 rounded-lg text-sm font-medium text-neutral-300 hover:text-primary transition-all capitalize truncate"
                         >
                           {genre.name}
                         </Link>
@@ -114,7 +114,7 @@ export function Navbar() {
                       <Link
                         href="/genres"
                         onClick={() => setIsCategoryOpen(false)}
-                        className="flex items-center justify-center gap-2 w-full py-2.5 rounded-lg border border-[#00dc74]/30 text-[#00dc74] text-sm font-bold hover:bg-[#00dc74]/10 transition-all"
+                        className="flex items-center justify-center gap-2 w-full py-2.5 rounded-lg border border-primary/30 text-primary text-sm font-bold hover:bg-primary/10 transition-all"
                       >
                         <Tag className="w-4 h-4" />
                         Lihat Semua Genre
@@ -131,7 +131,7 @@ export function Navbar() {
           <div className="flex items-center gap-3 md:gap-5">
             {/* Inline Search Bar */}
             <div className="relative hidden lg:block w-72">
-               <div className={`flex items-center bg-[#2a2b30] rounded-sm transition-all border ${isSearchFocused ? 'border-[#00dc74] shadow-[0_0_8px_rgba(0,220,116,0.3)]' : 'border-transparent'}`}>
+               <div className={`flex items-center bg-[#2a2b30] rounded-sm transition-all border ${isSearchFocused ? 'border-primary shadow-[0_0_8px_rgba(var(--primary),0.3)]' : 'border-transparent'}`}>
                   <input
                     type="text"
                     placeholder="The Best Thing ( AI English..."
@@ -141,7 +141,7 @@ export function Navbar() {
                   />
                   {/* Vertical Divider & Icon */}
                   <div className="flex items-center pr-3 pl-2 border-l border-neutral-600/50 h-5">
-                     <Search className="w-4 h-4 text-white hover:text-[#00dc74] cursor-pointer transition-colors" />
+                     <Search className="w-4 h-4 text-white hover:text-primary cursor-pointer transition-colors" />
                   </div>
                </div>
 
@@ -158,7 +158,7 @@ export function Navbar() {
                             href={`/film/${item.id || ''}`}
                             className="flex items-center gap-4 px-4 py-2.5 hover:bg-white/5 transition-colors"
                           >
-                             <span className={`text-[15px] font-bold w-4 text-center ${index < 3 ? 'text-[#00dc74]' : 'text-white'}`}>
+                             <span className={`text-[15px] font-bold w-4 text-center ${index < 3 ? 'text-primary' : 'text-white'}`}>
                                {index + 1}
                              </span>
                              <span className="text-[14px] text-neutral-200 truncate">
@@ -183,7 +183,7 @@ export function Navbar() {
               {mounted && (
                 userData ? (
                   <div className="relative group py-2">
-                    <div className="w-9 h-9 rounded-full bg-[#00dc74]/10 hover:bg-[#00dc74]/20 text-[#00dc74] transition-all flex items-center justify-center backdrop-blur-sm cursor-pointer border border-[#00dc74]/20 shadow-[0_0_15px_rgba(0,220,116,0.1)]">
+                    <div className="w-9 h-9 rounded-full bg-primary/10 hover:bg-primary/20 text-primary transition-all flex items-center justify-center backdrop-blur-sm cursor-pointer border border-primary/20 shadow-[0_0_15px_rgba(var(--primary),0.1)]">
                       <User className="w-4 h-4" />
                     </div>
                     <div className="absolute top-full right-0 mt-1 w-[240px] bg-[#1b1c21] rounded-lg shadow-[0_10px_40px_rgba(0,0,0,0.9)] border border-white/5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 overflow-hidden">
@@ -192,10 +192,10 @@ export function Navbar() {
                         <p className="text-xs text-neutral-400 truncate mt-0.5">{userData?.data?.personal_info?.email}</p>
                       </div>
                       <div className="flex flex-col py-2">
-                         <Link href="/dashboard" className="px-5 py-2.5 text-sm font-medium text-neutral-300 hover:text-[#00dc74] hover:bg-white/5 transition-colors flex items-center gap-3">
+                         <Link href="/dashboard" className="px-5 py-2.5 text-sm font-medium text-neutral-300 hover:text-primary hover:bg-white/5 transition-colors flex items-center gap-3">
                            <LayoutDashboard className="w-4 h-4" /> Dashboard
                          </Link>
-                         <Link href="#" className="px-5 py-2.5 text-sm font-medium text-neutral-300 hover:text-[#00dc74] hover:bg-white/5 transition-colors flex items-center gap-3">
+                         <Link href="/settings" className="px-5 py-2.5 text-sm font-medium text-neutral-300 hover:text-primary hover:bg-white/5 transition-colors flex items-center gap-3">
                            <Settings className="w-4 h-4" /> Pengaturan
                          </Link>
                          <div className="h-px bg-white/5 my-2" />
@@ -206,7 +206,7 @@ export function Navbar() {
                     </div>
                   </div>
                 ) : (
-                  <Link href="/login" className="px-5 py-2 bg-[#00dc74] text-black rounded-lg font-bold text-sm tracking-wide hover:bg-[#00c266] transition-all shadow-[0_4px_15px_rgba(0,220,116,0.3)]">
+                  <Link href="/login" className="px-5 py-2 bg-primary text-primary-foreground rounded-lg font-bold text-sm tracking-wide hover:brightness-90 transition-all shadow-[0_4px_15px_rgba(var(--primary),0.3)]">
                     Login Access
                   </Link>
                 )
@@ -229,7 +229,7 @@ export function Navbar() {
               <input
                 type="text"
                 placeholder="Cari drama, film..."
-                className="w-full bg-[#2a2b30] px-4 py-2 text-sm text-white focus:outline-none rounded-sm border-2 border-transparent focus:border-[#00dc74] transition-all"
+                className="w-full bg-[#2a2b30] px-4 py-2 text-sm text-white focus:outline-none rounded-sm border-2 border-transparent focus:border-primary transition-all"
                 autoFocus
               />
             </div>
@@ -242,24 +242,24 @@ export function Navbar() {
             <div className="flex flex-col py-2">
               <Link
                 href="/"
-                className="px-6 py-4 text-[15px] font-medium text-white hover:text-[#00dc74] hover:bg-white/5 transition-all"
+                className="px-6 py-4 text-[15px] font-medium text-white hover:text-primary hover:bg-white/5 transition-all"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Beranda
               </Link>
               <Link
                 href="/films"
-                className="px-6 py-4 text-[15px] font-medium text-neutral-300 hover:text-[#00dc74] hover:bg-white/5 transition-all"
+                className="px-6 py-4 text-[15px] font-medium text-neutral-300 hover:text-primary hover:bg-white/5 transition-all"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Drama & Film
               </Link>
               <button
-                className="w-full text-left px-6 py-4 text-[15px] font-medium text-neutral-300 hover:text-[#00dc74] hover:bg-white/5 transition-all flex items-center justify-between"
+                className="w-full text-left px-6 py-4 text-[15px] font-medium text-neutral-300 hover:text-primary hover:bg-white/5 transition-all flex items-center justify-between"
                 onClick={() => setMobileGenreOpen(o => !o)}
               >
                 <span>Kategori</span>
-                <ChevronDown className={`w-4 h-4 transition-transform ${mobileGenreOpen ? 'rotate-180 text-[#00dc74]' : ''}`} />
+                <ChevronDown className={`w-4 h-4 transition-transform ${mobileGenreOpen ? 'rotate-180 text-primary' : ''}`} />
               </button>
               {mobileGenreOpen && (
                 <div className="px-6 pb-3 bg-black/20">
@@ -269,7 +269,7 @@ export function Navbar() {
                         key={genre.id}
                         href={`/films?genre=${genre.id}`}
                         onClick={() => { setIsMenuOpen(false); setMobileGenreOpen(false); }}
-                        className="px-3 py-2 bg-white/5 rounded-lg text-sm font-medium text-neutral-300 hover:text-[#00dc74] transition-colors capitalize truncate"
+                        className="px-3 py-2 bg-white/5 rounded-lg text-sm font-medium text-neutral-300 hover:text-primary transition-colors capitalize truncate"
                       >
                         {genre.name}
                       </Link>
@@ -278,7 +278,7 @@ export function Navbar() {
                   <Link
                     href="/genres"
                     onClick={() => { setIsMenuOpen(false); setMobileGenreOpen(false); }}
-                    className="flex items-center justify-center gap-2 w-full py-2.5 rounded-lg border border-[#00dc74]/30 text-[#00dc74] text-sm font-bold"
+                    className="flex items-center justify-center gap-2 w-full py-2.5 rounded-lg border border-primary/30 text-primary text-sm font-bold"
                   >
                     <Tag className="w-3.5 h-3.5" /> Lihat Semua Genre
                   </Link>
@@ -293,10 +293,17 @@ export function Navbar() {
                   </div>
                   <Link
                      href="/dashboard"
-                     className="px-6 py-4 text-[15px] font-medium text-neutral-300 hover:text-[#00dc74] hover:bg-white/5 transition-all flex items-center gap-3"
+                     className="px-6 py-4 text-[15px] font-medium text-neutral-300 hover:text-primary hover:bg-white/5 transition-all flex items-center gap-3"
                      onClick={() => setIsMenuOpen(false)}
                   >
                     <LayoutDashboard className="w-4 h-4" /> Dashboard
+                  </Link>
+                  <Link
+                     href="/settings"
+                     className="px-6 py-4 text-[15px] font-medium text-neutral-300 hover:text-primary hover:bg-white/5 transition-all flex items-center gap-3"
+                     onClick={() => setIsMenuOpen(false)}
+                  >
+                    <Settings className="w-4 h-4" /> Pengaturan
                   </Link>
                   <button
                      className="w-full text-left px-6 py-4 text-[15px] font-medium text-red-400 hover:bg-red-500/10 transition-all flex items-center gap-3"
@@ -308,7 +315,7 @@ export function Navbar() {
                 ) : (
                   <Link
                      href="/login"
-                     className="px-6 py-4 text-[15px] font-medium text-[#00dc74] hover:bg-white/5 transition-all flex items-center gap-2"
+                     className="px-6 py-4 text-[15px] font-medium text-primary hover:bg-white/5 transition-all flex items-center gap-2"
                      onClick={() => setIsMenuOpen(false)}
                   >
                     <User className="w-4 h-4" /> Login / Register

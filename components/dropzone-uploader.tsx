@@ -3,6 +3,7 @@
 import { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { UploadCloud, X, ImageIcon } from 'lucide-react';
+import Image from 'next/image';
 
 interface DropzoneUploaderProps {
   onChange: (files: File[]) => void;
@@ -44,7 +45,13 @@ export function DropzoneUploader({ onChange, existingImages = [], uploadBaseUrl 
           <div className="flex flex-wrap gap-3">
             {existingImages.map((img, i) => (
               <div key={i} className="relative group w-20 h-28 rounded-lg overflow-hidden border border-white/10 shadow-md">
-                <img src={`${uploadBaseUrl}${img}`} alt={`poster-${i}`} className="w-full h-full object-cover" />
+                <Image
+                  src={`${uploadBaseUrl}${img}`}
+                  alt={`poster-${i}`}
+                  fill
+                  sizes="80px"
+                  className="object-cover"
+                />
               </div>
             ))}
           </div>
@@ -56,17 +63,17 @@ export function DropzoneUploader({ onChange, existingImages = [], uploadBaseUrl 
         {...getRootProps()}
         className={`relative border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all
           ${isDragActive
-            ? 'border-[#00dc74] bg-[#00dc74]/5 shadow-[0_0_20px_rgba(0,220,116,0.1)]'
-            : 'border-white/20 hover:border-[#00dc74]/60 bg-[#0b0c0f]/50 hover:bg-[#00dc74]/5'
+            ? 'border-primary bg-primary/5 shadow-[0_0_20px_rgba(var(--primary),0.1)]'
+            : 'border-white/20 hover:border-primary/60 bg-[#0b0c0f]/50 hover:bg-primary/5'
           }`}
       >
         <input {...getInputProps()} />
         <div className="flex flex-col items-center gap-3">
-          <div className={`w-12 h-12 rounded-full flex items-center justify-center transition-all ${isDragActive ? 'bg-[#00dc74]/20' : 'bg-white/5'}`}>
-            <UploadCloud className={`w-6 h-6 ${isDragActive ? 'text-[#00dc74]' : 'text-neutral-500'}`} />
+          <div className={`w-12 h-12 rounded-full flex items-center justify-center transition-all ${isDragActive ? 'bg-primary/20' : 'bg-white/5'}`}>
+            <UploadCloud className={`w-6 h-6 ${isDragActive ? 'text-primary' : 'text-neutral-500'}`} />
           </div>
           {isDragActive ? (
-            <p className="text-sm font-bold text-[#00dc74]">Lepaskan file di sini...</p>
+            <p className="text-sm font-bold text-primary">Lepaskan file di sini...</p>
           ) : (
             <>
               <p className="text-sm font-bold text-neutral-300">Drag & drop poster di sini</p>
@@ -83,16 +90,22 @@ export function DropzoneUploader({ onChange, existingImages = [], uploadBaseUrl 
           <p className="text-xs font-bold text-neutral-500 uppercase tracking-widest mb-2">File Baru ({previews.length})</p>
           <div className="flex flex-wrap gap-3">
             {previews.map((preview, i) => (
-              <div key={i} className="relative group w-20 h-28 rounded-lg overflow-hidden border border-[#00dc74]/30 shadow-md">
-                <img src={preview.url} alt={`new-${i}`} className="w-full h-full object-cover" />
+              <div key={i} className="relative group w-20 h-28 rounded-lg overflow-hidden border border-primary/30 shadow-md">
+                <Image
+                  src={preview.url}
+                  alt={`new-${i}`}
+                  fill
+                  sizes="80px"
+                  className="object-cover"
+                />
                 <button
                   type="button"
                   onClick={() => removePreview(i)}
-                  className="absolute top-1 right-1 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-md"
+                  className="absolute top-1 right-1 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-md z-10"
                 >
                   <X className="w-3 h-3 text-white" />
                 </button>
-                <div className="absolute inset-0 bg-[#00dc74]/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
             ))}
           </div>

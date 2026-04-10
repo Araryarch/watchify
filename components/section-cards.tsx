@@ -17,7 +17,7 @@ export function SectionCards() {
   const totalGenres = genresAll?.meta?.[0]?.total_data || 0;
 
   return (
-    <div className="grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:from-[#00dc74]/5 *:data-[slot=card]:to-card *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4 dark:*:data-[slot=card]:bg-card mb-8">
+    <div className="grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4 dark:*:data-[slot=card]:bg-card mb-8">
       
       {/* Total Film */}
       <Card className="@container/card border-white/5 bg-[#1b1c21]">
@@ -28,7 +28,7 @@ export function SectionCards() {
           </CardTitle>
           <CardAction>
             <div className="p-2.5 bg-white/5 rounded-lg border border-white/10">
-              <Film className="w-5 h-5 text-[#00dc74]" />
+              <Film className="w-5 h-5 text-primary" />
             </div>
           </CardAction>
         </CardHeader>
@@ -43,7 +43,7 @@ export function SectionCards() {
           </CardTitle>
           <CardAction>
             <div className="p-2.5 bg-white/5 rounded-lg border border-white/10">
-              <TvMinimalPlay className="w-5 h-5 text-[#00dc74]" />
+              <TvMinimalPlay className="w-5 h-5 text-primary" />
             </div>
           </CardAction>
         </CardHeader>
@@ -58,7 +58,7 @@ export function SectionCards() {
           </CardTitle>
           <CardAction>
             <div className="p-2.5 bg-white/5 rounded-lg border border-white/10">
-              <Clapperboard className="w-5 h-5 text-[#00dc74]" />
+              <Clapperboard className="w-5 h-5 text-primary" />
             </div>
           </CardAction>
         </CardHeader>
@@ -73,7 +73,7 @@ export function SectionCards() {
           </CardTitle>
           <CardAction>
             <div className="p-2.5 bg-white/5 rounded-lg border border-white/10">
-              <Tags className="w-5 h-5 text-[#00dc74]" />
+              <Tags className="w-5 h-5 text-primary" />
             </div>
           </CardAction>
         </CardHeader>

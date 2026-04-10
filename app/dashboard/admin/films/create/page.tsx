@@ -62,7 +62,7 @@ export default function CreateFilmPage() {
     <div className="flex-1 w-full bg-[#0b0c0f] font-sans text-white p-4 sm:p-6 lg:p-8 min-h-full">
       <div className="max-w-4xl mx-auto pb-12">
         <div className="mb-8">
-          <Link href="/dashboard/films" className="inline-flex items-center gap-2 text-sm font-bold text-neutral-400 hover:text-[#00dc74] mb-4 transition-colors">
+          <Link href="/dashboard/films" className="inline-flex items-center gap-2 text-sm font-bold text-neutral-400 hover:text-primary mb-4 transition-colors">
             <ArrowLeft className="w-4 h-4" /> Kembali
           </Link>
           <h1 className="text-3xl font-bold">Tambah Film Baru</h1>
@@ -73,15 +73,15 @@ export default function CreateFilmPage() {
             <div className="grid md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-bold text-neutral-300 mb-2">Judul Tayangan</label>
-                <input {...register('title', {required: true})} className="w-full bg-[#0b0c0f] border border-white/10 rounded-lg px-4 py-3 text-sm focus:border-[#00dc74] outline-none" placeholder="Masukkan judul..." />
+                <input {...register('title', {required: true})} className="w-full bg-[#0b0c0f] border border-white/10 rounded-lg px-4 py-3 text-sm focus:border-primary outline-none" placeholder="Masukkan judul..." />
               </div>
               <div>
                 <label className="block text-sm font-bold text-neutral-300 mb-2">Total Episode</label>
-                <input type="number" {...register('total_episodes')} className="w-full bg-[#0b0c0f] border border-white/10 rounded-lg px-4 py-3 text-sm focus:border-[#00dc74] outline-none" placeholder="12" />
+                <input type="number" {...register('total_episodes')} className="w-full bg-[#0b0c0f] border border-white/10 rounded-lg px-4 py-3 text-sm focus:border-primary outline-none" placeholder="12" />
               </div>
               <div>
                 <label className="block text-sm font-bold text-neutral-300 mb-2">Status Tayang</label>
-                <select {...register('airing_status')} className="w-full bg-[#0b0c0f] border border-white/10 rounded-lg px-4 py-3 text-sm focus:border-[#00dc74] outline-none text-white">
+                <select {...register('airing_status')} className="w-full bg-[#0b0c0f] border border-white/10 rounded-lg px-4 py-3 text-sm focus:border-primary outline-none text-white">
                   <option value="not_yet_aired">Akan Datang (Belum Tayang)</option>
                   <option value="airing">Sedang Tayang (Ongoing)</option>
                   <option value="finished_airing">Selesai (Tamat)</option>
@@ -89,20 +89,20 @@ export default function CreateFilmPage() {
               </div>
               <div>
                 <label className="block text-sm font-bold text-neutral-300 mb-2">Tanggal Rilis</label>
-                <input type="datetime-local" {...register('release_date')} className="w-full bg-[#0b0c0f] border border-white/10 rounded-lg px-4 py-3 text-sm focus:border-[#00dc74] outline-none" />
+                <input type="datetime-local" {...register('release_date')} className="w-full bg-[#0b0c0f] border border-white/10 rounded-lg px-4 py-3 text-sm focus:border-primary outline-none" />
               </div>
             </div>
 
             <div>
               <label className="block text-sm font-bold text-neutral-300 mb-2">Sinopsis</label>
-              <textarea {...register('synopsis')} rows={4} className="w-full bg-[#0b0c0f] border border-white/10 rounded-lg px-4 py-3 text-sm focus:border-[#00dc74] outline-none" placeholder="Ceritakan alur cerita singkat..."></textarea>
+              <textarea {...register('synopsis')} rows={4} className="w-full bg-[#0b0c0f] border border-white/10 rounded-lg px-4 py-3 text-sm focus:border-primary outline-none" placeholder="Ceritakan alur cerita singkat..."></textarea>
             </div>
 
             <div>
               <label className="block text-sm font-bold text-neutral-300 mb-2">Pilih Kategori (Genre)</label>
               <div className="flex flex-wrap gap-2">
                 {genresData?.data?.map((genre: any) => (
-                  <button type="button" key={genre.id} onClick={() => toggleGenre(genre.id)} className={`px-4 py-2 rounded-lg text-sm font-medium border transition-all ${selectedGenres.includes(genre.id) ? 'bg-[#00dc74] border-[#00dc74] text-black shadow-[0_0_10px_rgba(0,220,116,0.3)]' : 'bg-[#0b0c0f] border-white/10 text-neutral-400 hover:border-[#00dc74]/50'}`}>
+                  <button type="button" key={genre.id} onClick={() => toggleGenre(genre.id)} className={`px-4 py-2 rounded-lg text-sm font-medium border transition-all ${selectedGenres.includes(genre.id) ? 'bg-primary border-primary text-black shadow-[0_0_10px_rgba(0,220,116,0.3)]' : 'bg-[#0b0c0f] border-white/10 text-neutral-400 hover:border-primary/50'}`}>
                     {genre.name}
                   </button>
                 ))}
@@ -115,7 +115,7 @@ export default function CreateFilmPage() {
             </div>
 
             <div className="pt-6 border-t border-white/5 flex gap-4">
-              <button disabled={isPending} type="submit" className="flex-1 bg-[#00dc74] text-black font-bold py-3.5 rounded-lg hover:bg-[#00c266] transition-all flex items-center justify-center gap-2 shadow-[0_4px_15px_rgba(0,220,116,0.3)] disabled:opacity-50 disabled:cursor-not-allowed">
+              <button disabled={isPending} type="submit" className="flex-1 bg-primary text-black font-bold py-3.5 rounded-lg hover:brightness-90 transition-all flex items-center justify-center gap-2 shadow-[0_4px_15px_rgba(var(--primary),0.3)] disabled:opacity-50 disabled:cursor-not-allowed">
                 <Save className="w-5 h-5" /> {isPending ? 'Menyimpan...' : 'Simpan Film'}
               </button>
             </div>

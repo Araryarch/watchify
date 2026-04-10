@@ -8,6 +8,10 @@ const nextConfig: NextConfig = {
         hostname: 'film-management-api.labse.id',
         pathname: '/uploads/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
     ],
   },
 };

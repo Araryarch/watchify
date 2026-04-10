@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { Star, Play, Bookmark, ChevronRight } from 'lucide-react';
 import { Film } from '@/lib/api/films';
 import { Typography } from '@/components/ui/typography';
+import Image from 'next/image';
 
 interface FilmCardProps {
   film: Film;
@@ -28,19 +29,22 @@ export function FilmCard({ film }: FilmCardProps) {
           <Link href={`/film/${film.id}`} className="block relative w-full overflow-hidden rounded-md group-hover/card:rounded-b-none group-hover/card:rounded-t-lg bg-[#111216] shadow-sm">
             <div className="aspect-[4/5] relative w-full overflow-hidden transition-all duration-300 group-hover/card:aspect-[16/15]">
               {film.images && film.images[0] ? (
-                <img
+                <Image
                   src={`https://film-management-api.labse.id/uploads/${film.images[0]}`}
                   alt={film.title}
+                  fill
+                  sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+                  className="object-cover transition-transform duration-500 group-hover/card:scale-105"
                   onError={(e) => {
-                     (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=500&q=80";
+                    const target = e.target as HTMLImageElement;
+                    target.src = "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=500&q=80";
                   }}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover/card:scale-105"
                 />
               ) : (
                 <div className="w-full h-full bg-neutral-900" />
               )}
               
-              <div className="absolute top-0 right-0 px-2 py-1 bg-[#00dc74] text-black text-[10px] font-bold z-10 rounded-bl-lg transition-all">
+              <div className="absolute top-0 right-0 px-2 py-1 bg-primary text-primary-foreground text-[10px] font-bold z-10 rounded-bl-lg transition-all">
                 {topBadge}
               </div>
 
@@ -57,8 +61,8 @@ export function FilmCard({ film }: FilmCardProps) {
 
               {/* Quick Play & Bookmark Actions -> Appears on Hover */}
               <div className="absolute bottom-3 right-3 left-3 z-20 flex justify-end gap-2 translate-y-4 opacity-0 invisible group-hover/card:translate-y-0 group-hover/card:opacity-100 group-hover/card:visible transition-all duration-300">
-                 <button className="w-9 h-9 rounded-full bg-[#00dc74] hover:bg-[#00c266] flex items-center justify-center text-black shadow-[0_2px_10px_rgba(0,220,116,0.3)] transition-transform hover:scale-105">
-                    <Play className="w-5 h-5 fill-black translate-x-0.5" />
+                 <button className="w-9 h-9 rounded-full bg-primary hover:brightness-90 flex items-center justify-center text-primary-foreground shadow-[0_2px_10px_rgba(var(--primary),0.3)] transition-transform hover:scale-105">
+                    <Play className="w-5 h-5 fill-current translate-x-0.5" />
                  </button>
                  <button className="w-9 h-9 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-md flex items-center justify-center text-white transition-transform hover:scale-105">
                     <Bookmark className="w-4 h-4" />
@@ -87,8 +91,8 @@ export function FilmCard({ film }: FilmCardProps) {
                  {/* Metadata Row */}
                  <div className="flex items-center gap-2 text-white text-[11px] font-medium mb-3">
                     {film.average_rating !== undefined && film.average_rating > 0 && (
-                       <div className="flex items-center gap-1 text-[#00dc74]">
-                          <Star className="w-3 h-3 fill-[#00dc74]" />
+                       <div className="flex items-center gap-1 text-primary">
+                          <Star className="w-3 h-3 fill-primary" />
                           <span className="text-[13px] border-r border-white/20 pr-2">{film.average_rating.toFixed(1)}</span>
                        </div>
                     )}
@@ -120,7 +124,7 @@ export function FilmCard({ film }: FilmCardProps) {
 
                  {/* More info link */}
                  <div className="text-right mt-1">
-                   <span className="inline-flex items-center text-[11px] text-[#00dc74] font-medium hover:underline">
+                   <span className="inline-flex items-center text-[11px] text-primary font-medium hover:underline">
                       more info <ChevronRight className="w-3 h-3" />
                    </span>
                  </div>

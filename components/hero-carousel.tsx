@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { Play, Bookmark, Star, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Film } from '@/lib/api/films';
 import { Typography } from '@/components/ui/typography';
+import Image from 'next/image';
 
 interface HeroCarouselProps {
   heroes: Film[];
@@ -43,13 +44,17 @@ export function HeroCarousel({ heroes }: HeroCarouselProps) {
              <div className="absolute inset-0 bg-gradient-to-r from-[#0b0c0f]/90 via-[#0b0c0f]/40 to-transparent z-10 w-full md:w-3/5" />
              {/* Bottom gradient to blend into content rows smoothly */}
              <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-[#0b0c0f] via-[#0b0c0f]/80 to-transparent z-10" />
-             <img
+             <Image
                 src={film.images && film.images.length > 0 ? `https://film-management-api.labse.id/uploads/${film.images[0]}` : "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=1920&q=80"}
                 alt={film.title}
+                fill
+                priority={idx === 0}
+                sizes="100vw"
+                className="object-cover object-center md:object-right"
                 onError={(e) => {
-                   (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=1920&q=80";
+                   const target = e.target as HTMLImageElement;
+                   target.src = "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=1920&q=80";
                 }}
-                className="w-full h-full object-cover object-center md:object-right"
              />
           </div>
           
@@ -65,43 +70,71 @@ export function HeroCarousel({ heroes }: HeroCarouselProps) {
 
                 {/* Badges Row 1 */}
                 <div className="flex flex-wrap items-center gap-2 pt-2">
-                   <span className="px-2 py-0.5 bg-[#00dc74] text-black text-xs font-bold rounded-sm">
-                     TOP 1
-                   </span>
-                   <span className="px-2 py-0.5 bg-white/20 text-neutral-200 text-xs font-semibold rounded-sm backdrop-blur-sm">
-                     High Popularity
-                   </span>
-                   <span className="px-2 py-0.5 bg-[#00dc74]/20 text-[#00dc74] text-xs font-bold rounded-sm border border-[#00dc74]/30">
-                     Original
-                   </span>
+                   {film.average_rating && film.average_rating >= 8.0 && (
+                     <span className="px-2 py-0.5 bg-primary text-primary-foreground text-xs font-bold rounded-sm">
+                       TOP RATED
+                     </span>
+                   )}
+                   {film.airing_status === 'airing' && (
+                     <span className="px-2 py-0.5 bg-white/20 text-neutral-200 text-xs font-semibold rounded-sm backdrop-blur-sm">
+                       Sedang Tayang
+                     </span>
+                   )}
+                   {film.airing_status === 'finished' && (
+                     <span className="px-2 py-0.5 bg-primary/20 text-primary text-xs font-bold rounded-sm border border-primary/30">
+                       Completed
+                     </span>
+                   )}
+                   {!film.airing_status && (
+                     <span className="px-2 py-0.5 bg-primary/20 text-primary text-xs font-bold rounded-sm border border-primary/30">
+                       Original
+                     </span>
+                   )}
                 </div>
 
                 {/* Metadata Row 2 */}
                 <div className="flex items-center gap-3 text-white text-sm font-medium">
                    {film.average_rating !== undefined && film.average_rating > 0 && (
-                      <div className="flex items-center gap-1 text-[#00dc74]">
-                         <Star className="w-4 h-4 fill-[#00dc74]" />
+                      <div className="flex items-center gap-1 text-primary">
+                         <Star className="w-4 h-4 fill-primary" />
                          <span className="text-base">{film.average_rating.toFixed(1)}</span>
                       </div>
                    )}
-                   <span className="text-neutral-300">|</span>
-                   <span>{film.release_date ? new Date(film.release_date).getFullYear() : '2024'}</span>
+                   {film.average_rating > 0 && <span className="text-neutral-300">|</span>}
+                   <span>{film.release_date ? new Date(film.release_date).getFullYear() : new Date().getFullYear()}</span>
                    <span className="text-neutral-300">|</span>
                    <span>13+</span>
-                   <span className="text-neutral-300">|</span>
-                   <span>{film.total_episodes} Episodes</span>
+                   {film.total_episodes > 0 && (
+                     <>
+                       <span className="text-neutral-300">|</span>
+                       <span>{film.total_episodes} {film.total_episodes === 1 ? 'Episode' : 'Episodes'}</span>
+                     </>
+                   )}
                 </div>
                 
                 {/* Synopsis */}
-                <Typography variant="p" className="text-sm md:text-[15px] text-neutral-300 leading-relaxed line-clamp-3 max-w-xl drop-shadow-md">
-                  {film.synopsis || "Sebuah drama fantasi romantis yang menakjubkan. Saat rahasia dunia terbuka, cinta sejati akan diuji oleh takdir. Saksikan episodenya sekarang secara eksklusif."}
-                </Typography>
+                {film.synopsis && (
+                  <Typography variant="p" className="text-sm md:text-[15px] text-neutral-300 leading-relaxed line-clamp-3 max-w-xl drop-shadow-md">
+                    {film.synopsis}
+                  </Typography>
+                )}
+
+                {/* Genre Pills */}
+                {film.genres && film.genres.length > 0 && (
+                  <div className="flex flex-wrap gap-2 pt-2">
+                    {film.genres.slice(0, 4).map((genre: any) => (
+                      <span key={genre.id} className="px-3 py-1 bg-white/10 backdrop-blur-sm text-white text-xs font-medium rounded-full border border-white/20">
+                        {genre.name}
+                      </span>
+                    ))}
+                  </div>
+                )}
                 
                 {/* Circular Action Buttons */}
                 <div className="flex items-center gap-4 pt-4">
                   <Link href={`/film/${film.id}`}>
-                    <button className="w-14 h-14 rounded-full bg-[#00dc74] hover:bg-[#00c266] text-black flex items-center justify-center transition-transform hover:scale-110 active:scale-95 shadow-[0_4px_20px_rgba(0,220,116,0.4)]">
-                      <Play className="w-6 h-6 fill-black translate-x-0.5" />
+                    <button className="w-14 h-14 rounded-full bg-primary hover:brightness-90 text-primary-foreground flex items-center justify-center transition-transform hover:scale-110 active:scale-95 shadow-[0_4px_20px_rgba(var(--primary),0.4)]">
+                      <Play className="w-6 h-6 fill-current translate-x-0.5" />
                     </button>
                   </Link>
                   <button className="w-14 h-14 rounded-full bg-[#1b1c21] hover:bg-neutral-700/80 text-white flex items-center justify-center transition-transform hover:scale-110 active:scale-95">

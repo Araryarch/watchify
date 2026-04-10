@@ -62,7 +62,7 @@ export default function HomePage() {
       <section className="relative z-30 -mt-28 md:-mt-32 w-full group/section" aria-label="Popular on Watchify">
         <div className="max-w-[1600px] mx-auto px-6 lg:px-12">
           <header className="flex items-center justify-between mb-4">
-            <Typography variant="h2" className="text-xl md:text-2xl font-bold text-white flex items-center gap-1 hover:text-[#00dc74] cursor-pointer transition-colors drop-shadow-lg border-0 pb-0">
+            <Typography variant="h2" className="text-xl md:text-2xl font-bold text-white flex items-center gap-1 hover:text-primary cursor-pointer transition-colors drop-shadow-lg border-0 pb-0">
               Popular on Watchify <ChevronRight className="w-6 h-6 text-neutral-400" aria-hidden="true" />
             </Typography>
           </header>
@@ -93,7 +93,7 @@ export default function HomePage() {
       <section className="pt-4 w-full relative z-10 hover:z-20" aria-label="Trending Sekarang">
         <div className="max-w-[1600px] mx-auto px-6 lg:px-12">
           <header className="flex items-center justify-between mb-4">
-            <Typography variant="h2" className="text-xl md:text-2xl font-bold text-white flex items-center gap-1 hover:text-[#00dc74] cursor-pointer transition-colors border-0 pb-0">
+            <Typography variant="h2" className="text-xl md:text-2xl font-bold text-white flex items-center gap-1 hover:text-primary cursor-pointer transition-colors border-0 pb-0">
               Trending Sekarang <ChevronRight className="w-6 h-6 text-neutral-400" aria-hidden="true" />
             </Typography>
           </header>

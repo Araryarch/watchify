@@ -33,10 +33,10 @@ export function NavMain({
                   asChild 
                   tooltip={item.title} 
                   isActive={isActive}
-                  className={`h-[50px] px-4 text-[15px] font-bold tracking-wide transition-all rounded-xl ${isActive ? '!bg-[#00dc74] !text-black shadow-[0_4px_15px_rgba(0,220,116,0.25)]' : 'text-neutral-400 hover:text-white hover:bg-white/5'}`}
+                  className={`h-[50px] px-4 text-[15px] font-bold tracking-wide transition-all rounded-xl ${isActive ? '!bg-primary !text-primary-foreground shadow-[0_4px_15px_rgba(var(--primary),0.25)]' : 'text-neutral-400 hover:text-white hover:bg-white/5'}`}
                 >
                   <Link href={item.url} className="flex items-center gap-3">
-                    <div className={`[&>svg]:w-[22px] [&>svg]:h-[22px] ${isActive ? 'text-black' : 'text-neutral-500 group-hover:text-white'}`}>{item.icon}</div>
+                    <div className={`[&>svg]:w-[22px] [&>svg]:h-[22px] ${isActive ? 'text-primary-foreground' : 'text-neutral-500 group-hover:text-white'}`}>{item.icon}</div>
                     <span>{item.title}</span>
                   </Link>
                 </SidebarMenuButton>
