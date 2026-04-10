@@ -1,13 +1,19 @@
 'use client';
 
 import { useMe } from '@/lib/hooks/useAuth';
-import { User, List, Star, Settings } from 'lucide-react';
+import { useUserDetail } from '@/lib/hooks/useUsers';
+import { User, List, Star, Settings, Film } from 'lucide-react';
 import Link from 'next/link';
 import { Typography } from '@/components/ui/typography';
 
 export default function UserDashboardPage() {
   const { data: userData } = useMe();
   const user = userData?.data?.personal_info;
+  const userId = userData?.data?.personal_info?.id;
+  
+  // Get detailed user data including film_lists and reviews
+  const { data: userDetailData } = useUserDetail(userId || '', { enabled: !!userId });
+  const userDetail = userDetailData?.data;
 
   return (
     <div className="min-h-screen pt-24 pb-12 font-sans text-white px-4 lg:px-8 max-w-7xl mx-auto">
@@ -16,7 +22,7 @@ export default function UserDashboardPage() {
         <Typography variant="p" className="text-neutral-400 mt-0">Selamat datang di panel dashboard personal Anda.</Typography>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
         {/* Info Card */}
         <div className="bg-[#1b1c21] border border-white/5 rounded-2xl p-6">
           <div className="flex items-center gap-4 mb-6">
@@ -28,19 +34,24 @@ export default function UserDashboardPage() {
               <Typography variant="p" className="text-sm text-neutral-400 mt-0">{user?.email}</Typography>
             </div>
           </div>
+          {userDetail?.bio && (
+            <p className="text-sm text-neutral-300 mb-4 italic">"{userDetail.bio}"</p>
+          )}
           <Link href={`/user/${user?.id}`} className="block w-full py-2.5 text-center bg-white/5 hover:bg-white/10 rounded-lg text-sm font-bold transition-all border border-white/10">
             Lihat Profil Publik
           </Link>
         </div>
 
-        {/* Action Cards */}
+        {/* Stats Cards */}
         <div className="bg-[#1b1c21] border border-white/5 rounded-2xl p-6 flex flex-col justify-between">
           <div>
              <div className="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center mb-4 border border-white/10">
                <List className="w-5 h-5 text-primary" />
              </div>
              <Typography variant="h4" className="text-lg font-bold mb-1">Daftar Tontonan</Typography>
-             <Typography variant="p" className="text-sm text-neutral-400 mb-6 mt-0">Kelola visibilitas daftar film favorit yang sedang atau sudah Anda tonton.</Typography>
+             <Typography variant="p" className="text-sm text-neutral-400 mb-4 mt-0">
+               {userDetail?.film_lists?.length || 0} film dalam daftar
+             </Typography>
           </div>
           <Link href={`/user/${user?.id}`} className="text-primary text-sm font-bold hover:underline">
              Kelola Daftar &rarr;
@@ -50,16 +61,62 @@ export default function UserDashboardPage() {
         <div className="bg-[#1b1c21] border border-white/5 rounded-2xl p-6 flex flex-col justify-between">
           <div>
              <div className="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center mb-4 border border-white/10">
-               <Settings className="w-5 h-5 text-primary" />
+               <Star className="w-5 h-5 text-primary" />
              </div>
-             <Typography variant="h4" className="text-lg font-bold mb-1">Pengaturan Akun</Typography>
-             <Typography variant="p" className="text-sm text-neutral-400 mb-6 mt-0">Perbarui profil dan keamanan asisten tontonan pribadi Anda.</Typography>
+             <Typography variant="h4" className="text-lg font-bold mb-1">Ulasan Saya</Typography>
+             <Typography variant="p" className="text-sm text-neutral-400 mb-4 mt-0">
+               {userDetail?.reviews?.length || 0} ulasan ditulis
+             </Typography>
           </div>
-          <button className="text-left text-primary text-sm font-bold opacity-50 cursor-not-allowed">
-             Segera Hadir
-          </button>
         </div>
       </div>
+
+      {/* Film Lists Section */}
+      {userDetail?.film_lists && userDetail.film_lists.length > 0 && (
+        <div className="mb-8">
+          <Typography variant="h3" className="text-2xl font-bold mb-4 border-0 pb-0">Daftar Tontonan Saya</Typography>
+          <div className="bg-[#1b1c21] border border-white/5 rounded-2xl overflow-hidden">
+            <div className="divide-y divide-white/5">
+              {userDetail.film_lists.map((item: any, index: number) => (
+                <div key={index} className="p-4 hover:bg-white/2 transition-colors flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <Film className="w-5 h-5 text-primary" />
+                    <div>
+                      <p className="text-white font-medium">{item.film_title}</p>
+                      <p className="text-xs text-neutral-500 capitalize">{item.list_status.replace(/_/g, ' ')}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Reviews Section */}
+      {userDetail?.reviews && userDetail.reviews.length > 0 && (
+        <div>
+          <Typography variant="h3" className="text-2xl font-bold mb-4 border-0 pb-0">Ulasan Saya</Typography>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {userDetail.reviews.map((review: any, index: number) => (
+              <div key={index} className="bg-[#1b1c21] border border-white/5 rounded-2xl p-5">
+                <div className="flex items-start justify-between mb-3">
+                  <div className="flex-1">
+                    <p className="text-white font-bold mb-1">{review.film}</p>
+                    <div className="flex items-center gap-1">
+                      {Array.from({ length: review.rating }).map((_, i) => (
+                        <Star key={i} className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />
+                      ))}
+                      <span className="text-yellow-400 text-sm font-bold ml-1">{review.rating}/10</span>
+                    </div>
+                  </div>
+                </div>
+                <p className="text-gray-300 text-sm leading-relaxed">{review.comment}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
