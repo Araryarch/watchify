@@ -392,7 +392,7 @@ export default function FilmDetailPage() {
   return (
     <div className="min-h-screen bg-black pt-16">
       {/* Hero */}
-      <div className="relative h-[50vh] sm:h-[60vh] lg:h-[70vh] overflow-hidden bg-gradient-to-br from-purple-800 via-blue-800 to-teal-800">
+      <div className="relative min-h-[85vh] sm:h-[60vh] lg:h-[70vh] overflow-hidden bg-gradient-to-br from-purple-800 via-blue-800 to-teal-800">
         {film.images?.[0] && (
           <>
             <div
@@ -406,10 +406,10 @@ export default function FilmDetailPage() {
         <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
 
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 h-full relative z-10">
-          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 lg:gap-8 items-center sm:items-end h-full justify-end pb-8 sm:pb-10 lg:pb-12">
+        <div className="max-w-[1400px] mx-auto px-3 sm:px-6 lg:px-8 h-full relative z-10">
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 lg:gap-8 items-center sm:items-end h-full justify-end pb-6 sm:pb-10 lg:pb-12 pt-6 sm:pt-0">
             {/* Poster */}
-            <div className="w-40 sm:w-40 md:w-48 lg:w-64 shrink-0">
+            <div className="w-32 sm:w-40 md:w-48 lg:w-64 shrink-0">
               <div className="aspect-[2/3] rounded-lg overflow-hidden shadow-2xl border border-white/10">
                 {film.images?.[0] ? (
                   <img
@@ -419,41 +419,41 @@ export default function FilmDetailPage() {
                   />
                 ) : (
                   <div className="w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
-                    <FilmIcon className="w-12 sm:w-16 h-12 sm:h-16 text-neutral-600" />
+                    <FilmIcon className="w-8 sm:w-12 md:w-16 h-8 sm:h-12 md:h-16 text-neutral-600" />
                   </div>
                 )}
               </div>
             </div>
 
             {/* Info */}
-            <div className="flex-1 space-y-3 sm:space-y-4 lg:space-y-5 pb-2 sm:pb-4 w-full text-center sm:text-left">
+            <div className="flex-1 space-y-2.5 sm:space-y-4 lg:space-y-5 pb-2 sm:pb-4 w-full text-center sm:text-left">
               <div>
-                <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-3 sm:mb-4">{film.title}</h1>
-                <div className="flex flex-wrap gap-2 mb-3 sm:mb-4 justify-center sm:justify-start">
+                <h1 className="text-xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-2 sm:mb-3 md:mb-4 leading-tight break-words px-2 sm:px-0">{film.title}</h1>
+                <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-2.5 sm:mb-3 md:mb-4 justify-center sm:justify-start px-2 sm:px-0">
                   {film.genres?.map((genre: any) => (
-                    <span key={genre.id} className="px-2.5 sm:px-3 py-1 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full text-xs sm:text-sm text-gray-300 capitalize">
+                    <span key={genre.id} className="px-2 sm:px-2.5 md:px-3 py-0.5 sm:py-1 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full text-[10px] sm:text-xs md:text-sm text-gray-300 capitalize">
                       {genre.name}
                     </span>
                   ))}
-                  <span className="px-2.5 sm:px-3 py-1 bg-[#00dc74]/20 border border-[#00dc74]/30 rounded-full text-xs sm:text-sm text-[#00dc74]">
+                  <span className="px-2 sm:px-2.5 md:px-3 py-0.5 sm:py-1 bg-[#00dc74]/20 border border-[#00dc74]/30 rounded-full text-[10px] sm:text-xs md:text-sm text-[#00dc74]">
                     {AIRING_STATUS_MAP[film.airing_status]}
                   </span>
                 </div>
 
-                <div className="flex flex-wrap gap-3 sm:gap-4 lg:gap-6 text-xs sm:text-sm text-gray-300 justify-center sm:justify-start">
+                <div className="flex flex-wrap gap-2 sm:gap-3 md:gap-4 lg:gap-6 text-[10px] sm:text-xs md:text-sm text-gray-300 justify-center sm:justify-start px-2 sm:px-0">
                   {film.average_rating > 0 && (
-                    <div className="flex items-center gap-1.5 sm:gap-2">
-                      <Star className="w-4 sm:w-5 h-4 sm:h-5 fill-yellow-400 text-yellow-400" />
-                      <span className="text-white font-semibold text-base sm:text-lg">{film.average_rating.toFixed(1)}</span>
+                    <div className="flex items-center gap-1 sm:gap-1.5 md:gap-2">
+                      <Star className="w-3.5 sm:w-4 md:w-5 h-3.5 sm:h-4 md:h-5 fill-yellow-400 text-yellow-400" />
+                      <span className="text-white font-semibold text-sm sm:text-base md:text-lg">{film.average_rating.toFixed(1)}</span>
                       <span className="text-gray-400">/10</span>
                     </div>
                   )}
-                  <div className="flex items-center gap-1.5 sm:gap-2">
-                    <FilmIcon className="w-4 sm:w-5 h-4 sm:h-5" />
+                  <div className="flex items-center gap-1 sm:gap-1.5 md:gap-2">
+                    <FilmIcon className="w-3.5 sm:w-4 md:w-5 h-3.5 sm:h-4 md:h-5" />
                     <span>{film.total_episodes} Episode</span>
                   </div>
-                  <div className="flex items-center gap-1.5 sm:gap-2">
-                    <Calendar className="w-4 sm:w-5 h-4 sm:h-5" />
+                  <div className="flex items-center gap-1 sm:gap-1.5 md:gap-2">
+                    <Calendar className="w-3.5 sm:w-4 md:w-5 h-3.5 sm:h-4 md:h-5" />
                     <span className="hidden sm:inline">{new Date(film.release_date).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
                     <span className="sm:hidden">{new Date(film.release_date).toLocaleDateString('id-ID', { year: 'numeric', month: 'short' })}</span>
                   </div>
@@ -461,12 +461,12 @@ export default function FilmDetailPage() {
               </div>
 
               {/* Action buttons */}
-              <div className="flex flex-col sm:flex-row flex-wrap gap-2 sm:gap-3">
+              <div className="flex flex-col sm:flex-row flex-wrap gap-2 sm:gap-3 px-2 sm:px-0">
                 <Link
                   href={`/film/${film.id}/watch?ep=1`}
-                  className="group px-6 sm:px-8 py-3 sm:py-3.5 bg-[#00dc74] hover:bg-[#00c266] text-black rounded-lg font-bold transition-all flex items-center justify-center gap-2 sm:gap-3 shadow-[0_4px_20px_rgba(0,220,116,0.3)] w-full sm:w-auto"
+                  className="group px-4 sm:px-6 md:px-8 py-2.5 sm:py-3 md:py-3.5 bg-[#00dc74] hover:bg-[#00c266] text-black rounded-lg font-bold transition-all flex items-center justify-center gap-2 sm:gap-3 shadow-[0_4px_20px_rgba(0,220,116,0.3)] w-full sm:w-auto text-sm sm:text-base"
                 >
-                  <Play className="w-4 sm:w-5 h-4 sm:h-5 fill-black" />
+                  <Play className="w-3.5 sm:w-4 md:w-5 h-3.5 sm:h-4 md:h-5 fill-black" />
                   <span>Tonton Sekarang</span>
                 </Link>
                 <AddToListButton filmId={film.id} />
