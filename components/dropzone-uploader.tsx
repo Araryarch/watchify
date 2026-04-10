@@ -18,19 +18,15 @@ export function DropzoneUploader({ onChange, existingImages = [], uploadBaseUrl 
       url: URL.createObjectURL(file),
       file,
     }));
-    setPreviews(prev => {
-      const updated = [...prev, ...newPreviews];
-      onChange(updated.map(p => p.file));
-      return updated;
-    });
-  }, [onChange]);
+    const updated = [...previews, ...newPreviews];
+    setPreviews(updated);
+    onChange(updated.map(p => p.file));
+  }, [previews, onChange]);
 
   const removePreview = (index: number) => {
-    setPreviews(prev => {
-      const updated = prev.filter((_, i) => i !== index);
-      onChange(updated.map(p => p.file));
-      return updated;
-    });
+    const updated = previews.filter((_, i) => i !== index);
+    setPreviews(updated);
+    onChange(updated.map(p => p.file));
   };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({

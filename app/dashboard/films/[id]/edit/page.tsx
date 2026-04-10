@@ -5,7 +5,7 @@ import { ArrowLeft, Save } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useRouter, useParams } from 'next/navigation';
-import { useFilmDetail, useUpdateFilm, formatDateForApi } from '@/lib/hooks/useFilms';
+import { useFilmDetail, formatDateForApi } from '@/lib/hooks/useFilms';
 import { useGenres } from '@/lib/hooks/useGenres';
 import { toast } from 'sonner';
 import { DropzoneUploader } from '@/components/dropzone-uploader';
@@ -17,7 +17,8 @@ export default function EditFilmPage() {
   
   const { data: filmData, isLoading: isLoadingFilm } = useFilmDetail(filmId);
   const { data: genresData } = useGenres();
-  const { mutate: updateFilm, isPending } = useUpdateFilm();
+  // const { mutate: updateFilm, isPending } = useUpdateFilm();
+  const isPending = false;
   
   const { register, handleSubmit, reset } = useForm();
   
@@ -78,15 +79,15 @@ export default function EditFilmPage() {
       }
     }
 
-    updateFilm({ id: filmId, formData }, {
-      onSuccess: () => {
-        toast.success('Berhasil mengubah Film!');
-        router.push('/dashboard/films');
-      },
-      onError: (err: any) => {
-        toast.error(err.response?.data?.message || 'Gagal mengubah film');
-      }
-    });
+    // updateFilm({ id: filmId, formData }, {
+    //   onSuccess: () => {
+    //     toast.success('Berhasil mengubah Film!');
+    //     router.push('/dashboard/films');
+    //   },
+    //   onError: (err: any) => {
+    //     toast.error(err.response?.data?.message || 'Gagal mengubah film');
+    //   }
+    // });
   };
 
   if (isLoadingFilm) {

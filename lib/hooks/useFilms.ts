@@ -29,22 +29,22 @@ export const useCreateFilm = () => {
   });
 };
 
-export const useUpdateFilm = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: ({ id, formData }: { id: string; formData: FormData }) =>
-      filmsApi.update(id, formData),
-    onSuccess: (_, { id }) => {
-      queryClient.invalidateQueries({ queryKey: ['films'] });
-      queryClient.invalidateQueries({ queryKey: ['film', id] });
-    },
-  });
-};
+// export const useUpdateFilm = () => {
+//   const queryClient = useQueryClient();
+//   return useMutation({
+//     mutationFn: ({ id, formData }: { id: string; formData: FormData }) =>
+//       filmsApi.update(id, formData),
+//     onSuccess: (_, { id }) => {
+//       queryClient.invalidateQueries({ queryKey: ['films'] });
+//       queryClient.invalidateQueries({ queryKey: ['film', id] });
+//     },
+//   });
+// };
 
-export const useDeleteFilm = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (id: string) => filmsApi.delete(id),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['films'] }),
-  });
-};
+// export const useDeleteFilm = () => {
+//   const queryClient = useQueryClient();
+//   return useMutation({
+//     mutationFn: (id: string) => filmsApi.delete(id),
+//     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['films'] }),
+//   });
+// };

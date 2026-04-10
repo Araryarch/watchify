@@ -1,111 +1,84 @@
-"use client"
+'use client';
 
-import { Badge } from "@/components/ui/badge"
-import {
-  Card,
-  CardAction,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-import { TrendingUpIcon, TrendingDownIcon } from "lucide-react"
+import { useFilms } from '@/lib/hooks/useFilms';
+import { useGenresPaginated } from '@/lib/hooks/useGenres';
+import { Film, Tags, TvMinimalPlay, Clapperboard } from 'lucide-react';
+import { Card, CardHeader, CardDescription, CardTitle, CardAction } from '@/components/ui/card';
 
 export function SectionCards() {
+  const { data: filmsAll } = useFilms({ take: 1, page: 1 });
+  const { data: filmsAiring } = useFilms({ take: 1, page: 1, filter_by: 'airing_status', filter: 'airing' });
+  const { data: filmsFinished } = useFilms({ take: 1, page: 1, filter_by: 'airing_status', filter: 'finished_airing' });
+  const { data: genresAll } = useGenresPaginated({ take: 1, page: 1 });
+
+  const totalFilms = filmsAll?.meta?.[0]?.total_data || 0;
+  const totalAiring = filmsAiring?.meta?.[0]?.total_data || 0;
+  const totalFinished = filmsFinished?.meta?.[0]?.total_data || 0;
+  const totalGenres = genresAll?.meta?.[0]?.total_data || 0;
+
   return (
-    <div className="grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4 dark:*:data-[slot=card]:bg-card">
-      <Card className="@container/card">
+    <div className="grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:from-[#00dc74]/5 *:data-[slot=card]:to-card *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4 dark:*:data-[slot=card]:bg-card mb-8">
+      
+      {/* Total Film */}
+      <Card className="@container/card border-white/5 bg-[#1b1c21]">
         <CardHeader>
-          <CardDescription>Total Revenue</CardDescription>
-          <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            $1,250.00
+          <CardDescription className="text-neutral-400 font-medium">Total Tayangan</CardDescription>
+          <CardTitle className="text-2xl font-bold text-white tabular-nums @[250px]/card:text-3xl mt-2">
+            {totalFilms}
           </CardTitle>
           <CardAction>
-            <Badge variant="outline">
-              <TrendingUpIcon
-              />
-              +12.5%
-            </Badge>
+            <div className="p-2.5 bg-white/5 rounded-lg border border-white/10">
+              <Film className="w-5 h-5 text-[#00dc74]" />
+            </div>
           </CardAction>
         </CardHeader>
-        <CardFooter className="flex-col items-start gap-1.5 text-sm">
-          <div className="line-clamp-1 flex gap-2 font-medium">
-            Trending up this month{" "}
-            <TrendingUpIcon className="size-4" />
-          </div>
-          <div className="text-muted-foreground">
-            Visitors for the last 6 months
-          </div>
-        </CardFooter>
       </Card>
-      <Card className="@container/card">
+
+      {/* Airing */}
+      <Card className="@container/card border-white/5 bg-[#1b1c21]">
         <CardHeader>
-          <CardDescription>New Customers</CardDescription>
-          <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            1,234
+          <CardDescription className="text-neutral-400 font-medium">Sedang Tayang (Airing)</CardDescription>
+          <CardTitle className="text-2xl font-bold text-white tabular-nums @[250px]/card:text-3xl mt-2">
+            {totalAiring}
           </CardTitle>
           <CardAction>
-            <Badge variant="outline">
-              <TrendingDownIcon
-              />
-              -20%
-            </Badge>
+            <div className="p-2.5 bg-white/5 rounded-lg border border-white/10">
+              <TvMinimalPlay className="w-5 h-5 text-[#00dc74]" />
+            </div>
           </CardAction>
         </CardHeader>
-        <CardFooter className="flex-col items-start gap-1.5 text-sm">
-          <div className="line-clamp-1 flex gap-2 font-medium">
-            Down 20% this period{" "}
-            <TrendingDownIcon className="size-4" />
-          </div>
-          <div className="text-muted-foreground">
-            Acquisition needs attention
-          </div>
-        </CardFooter>
       </Card>
-      <Card className="@container/card">
+
+      {/* Finished */}
+      <Card className="@container/card border-white/5 bg-[#1b1c21]">
         <CardHeader>
-          <CardDescription>Active Accounts</CardDescription>
-          <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            45,678
+          <CardDescription className="text-neutral-400 font-medium">Tayangan Selesai</CardDescription>
+          <CardTitle className="text-2xl font-bold text-white tabular-nums @[250px]/card:text-3xl mt-2">
+            {totalFinished}
           </CardTitle>
           <CardAction>
-            <Badge variant="outline">
-              <TrendingUpIcon
-              />
-              +12.5%
-            </Badge>
+            <div className="p-2.5 bg-white/5 rounded-lg border border-white/10">
+              <Clapperboard className="w-5 h-5 text-[#00dc74]" />
+            </div>
           </CardAction>
         </CardHeader>
-        <CardFooter className="flex-col items-start gap-1.5 text-sm">
-          <div className="line-clamp-1 flex gap-2 font-medium">
-            Strong user retention{" "}
-            <TrendingUpIcon className="size-4" />
-          </div>
-          <div className="text-muted-foreground">Engagement exceed targets</div>
-        </CardFooter>
       </Card>
-      <Card className="@container/card">
+
+      {/* Total Genre */}
+      <Card className="@container/card border-white/5 bg-[#1b1c21]">
         <CardHeader>
-          <CardDescription>Growth Rate</CardDescription>
-          <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            4.5%
+          <CardDescription className="text-neutral-400 font-medium">Total Kategori (Genre)</CardDescription>
+          <CardTitle className="text-2xl font-bold text-white tabular-nums @[250px]/card:text-3xl mt-2">
+            {totalGenres}
           </CardTitle>
           <CardAction>
-            <Badge variant="outline">
-              <TrendingUpIcon
-              />
-              +4.5%
-            </Badge>
+            <div className="p-2.5 bg-white/5 rounded-lg border border-white/10">
+              <Tags className="w-5 h-5 text-[#00dc74]" />
+            </div>
           </CardAction>
         </CardHeader>
-        <CardFooter className="flex-col items-start gap-1.5 text-sm">
-          <div className="line-clamp-1 flex gap-2 font-medium">
-            Steady performance increase{" "}
-            <TrendingUpIcon className="size-4" />
-          </div>
-          <div className="text-muted-foreground">Meets growth projections</div>
-        </CardFooter>
       </Card>
+
     </div>
-  )
+  );
 }

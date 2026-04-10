@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { Film, Plus, Search, Trash2, Edit } from 'lucide-react';
 import { useState, useMemo } from 'react';
 import { toast } from 'sonner';
-import { useFilms, useDeleteFilm } from '@/lib/hooks/useFilms';
+import { useFilms } from '@/lib/hooks/useFilms';
 
 import {
   useReactTable,
@@ -47,18 +47,18 @@ export default function DashboardFilmsPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [pageIndex, setPageIndex] = useState(1);
   const { data: filmsResponse, isLoading } = useFilms({ take: 10, page: pageIndex, filter: searchQuery, filter_by: 'title' });
-  const { mutate: deleteFilm, isPending: isDeleting } = useDeleteFilm();
+  // const { mutate: deleteFilm, isPending: isDeleting } = useDeleteFilm();
 
   const films = filmsResponse?.data || [];
   const meta = filmsResponse?.meta?.[0];
   const totalPages = meta?.total_page || 1;
 
-  const handleDelete = (id: string, title: string) => {
-    deleteFilm(id, {
-      onSuccess: () => toast.success(`Berhasil menghapus film ${title}`),
-      onError: () => toast.error(`Gagal menghapus film ${title}`)
-    });
-  };
+  // const handleDelete = (id: string, title: string) => {
+  //   deleteFilm(id, {
+  //     onSuccess: () => toast.success(`Berhasil menghapus film ${title}`),
+  //     onError: () => toast.error(`Gagal menghapus film ${title}`)
+  //   });
+  // };
 
   const statusMap: Record<string, string> = {
     airing: 'Sedang Tayang',
@@ -103,42 +103,42 @@ export default function DashboardFilmsPage() {
       header: 'Total EPs',
       cell: info => <span className="font-mono text-sm text-neutral-300 bg-white/5 px-2 py-1 rounded border border-white/5">{info.getValue()} EPS</span>
     }),
-    columnHelper.display({
-      id: 'actions',
-      header: () => <div className="text-right">Aksi</div>,
-      cell: info => {
-        const film = info.row.original;
-        return (
-          <div className="flex items-center justify-end gap-2">
-            <Link href={`/dashboard/films/${film.id}/edit`} className="p-2 text-neutral-500 hover:text-[#00dc74] hover:bg-[#00dc74]/10 rounded-lg transition-colors">
-              <Edit className="w-4 h-4" />
-            </Link>
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <button className="p-2 text-neutral-500 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-colors">
-                  <Trash2 className="w-4 h-4" />
-                </button>
-              </AlertDialogTrigger>
-              <AlertDialogContent className="bg-[#1b1c21] border-white/5 text-white">
-                <AlertDialogHeader>
-                  <AlertDialogTitle>Hapus Tayangan?</AlertDialogTitle>
-                  <AlertDialogDescription className="text-neutral-400">
-                    Tindakan ini tidak dapat dibatalkan. Tayangan <strong className="text-white">{film.title}</strong> akan dihapus permanen dari basis data.
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel className="bg-transparent border-white/10 text-white hover:bg-white/5 hover:text-white">Batal</AlertDialogCancel>
-                  <AlertDialogAction disabled={isDeleting} onClick={() => handleDelete(film.id, film.title)} className="bg-red-500 text-white hover:bg-red-600">
-                    Ya, Hapus
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
-          </div>
-        );
-      }
-    })
-  ], [isDeleting]);
+    // columnHelper.display({
+    //   id: 'actions',
+    //   header: () => <div className="text-right">Aksi</div>,
+    //   cell: (info) => {
+    //     const film = info.row.original;
+    //     return (
+    //       <div className="flex items-center justify-end gap-2">
+    //         <Link href={`/dashboard/films/${film.id}/edit`} className="p-2 text-neutral-500 hover:text-[#00dc74] hover:bg-[#00dc74]/10 rounded-lg transition-colors">
+    //           <Edit className="w-4 h-4" />
+    //         </Link>
+    //         <AlertDialog>
+    //           <AlertDialogTrigger asChild>
+    //             <button className="p-2 text-neutral-500 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-colors">
+    //               <Trash2 className="w-4 h-4" />
+    //             </button>
+    //           </AlertDialogTrigger>
+    //           <AlertDialogContent className="bg-[#1b1c21] border-white/5 text-white">
+    //             <AlertDialogHeader>
+    //               <AlertDialogTitle>Hapus Tayangan?</AlertDialogTitle>
+    //               <AlertDialogDescription className="text-neutral-400">
+    //                 Tindakan ini tidak dapat dibatalkan. Tayangan <strong className="text-white">{film.title}</strong> akan dihapus permanen dari basis data.
+    //               </AlertDialogDescription>
+    //               <AlertDialogFooter>
+    //                 <AlertDialogCancel className="bg-transparent border-white/10 text-white hover:bg-white/5 hover:text-white">Batal</AlertDialogCancel>
+    //                 <AlertDialogAction disabled={isDeleting} onClick={() => handleDelete(film.id, film.title)} className="bg-red-500 text-white hover:bg-red-600">
+    //                   Ya, Hapus
+    //                 </AlertDialogAction>
+    //               </AlertDialogFooter>
+    //             </AlertDialogHeader>
+    //           </AlertDialogContent>
+    //         </AlertDialog>
+    //       </div>
+    //     );
+    //   }
+    // })
+  ], []);
 
   const table = useReactTable({
     data: films,
