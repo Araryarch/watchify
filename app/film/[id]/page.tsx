@@ -9,6 +9,7 @@ import { useCreateReview } from '@/lib/hooks/useReviews';
 import { useCreateReaction, useUpdateReaction } from '@/lib/hooks/useReactions';
 import { useUserDetail } from '@/lib/hooks/useUsers';
 import { useMe } from '@/lib/hooks/useAuth';
+import { useThemeGradient } from '@/lib/hooks/useThemeGradient';
 import { useAuthStore } from '@/lib/store/authStore';
 import { toast } from 'sonner';
 import { useForm } from 'react-hook-form';
@@ -373,6 +374,7 @@ export default function FilmDetailPage() {
   const id = params.id as string;
   const { data, isLoading } = useFilmDetail(id);
   const film = data?.data;
+  const gradient = useThemeGradient();
 
   if (isLoading) {
     return <FilmDetailSkeleton />;
@@ -392,7 +394,7 @@ export default function FilmDetailPage() {
   return (
     <div className="min-h-screen bg-black pt-16">
       {/* Hero */}
-      <div className="relative min-h-[85vh] sm:h-[60vh] lg:h-[70vh] overflow-hidden bg-gradient-to-br from-purple-800 via-blue-800 to-teal-800">
+      <div className="relative min-h-[85vh] sm:h-[60vh] lg:h-[70vh] overflow-hidden" style={gradient.style}>
         {film.images?.[0] && (
           <>
             <div
