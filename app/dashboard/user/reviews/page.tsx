@@ -17,7 +17,7 @@ import {
 export default function ReviewsPage() {
   const { data: userData } = useMe();
   const userId = userData?.data?.personal_info?.id;
-  const { data: userDetailData, isLoading } = useUserDetail(userId || '', { enabled: !!userId });
+  const { data: userDetailData, isLoading } = useUserDetail(userId || '');
   const reviews = userDetailData?.data?.reviews || [];
 
   return (

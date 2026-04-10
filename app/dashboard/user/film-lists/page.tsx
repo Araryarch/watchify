@@ -31,7 +31,7 @@ const STATUS_COLORS: Record<string, string> = {
 export default function FilmListsPage() {
   const { data: userData } = useMe();
   const userId = userData?.data?.personal_info?.id;
-  const { data: userDetailData, isLoading } = useUserDetail(userId || '', { enabled: !!userId });
+  const { data: userDetailData, isLoading } = useUserDetail(userId || '');
   const filmLists = userDetailData?.data?.film_lists || [];
 
   return (

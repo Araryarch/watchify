@@ -12,7 +12,7 @@ export default function UserDashboardPage() {
   const userId = userData?.data?.personal_info?.id;
   
   // Get detailed user data including film_lists and reviews
-  const { data: userDetailData } = useUserDetail(userId || '', { enabled: !!userId });
+  const { data: userDetailData } = useUserDetail(userId || '');
   const userDetail = userDetailData?.data;
 
   return (
