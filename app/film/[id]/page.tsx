@@ -7,6 +7,7 @@ import { useFilmDetail } from '@/lib/hooks/useFilms';
 import { useAddToFilmList } from '@/lib/hooks/useFilmLists';
 import { useCreateReview } from '@/lib/hooks/useReviews';
 import { useCreateReaction } from '@/lib/hooks/useReactions';
+import { useUserDetail } from '@/lib/hooks/useUsers';
 import { useAuthStore } from '@/lib/store/authStore';
 import { toast } from 'sonner';
 import { useForm } from 'react-hook-form';
@@ -84,6 +85,45 @@ function AddToListButton({ filmId }: { filmId: string }) {
   );
 }
 
+// Component to display user info in review
+function ReviewUserInfo({ userId }: { userId: string }) {
+  const { data: userData } = useUserDetail(userId);
+  const user = userData?.data;
+
+  if (!user) {
+    return (
+      <div className="flex items-center gap-2">
+        <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#00dc74]/20 border border-[#00dc74]/30 flex items-center justify-center">
+          <span className="text-[#00dc74] font-bold text-sm sm:text-base">
+            {userId.substring(0, 2).toUpperCase()}
+          </span>
+        </div>
+        <div>
+          <p className="text-white font-medium text-sm sm:text-base">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex items-center gap-2">
+      <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#00dc74]/20 border border-[#00dc74]/30 flex items-center justify-center">
+        <span className="text-[#00dc74] font-bold text-sm sm:text-base">
+          {(user.personal_info?.display_name || user.personal_info?.username || 'U').substring(0, 2).toUpperCase()}
+        </span>
+      </div>
+      <div>
+        <p className="text-white font-medium text-sm sm:text-base">
+          {user.personal_info?.display_name || user.personal_info?.username || 'Anonymous'}
+        </p>
+        {user.personal_info?.bio && (
+          <p className="text-neutral-500 text-xs truncate max-w-[200px]">{user.personal_info.bio}</p>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function StarRating({ value, onChange }: { value: number; onChange: (v: number) => void }) {
   const [hover, setHover] = useState(0);
   return (
@@ -113,7 +153,7 @@ function StarRating({ value, onChange }: { value: number; onChange: (v: number) 
   );
 }
 
-function ReviewSection({ filmId }: { filmId: string }) {
+function ReviewSection({ filmId, reviews }: { filmId: string; reviews?: any[] }) {
   const { token } = useAuthStore();
   const { register, handleSubmit, reset, formState } = useForm<{ comment: string }>();
   const [rating, setRating] = useState(0);
@@ -196,6 +236,51 @@ function ReviewSection({ filmId }: { filmId: string }) {
           </p>
         </div>
       )}
+
+      {/* Display existing reviews */}
+      {reviews && reviews.length > 0 && (
+        <div className="space-y-4">
+          <h3 className="text-lg sm:text-xl font-bold text-white">Ulasan Pengguna ({reviews.length})</h3>
+          <div className="space-y-4">
+            {reviews.map((review: any) => (
+              <div key={review.id} className="bg-[#1b1c21] border border-white/5 rounded-xl sm:rounded-2xl p-4 sm:p-5 space-y-3">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-2">
+                      <ReviewUserInfo userId={review.user_id} />
+                    </div>
+                    <div className="flex items-center gap-1 mb-2">
+                      {Array.from({ length: review.rating }).map((_, i) => (
+                        <Star key={i} className="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-yellow-400 text-yellow-400" />
+                      ))}
+                      <span className="text-yellow-400 text-xs sm:text-sm font-bold ml-1">{review.rating}/10</span>
+                    </div>
+                    <p className="text-gray-300 text-sm sm:text-base leading-relaxed">{review.comment}</p>
+                  </div>
+                </div>
+                
+                {/* Reaction buttons */}
+                <div className="flex items-center gap-3 pt-2 border-t border-white/5">
+                  <button
+                    onClick={() => handleReaction(review.id, 'like')}
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 transition-colors text-xs sm:text-sm"
+                  >
+                    <span>👍</span>
+                    <span className="text-neutral-400">{review.likes || 0}</span>
+                  </button>
+                  <button
+                    onClick={() => handleReaction(review.id, 'dislike')}
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 transition-colors text-xs sm:text-sm"
+                  >
+                    <span>👎</span>
+                    <span className="text-neutral-400">{review.dislikes || 0}</span>
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -243,9 +328,9 @@ export default function FilmDetailPage() {
         )}
 
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 h-full relative z-10">
-          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 lg:gap-8 items-end h-full pb-8 sm:pb-10 lg:pb-12">
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 lg:gap-8 items-center sm:items-end h-full justify-end pb-8 sm:pb-10 lg:pb-12">
             {/* Poster */}
-            <div className="w-32 sm:w-40 md:w-48 lg:w-64 shrink-0 mx-auto sm:mx-0">
+            <div className="w-40 sm:w-40 md:w-48 lg:w-64 shrink-0">
               <div className="aspect-[2/3] rounded-lg overflow-hidden shadow-2xl border border-white/10">
                 {film.images?.[0] ? (
                   <img
@@ -255,14 +340,14 @@ export default function FilmDetailPage() {
                   />
                 ) : (
                   <div className="w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
-                    <FilmIcon className="w-16 h-16 text-neutral-600" />
+                    <FilmIcon className="w-12 sm:w-16 h-12 sm:h-16 text-neutral-600" />
                   </div>
                 )}
               </div>
             </div>
 
             {/* Info */}
-            <div className="flex-1 space-y-3 sm:space-y-4 lg:space-y-5 pb-2 sm:pb-4 text-center sm:text-left">
+            <div className="flex-1 space-y-3 sm:space-y-4 lg:space-y-5 pb-2 sm:pb-4 w-full text-center sm:text-left">
               <div>
                 <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-3 sm:mb-4">{film.title}</h1>
                 <div className="flex flex-wrap gap-2 mb-3 sm:mb-4 justify-center sm:justify-start">
@@ -297,7 +382,7 @@ export default function FilmDetailPage() {
               </div>
 
               {/* Action buttons */}
-              <div className="flex flex-col sm:flex-row flex-wrap gap-2 sm:gap-3 justify-center sm:justify-start">
+              <div className="flex flex-col sm:flex-row flex-wrap gap-2 sm:gap-3">
                 <Link
                   href={`/film/${film.id}/watch?ep=1`}
                   className="group px-6 sm:px-8 py-3 sm:py-3.5 bg-[#00dc74] hover:bg-[#00c266] text-black rounded-lg font-bold transition-all flex items-center justify-center gap-2 sm:gap-3 shadow-[0_4px_20px_rgba(0,220,116,0.3)] w-full sm:w-auto"
@@ -345,7 +430,7 @@ export default function FilmDetailPage() {
             )}
 
             {/* Reviews & Reactions */}
-            <ReviewSection filmId={film.id} />
+            <ReviewSection filmId={film.id} reviews={film.reviews} />
           </div>
 
           {/* Sidebar column */}
