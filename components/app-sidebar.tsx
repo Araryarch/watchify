@@ -21,7 +21,7 @@ const data = {
   navMain: [
     {
       title: "Beranda Dashboard",
-      url: "/dashboard",
+      url: "/dashboard/admin",
       icon: (
         <LayoutDashboardIcon
         />
@@ -29,7 +29,7 @@ const data = {
     },
     {
       title: "Film & Tayangan",
-      url: "/dashboard/films",
+      url: "/dashboard/admin/films",
       icon: (
         <FilmIcon
         />
@@ -37,7 +37,7 @@ const data = {
     },
     {
       title: "Pengguna",
-      url: "/dashboard/users",
+      url: "/dashboard/admin/users",
       icon: (
         <UsersIcon
         />
@@ -45,7 +45,7 @@ const data = {
     },
     {
       title: "Genre",
-      url: "/dashboard/genres",
+      url: "/dashboard/admin/genres",
       icon: (
         <TagIcon
         />

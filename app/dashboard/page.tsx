@@ -1,15 +1,32 @@
-import { SectionCards } from "@/components/section-cards"
+'use client';
 
-export default function Page() {
+import { useMe } from '@/lib/hooks/useAuth';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+
+export default function DashboardIndexPage() {
+  const { data: userData, isLoading } = useMe();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!isLoading && userData?.data?.personal_info) {
+      const role = userData.data.personal_info.role;
+      if (role === 'ADMIN') {
+        router.replace('/dashboard/admin');
+      } else {
+        router.replace('/dashboard/user');
+      }
+    } else if (!isLoading && !userData?.data) {
+       router.replace('/login');
+    }
+  }, [isLoading, userData, router]);
+
   return (
-    <div className="@container/main flex flex-1 flex-col gap-2 bg-[#0b0c0f] font-sans min-h-full">
-      <div className="flex flex-col gap-4 py-8 md:gap-6 text-white h-full px-4 lg:px-8">
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white mb-2">Selamat Datang di Watchify Admin</h1>
-          <p className="text-sm font-medium text-neutral-400 mb-8">Pantau lalu lintas dan aktivitas database tayangan harian Anda</p>
-        </div>
-        <SectionCards />
+    <div className="flex items-center justify-center min-h-screen bg-[#0b0c0f]">
+      <div className="flex flex-col items-center gap-4">
+        <div className="w-10 h-10 border-2 border-[#00dc74] border-t-transparent rounded-full animate-spin" />
+        <p className="text-sm text-neutral-500 font-medium">Mengarahkan...</p>
       </div>
     </div>
-  )
+  );
 }
