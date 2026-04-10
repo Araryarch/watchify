@@ -3,9 +3,15 @@
 import { useThemeStore, themes, type Theme } from '@/lib/store/themeStore';
 import { Button } from '@/components/ui/button';
 import { Check, Palette, Sparkles, Info } from 'lucide-react';
+import { toast } from 'sonner';
 
 export default function SettingsPage() {
   const { theme: currentTheme, setTheme } = useThemeStore();
+
+  const handleThemeChange = (themeKey: Theme) => {
+    setTheme(themeKey);
+    toast.success(`Tema berhasil diubah ke ${themes[themeKey].name}! 🎨`);
+  };
 
   return (
     <div className="min-h-screen bg-background pt-20 pb-16">
@@ -47,7 +53,7 @@ export default function SettingsPage() {
                   return (
                     <button
                       key={themeKey}
-                      onClick={() => setTheme(themeKey)}
+                      onClick={() => handleThemeChange(themeKey)}
                       className={`
                         relative p-6 rounded-xl border-2 transition-all duration-300
                         hover:scale-[1.03] hover:shadow-2xl group text-left

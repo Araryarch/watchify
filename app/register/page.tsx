@@ -9,6 +9,7 @@ import { useAuth } from '@/lib/hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { User, Mail, Lock, UserCircle, ChevronRight, AlertCircle } from 'lucide-react';
+import { toast } from 'sonner';
 
 const registerSchema = z.object({
   username: z.string().min(3, 'Username minimal 3 karakter').max(20, 'Username maksimal 20 karakter'),
@@ -33,13 +34,17 @@ export default function RegisterPage() {
     registerUser(data, {
       onSuccess: (res: any) => {
         if (res.success) {
-          router.push('/login');
+          toast.success('Registrasi berhasil! Silakan login 🎉');
+          setTimeout(() => router.push('/login'), 1000);
         } else {
           setErrorMsg(res.message || 'Registrasi gagal');
+          toast.error(res.message || 'Registrasi gagal');
         }
       },
       onError: (err: any) => {
-        setErrorMsg(err.response?.data?.message || 'Terjadi kesalahan saat mendaftar');
+        const errorMessage = err.response?.data?.message || 'Terjadi kesalahan saat mendaftar';
+        setErrorMsg(errorMessage);
+        toast.error(errorMessage);
       }
     });
   };

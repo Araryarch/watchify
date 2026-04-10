@@ -9,6 +9,7 @@ import { useAuth } from '@/lib/hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Lock, Mail, ChevronRight, AlertCircle } from 'lucide-react';
+import { toast } from 'sonner';
 
 const loginSchema = z.object({
   email: z.string().email('Format email tidak valid'),
@@ -31,13 +32,17 @@ export default function LoginPage() {
     login(data, {
       onSuccess: (res: any) => {
         if (res.success) {
-          router.push('/');
+          toast.success('Login berhasil! Selamat datang kembali 🎉');
+          setTimeout(() => router.push('/'), 500);
         } else {
           setErrorMsg(res.message || 'Login gagal');
+          toast.error(res.message || 'Login gagal');
         }
       },
       onError: (err: any) => {
-        setErrorMsg(err.response?.data?.message || 'Email atau password salah');
+        const errorMessage = err.response?.data?.message || 'Email atau password salah';
+        setErrorMsg(errorMessage);
+        toast.error(errorMessage);
       }
     });
   };
