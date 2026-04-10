@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
+import { Typography } from '@/components/ui/typography';
 import { useAuth } from '@/lib/hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -53,21 +54,21 @@ export default function RegisterPage() {
           <Link href="/" className="inline-block text-3xl font-black tracking-widest text-[#00dc74] mb-2 drop-shadow-[0_0_12px_rgba(0,220,116,0.5)] hover:drop-shadow-[0_0_16px_rgba(0,220,116,0.7)] transition-all">
             WATCHIFY
           </Link>
-          <p className="text-neutral-400 text-sm">Bergabung dan jadilah bagian dari Watchify</p>
+          <Typography variant="p" className="text-neutral-400 text-sm mt-0">Daftar untuk menikmati akses streaming tanpa batas</Typography>
         </div>
 
         <div className="bg-[#1b1c21]/80 backdrop-blur-xl p-8 rounded-2xl border border-white/5 shadow-2xl mb-8">
           {errorMsg && (
             <div className="mb-6 p-3 bg-red-500/10 border border-red-500/20 rounded-lg flex items-center gap-3 text-red-500 text-sm font-medium">
               <AlertCircle className="w-5 h-5 shrink-0" />
-              <p>{errorMsg}</p>
+              <Typography variant="p" className="mt-0">{errorMsg}</Typography>
             </div>
           )}
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
                <div>
-                 <label className="block text-sm font-medium text-neutral-300 mb-1.5">Username</label>
+                 <Typography variant="label" className="block text-sm font-medium text-neutral-300 mb-1.5">Username</Typography>
                  <div className="relative">
                    <input
                      type="text"
@@ -77,10 +78,10 @@ export default function RegisterPage() {
                    />
                    <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500" />
                  </div>
-                 {errors.username && <p className="mt-1 text-xs text-red-500">{errors.username.message}</p>}
+                 {errors.username && <Typography variant="p" className="mt-1.5 text-xs text-red-500">{errors.username.message}</Typography>}
                </div>
                <div>
-                 <label className="block text-sm font-medium text-neutral-300 mb-1.5">Display Name</label>
+                 <Typography variant="label" className="block text-sm font-medium text-neutral-300 mb-1.5">Display Name</Typography>
                  <div className="relative">
                    <input
                      type="text"
@@ -90,12 +91,12 @@ export default function RegisterPage() {
                    />
                    <UserCircle className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500" />
                  </div>
-                 {errors.display_name && <p className="mt-1 text-xs text-red-500">{errors.display_name.message}</p>}
+                 {errors.display_name && <Typography variant="p" className="mt-1.5 text-xs text-red-500">{errors.display_name.message}</Typography>}
                </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-neutral-300 mb-1.5">Email</label>
+              <Typography variant="label" className="block text-sm font-medium text-neutral-300 mb-1.5">Email</Typography>
               <div className="relative">
                 <input
                   type="email"
@@ -105,11 +106,11 @@ export default function RegisterPage() {
                 />
                 <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral-500" />
               </div>
-              {errors.email && <p className="mt-1.5 text-xs text-red-500">{errors.email.message}</p>}
+              {errors.email && <Typography variant="p" className="mt-1.5 text-xs text-red-500">{errors.email.message}</Typography>}
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-neutral-300 mb-1.5">Password</label>
+              <Typography variant="label" className="block text-sm font-medium text-neutral-300 mb-1.5">Password</Typography>
               <div className="relative">
                 <input
                   type="password"
@@ -119,7 +120,7 @@ export default function RegisterPage() {
                 />
                 <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral-500" />
               </div>
-              {errors.password && <p className="mt-1.5 text-xs text-red-500">{errors.password.message}</p>}
+              {errors.password && <Typography variant="p" className="mt-1.5 text-xs text-red-500">{errors.password.message}</Typography>}
             </div>
 
             <button

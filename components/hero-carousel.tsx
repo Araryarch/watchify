@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Play, Bookmark, Star, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Film } from '@/lib/api/films';
+import { Typography } from '@/components/ui/typography';
 
 interface HeroCarouselProps {
   heroes: Film[];
@@ -58,9 +59,9 @@ export function HeroCarousel({ heroes }: HeroCarouselProps) {
               <div className="max-w-xl md:max-w-2xl space-y-4">
                 
                 {/* Title */}
-                <h1 className="text-4xl md:text-6xl lg:text-[5.5rem] font-bold text-white leading-[1.1] drop-shadow-lg font-sans tracking-tight">
+                <Typography variant="h1" className="text-4xl md:text-6xl lg:text-[5.5rem] font-bold text-white leading-[1.1] drop-shadow-lg tracking-tight border-0 pb-0">
                   {film.title}
-                </h1>
+                </Typography>
 
                 {/* Badges Row 1 */}
                 <div className="flex flex-wrap items-center gap-2 pt-2">
@@ -92,9 +93,9 @@ export function HeroCarousel({ heroes }: HeroCarouselProps) {
                 </div>
                 
                 {/* Synopsis */}
-                <p className="text-sm md:text-[15px] text-neutral-300 leading-relaxed line-clamp-3 max-w-xl drop-shadow-md">
+                <Typography variant="p" className="text-sm md:text-[15px] text-neutral-300 leading-relaxed line-clamp-3 max-w-xl drop-shadow-md">
                   {film.synopsis || "Sebuah drama fantasi romantis yang menakjubkan. Saat rahasia dunia terbuka, cinta sejati akan diuji oleh takdir. Saksikan episodenya sekarang secara eksklusif."}
-                </p>
+                </Typography>
                 
                 {/* Circular Action Buttons */}
                 <div className="flex items-center gap-4 pt-4">

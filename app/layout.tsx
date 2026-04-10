@@ -56,8 +56,9 @@ export default function RootLayout({
     <html
       lang="id"
       className={`${inter.variable} ${jetbrainsMono.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col bg-black font-sans">
+      <body suppressHydrationWarning className="min-h-full flex flex-col bg-black font-sans">
         <QueryProvider>
           <TooltipProvider>
             <HeaderWrapper>

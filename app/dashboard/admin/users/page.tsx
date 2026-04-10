@@ -2,6 +2,7 @@
 
 import { Users, Search, Filter } from 'lucide-react';
 import { useState } from 'react';
+import { Typography } from '@/components/ui/typography';
 
 export default function UsersPage() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -13,12 +14,12 @@ export default function UsersPage() {
         {/* Page Header Area */}
         <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
           <hgroup>
-            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white mb-1">
+            <Typography variant="h1" className="text-2xl sm:text-3xl font-bold tracking-tight mb-1 border-0 pb-0">
               Data Pengguna
-            </h1>
-            <p className="text-sm font-medium text-neutral-400">
+            </Typography>
+            <Typography variant="p" className="text-sm font-medium text-neutral-400 mt-0">
               Manajemen daftar pengguna terdaftar Watchify
-            </p>
+            </Typography>
           </hgroup>
           
           <search className="flex items-center gap-3">
@@ -46,12 +47,12 @@ export default function UsersPage() {
              <Users className="w-10 h-10 text-neutral-500" />
           </figure>
           
-          <h2 className="text-xl font-bold mb-2 text-white">
+          <Typography as="h2" variant="h3" className="text-xl font-bold mb-2 text-white">
             Data Tidak Ditemukan
-          </h2>
-          <p className="text-sm text-neutral-400 mb-8 max-w-md mx-auto">
+          </Typography>
+          <Typography variant="p" className="text-sm text-neutral-400 mb-8 max-w-md mx-auto mt-0">
             Endpoint list pengguna belum tersedia di dalam API. Kami sangat menantikan integrasi fitur administratif ini di masa mendatang.
-          </p>
+          </Typography>
         </article>
 
       </section>

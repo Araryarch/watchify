@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Star, Play, Bookmark, ChevronRight } from 'lucide-react';
 import { Film } from '@/lib/api/films';
+import { Typography } from '@/components/ui/typography';
 
 interface FilmCardProps {
   film: Film;
@@ -68,9 +69,9 @@ export function FilmCard({ film }: FilmCardProps) {
 
           {/* Normal Title -> Visible normally, shrinks/hides on hover */}
           <div className="text-left px-0.5 mt-1.5 max-h-8 opacity-100 transition-all duration-300 overflow-hidden group-hover/card:max-h-0 group-hover/card:opacity-0 group-hover/card:mt-0">
-            <h3 className="text-[13px] font-medium text-neutral-300 truncate">
+            <Typography variant="h4" className="text-[13px] font-medium text-neutral-300 truncate">
               {film.title}
-            </h3>
+            </Typography>
           </div>
 
           {/* Expanded Details Panel -> Grows to visible on hover */}
@@ -79,9 +80,9 @@ export function FilmCard({ film }: FilmCardProps) {
           <Link href={`/film/${film.id}`} className="block relative w-full">
             <div className="max-h-0 opacity-0 overflow-hidden transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] group-hover/card:max-h-[300px] group-hover/card:opacity-100">
               <div className="p-3 sm:p-4 bg-[#1b1c21] rounded-b-lg flex flex-col justify-start">
-                 <h2 className="text-base sm:text-[15px] font-bold text-white mb-2 leading-tight line-clamp-1">
+                 <Typography variant="h3" className="text-base sm:text-[15px] font-bold text-white mb-2 leading-tight line-clamp-1 border-0 pb-0">
                    {film.title}
-                 </h2>
+                 </Typography>
 
                  {/* Metadata Row */}
                  <div className="flex items-center gap-2 text-white text-[11px] font-medium mb-3">
@@ -112,9 +113,9 @@ export function FilmCard({ film }: FilmCardProps) {
 
                  {/* Synopsis */}
                  {film.synopsis && (
-                   <p className="text-[10px] sm:text-[11px] text-neutral-400 leading-snug line-clamp-3 mb-2">
+                   <Typography variant="p" className="text-[10px] sm:text-[11px] text-neutral-400 leading-snug line-clamp-3 mb-2 mt-0">
                      {film.synopsis}
-                   </p>
+                   </Typography>
                  )}
 
                  {/* More info link */}
