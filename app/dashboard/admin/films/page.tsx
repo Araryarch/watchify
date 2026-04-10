@@ -163,7 +163,7 @@ export default function DashboardFilmsPage() {
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
           <div>
             <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white mb-1">Manajemen Film</h1>
-            <p className="text-sm font-medium text-neutral-400">Atur database tayangan dengan struktur Tabel TanStack</p>
+            <p className="text-sm font-medium text-neutral-400">Kelola dan atur database tayangan Anda</p>
           </div>
           <div className="flex flex-col sm:flex-row sm:items-center gap-3">
              <div className="relative flex-1 sm:flex-none">

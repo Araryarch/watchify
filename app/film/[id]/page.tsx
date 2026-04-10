@@ -6,14 +6,15 @@ import Link from 'next/link';
 import { useFilmDetail } from '@/lib/hooks/useFilms';
 import { useAddToFilmList } from '@/lib/hooks/useFilmLists';
 import { useCreateReview } from '@/lib/hooks/useReviews';
-import { useCreateReaction } from '@/lib/hooks/useReactions';
+import { useCreateReaction, useUpdateReaction } from '@/lib/hooks/useReactions';
 import { useUserDetail } from '@/lib/hooks/useUsers';
+import { useMe } from '@/lib/hooks/useAuth';
 import { useAuthStore } from '@/lib/store/authStore';
 import { toast } from 'sonner';
 import { useForm } from 'react-hook-form';
 import {
   Star, Calendar, Film as FilmIcon, Play, BookmarkPlus,
-  Send, ChevronDown
+  Send, ThumbsUp, ThumbsDown
 } from 'lucide-react';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -37,18 +38,16 @@ const AIRING_STATUS_MAP: Record<string, string> = {
 
 function AddToListButton({ filmId }: { filmId: string }) {
   const { token } = useAuthStore();
-  const [open, setOpen] = useState(false);
   const { mutate: addToList, isPending } = useAddToFilmList();
 
   if (!token) return null;
 
-  const handleAdd = (status: ListStatus) => {
+  const handleAdd = () => {
     addToList(
-      { film_id: filmId, list_status: status },
+      { film_id: filmId, list_status: 'watching' },
       {
         onSuccess: () => {
-          toast.success(`Ditambahkan ke daftar: ${LIST_STATUS_LABELS[status]}`);
-          setOpen(false);
+          toast.success('Ditambahkan ke daftar tontonan!');
         },
         onError: (e: any) =>
           toast.error(e.response?.data?.error || 'Gagal menambahkan ke daftar'),
@@ -57,31 +56,14 @@ function AddToListButton({ filmId }: { filmId: string }) {
   };
 
   return (
-    <div className="relative">
-      <button
-        onClick={() => setOpen(o => !o)}
-        className="group px-4 sm:px-6 py-3 sm:py-3.5 bg-white/10 hover:bg-white/15 border border-white/20 text-white rounded-lg font-medium transition-all flex items-center justify-center gap-2 sm:gap-3 w-full sm:w-auto"
-      >
-        <BookmarkPlus className="w-4 sm:w-5 h-4 sm:h-5 text-[#00dc74]" />
-        <span className="text-sm sm:text-base">Tambah ke Daftar</span>
-        <ChevronDown className={`w-3.5 sm:w-4 h-3.5 sm:h-4 transition-transform ${open ? 'rotate-180' : ''}`} />
-      </button>
-      {open && (
-        <div className="absolute top-full mt-2 left-0 right-0 sm:left-0 sm:right-auto z-10 w-full sm:w-52 bg-[#1b1c21] border border-white/10 rounded-xl shadow-2xl overflow-hidden">
-          {(Object.keys(LIST_STATUS_LABELS) as ListStatus[]).map(status => (
-            <button
-              key={status}
-              disabled={isPending}
-              onClick={() => handleAdd(status)}
-              className="w-full px-4 py-3 text-left text-sm text-neutral-300 hover:bg-white/5 hover:text-white transition-colors flex items-center gap-2"
-            >
-              <span className="w-2 h-2 rounded-full bg-[#00dc74]" />
-              {LIST_STATUS_LABELS[status]}
-            </button>
-          ))}
-        </div>
-      )}
-    </div>
+    <button
+      onClick={handleAdd}
+      disabled={isPending}
+      className="group px-4 sm:px-6 py-3 sm:py-3.5 bg-white/10 hover:bg-white/15 border border-white/20 text-white rounded-lg font-medium transition-all flex items-center justify-center gap-2 sm:gap-3 w-full sm:w-auto disabled:opacity-50 disabled:cursor-not-allowed"
+    >
+      <BookmarkPlus className="w-4 sm:w-5 h-4 sm:h-5 text-[#00dc74]" />
+      <span className="text-sm sm:text-base">{isPending ? 'Menambahkan...' : 'Tambah ke Daftar'}</span>
+    </button>
   );
 }
 
@@ -159,6 +141,13 @@ function ReviewSection({ filmId, reviews }: { filmId: string; reviews?: any[] })
   const [rating, setRating] = useState(0);
   const { mutate: createReview, isPending } = useCreateReview(filmId);
   const { mutate: createReaction } = useCreateReaction();
+  const { mutate: updateReaction } = useUpdateReaction();
+  
+  // Get current user data to check reactions
+  const { data: userData } = useMe();
+  const userId = userData?.data?.personal_info?.id;
+  const { data: userDetailData } = useUserDetail(userId || '', { enabled: !!userId });
+  const userReactions = userDetailData?.data?.reactions || [];
 
   const onSubmit = (data: { comment: string }) => {
     if (rating === 0) {
@@ -179,18 +168,49 @@ function ReviewSection({ filmId, reviews }: { filmId: string; reviews?: any[] })
     );
   };
 
-  const handleReaction = (reviewId: string, status: 'like' | 'dislike') => {
+  const getUserReactionForReview = (reviewId: string) => {
+    return userReactions.find((r: any) => r.review_id === reviewId);
+  };
+
+  const handleReaction = (review: any, status: 'like' | 'dislike') => {
     if (!token) {
       toast.error('Login terlebih dahulu untuk memberi reaksi');
       return;
     }
-    createReaction(
-      { review_id: reviewId, status },
-      {
-        onSuccess: () => toast.success(status === 'like' ? '👍 Disukai!' : '👎 Tidak disukai'),
-        onError: (e: any) => toast.error(e.response?.data?.message || 'Gagal memberi reaksi'),
-      },
-    );
+
+    const userReaction = getUserReactionForReview(review.id);
+    
+    if (userReaction) {
+      // User already reacted, use update
+      if (userReaction.status === status) {
+        // Same reaction, do nothing
+        toast.info('Anda sudah memberi reaksi ini');
+        return;
+      }
+      // Different reaction, update it
+      updateReaction(
+        { id: userReaction.id, payload: { status } },
+        {
+          onSuccess: () => {
+            toast.success(status === 'like' ? '👍 Diubah ke suka!' : '👎 Diubah ke tidak suka');
+            window.location.reload();
+          },
+          onError: (e: any) => toast.error(e.response?.data?.message || 'Gagal mengubah reaksi'),
+        }
+      );
+    } else {
+      // User hasn't reacted, create new reaction
+      createReaction(
+        { review_id: review.id, status },
+        {
+          onSuccess: () => {
+            toast.success(status === 'like' ? '👍 Disukai!' : '👎 Tidak disukai');
+            window.location.reload();
+          },
+          onError: (e: any) => toast.error(e.response?.data?.message || 'Gagal memberi reaksi'),
+        }
+      );
+    }
   };
 
   return (
@@ -262,18 +282,26 @@ function ReviewSection({ filmId, reviews }: { filmId: string; reviews?: any[] })
                 {/* Reaction buttons */}
                 <div className="flex items-center gap-3 pt-2 border-t border-white/5">
                   <button
-                    onClick={() => handleReaction(review.id, 'like')}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 transition-colors text-xs sm:text-sm"
+                    onClick={() => handleReaction(review, 'like')}
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border transition-colors text-xs sm:text-sm ${
+                      getUserReactionForReview(review.id)?.status === 'like'
+                        ? 'bg-primary/10 border-primary/30 text-primary'
+                        : 'bg-white/5 hover:bg-white/10 border-white/10 text-neutral-400'
+                    }`}
                   >
-                    <span>👍</span>
-                    <span className="text-neutral-400">{review.likes || 0}</span>
+                    <ThumbsUp className="w-3.5 h-3.5" />
+                    <span>{review.likes || 0}</span>
                   </button>
                   <button
-                    onClick={() => handleReaction(review.id, 'dislike')}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 transition-colors text-xs sm:text-sm"
+                    onClick={() => handleReaction(review, 'dislike')}
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border transition-colors text-xs sm:text-sm ${
+                      getUserReactionForReview(review.id)?.status === 'dislike'
+                        ? 'bg-red-500/10 border-red-500/30 text-red-400'
+                        : 'bg-white/5 hover:bg-white/10 border-white/10 text-neutral-400'
+                    }`}
                   >
-                    <span>👎</span>
-                    <span className="text-neutral-400">{review.dislikes || 0}</span>
+                    <ThumbsDown className="w-3.5 h-3.5" />
+                    <span>{review.dislikes || 0}</span>
                   </button>
                 </div>
               </div>
@@ -430,7 +458,9 @@ export default function FilmDetailPage() {
             )}
 
             {/* Reviews & Reactions */}
-            <ReviewSection filmId={film.id} reviews={film.reviews} />
+            {film.airing_status !== 'not_yet_aired' && (
+              <ReviewSection filmId={film.id} reviews={film.reviews} />
+            )}
           </div>
 
           {/* Sidebar column */}

@@ -11,8 +11,11 @@ export const useCreateReaction = () => {
   });
 };
 
-export const useUpdateReaction = () =>
-  useMutation({
+export const useUpdateReaction = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
     mutationFn: ({ id, payload }: { id: string; payload: UpdateReactionPayload }) =>
       reactionsApi.update(id, payload),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['film'] }),
   });
+};

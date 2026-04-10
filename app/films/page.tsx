@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { FilmCard } from '@/components/film-card';
 import { HeroCarousel } from '@/components/hero-carousel';
 import { useFilms } from '@/lib/hooks/useFilms';
@@ -9,18 +10,42 @@ import { SlidersHorizontal, ChevronLeft, ChevronRight } from 'lucide-react';
 import Loading from '../loading';
 
 export default function FilmsPage() {
-  const [selectedGenre, setSelectedGenre] = useState<string | null>(null);
+  const searchParams = useSearchParams();
+  const genreFromUrl = searchParams.get('genre');
+  
+  const [selectedGenre, setSelectedGenre] = useState<string | null>(genreFromUrl);
   const [page, setPage] = useState(1);
   const [showFilters, setShowFilters] = useState(false);
   
-  const { data: filmsData, isLoading } = useFilms({
-    take: 18,
-    page,
-    ...(selectedGenre ? { genre: selectedGenre } : {}) as any
-  });
+  // Sync selectedGenre with URL parameter
+  useEffect(() => {
+    setSelectedGenre(genreFromUrl);
+  }, [genreFromUrl]);
+  
+  const { data: filmsData, isLoading } = useFilms({ take: 100 }); // Fetch all films
   const { data: genresData } = useGenres();
 
+  // Client-side filtering
+  const filteredFilms = selectedGenre
+    ? filmsData?.data?.filter((film: any) => 
+        film.genres?.some((g: any) => g.id === selectedGenre)
+      ) || []
+    : filmsData?.data || [];
+
+  // Client-side pagination
+  const itemsPerPage = 18;
+  const totalPages = Math.ceil(filteredFilms.length / itemsPerPage);
+  const paginatedFilms = filteredFilms.slice(
+    (page - 1) * itemsPerPage,
+    page * itemsPerPage
+  );
+
   const heroes = filmsData?.data?.slice(0, 5) || [];
+
+  const handleGenreChange = (genreId: string | null) => {
+    setSelectedGenre(genreId);
+    setPage(1); // Reset to page 1 when changing genre
+  };
 
   if (isLoading) return <Loading />;
 
@@ -58,7 +83,7 @@ export default function FilmsPage() {
             <ul className="flex flex-wrap gap-2 list-none p-0 m-0">
               <li>
                 <button
-                  onClick={() => setSelectedGenre(null)}
+                  onClick={() => handleGenreChange(null)}
                   className={`px-4 py-1.5 rounded-full font-bold transition-all text-sm ${
                     selectedGenre === null
                       ? 'bg-primary text-black shadow-[0_2px_10px_rgba(var(--primary),0.3)]'
@@ -71,7 +96,7 @@ export default function FilmsPage() {
               {genresData?.data?.map((genre: any) => (
                 <li key={genre.id}>
                   <button
-                    onClick={() => setSelectedGenre(genre.id)}
+                    onClick={() => handleGenreChange(genre.id)}
                     className={`px-4 py-1.5 rounded-full font-medium transition-all capitalize text-sm ${
                       selectedGenre === genre.id
                         ? 'bg-primary text-black shadow-[0_2px_10px_rgba(var(--primary),0.3)]'
@@ -89,7 +114,7 @@ export default function FilmsPage() {
         {/* Film grid */}
         <section aria-label="Daftar film">
           <ol className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 md:gap-5 mb-16 list-none p-0 m-0">
-            {filmsData?.data?.map((film: any) => (
+            {paginatedFilms.map((film: any) => (
               <li key={film.id || film.title}>
                 <FilmCard film={film} />
               </li>
@@ -97,7 +122,7 @@ export default function FilmsPage() {
           </ol>
 
           {/* Pagination */}
-          {filmsData?.meta?.[0] && filmsData.meta[0].total_page > 1 && (
+          {totalPages > 1 && (
             <nav aria-label="Navigasi halaman" className="flex items-center justify-center gap-4 mt-4">
               <button
                 onClick={() => setPage(p => Math.max(1, p - 1))}
@@ -109,11 +134,11 @@ export default function FilmsPage() {
               </button>
               <p className="flex items-center gap-2 px-5 py-2 bg-[#1b1c21] rounded-full border border-white/5 text-sm text-neutral-400">
                 Halaman <strong className="text-white">{page}</strong> dari{' '}
-                <strong className="text-white">{filmsData.meta[0].total_page}</strong>
+                <strong className="text-white">{totalPages}</strong>
               </p>
               <button
                 onClick={() => setPage(p => p + 1)}
-                disabled={page >= filmsData.meta[0].total_page}
+                disabled={page >= totalPages}
                 aria-label="Halaman berikutnya"
                 className="w-10 h-10 flex items-center justify-center bg-white/5 hover:bg-white/10 disabled:opacity-30 disabled:hover:bg-white/5 rounded-full text-white transition-all"
               >

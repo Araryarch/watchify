@@ -53,7 +53,7 @@ export default function UserDashboardPage() {
                {userDetail?.film_lists?.length || 0} film dalam daftar
              </Typography>
           </div>
-          <Link href={`/user/${user?.id}`} className="text-primary text-sm font-bold hover:underline">
+          <Link href="/dashboard/user/film-lists" className="text-primary text-sm font-bold hover:underline">
              Kelola Daftar &rarr;
           </Link>
         </div>
@@ -68,16 +68,24 @@ export default function UserDashboardPage() {
                {userDetail?.reviews?.length || 0} ulasan ditulis
              </Typography>
           </div>
+          <Link href="/dashboard/user/reviews" className="text-primary text-sm font-bold hover:underline">
+             Lihat Ulasan &rarr;
+          </Link>
         </div>
       </div>
 
       {/* Film Lists Section */}
       {userDetail?.film_lists && userDetail.film_lists.length > 0 && (
         <div className="mb-8">
-          <Typography variant="h3" className="text-2xl font-bold mb-4 border-0 pb-0">Daftar Tontonan Saya</Typography>
+          <div className="flex items-center justify-between mb-4">
+            <Typography variant="h3" className="text-2xl font-bold border-0 pb-0">Daftar Tontonan Saya</Typography>
+            <Link href="/dashboard/user/film-lists" className="text-primary text-sm font-bold hover:underline">
+              Lihat Semua &rarr;
+            </Link>
+          </div>
           <div className="bg-[#1b1c21] border border-white/5 rounded-2xl overflow-hidden">
             <div className="divide-y divide-white/5">
-              {userDetail.film_lists.map((item: any, index: number) => (
+              {userDetail.film_lists.slice(0, 3).map((item: any, index: number) => (
                 <div key={index} className="p-4 hover:bg-white/2 transition-colors flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <Film className="w-5 h-5 text-primary" />
@@ -96,9 +104,14 @@ export default function UserDashboardPage() {
       {/* Reviews Section */}
       {userDetail?.reviews && userDetail.reviews.length > 0 && (
         <div>
-          <Typography variant="h3" className="text-2xl font-bold mb-4 border-0 pb-0">Ulasan Saya</Typography>
+          <div className="flex items-center justify-between mb-4">
+            <Typography variant="h3" className="text-2xl font-bold border-0 pb-0">Ulasan Saya</Typography>
+            <Link href="/dashboard/user/reviews" className="text-primary text-sm font-bold hover:underline">
+              Lihat Semua &rarr;
+            </Link>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {userDetail.reviews.map((review: any, index: number) => (
+            {userDetail.reviews.slice(0, 2).map((review: any, index: number) => (
               <div key={index} className="bg-[#1b1c21] border border-white/5 rounded-2xl p-5">
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex-1">

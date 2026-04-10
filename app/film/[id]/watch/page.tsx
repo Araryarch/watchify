@@ -3,14 +3,267 @@
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { useFilmDetail } from '@/lib/hooks/useFilms';
 import { useAddToFilmList } from '@/lib/hooks/useFilmLists';
+import { useCreateReview } from '@/lib/hooks/useReviews';
+import { useCreateReaction, useUpdateReaction } from '@/lib/hooks/useReactions';
+import { useUserDetail } from '@/lib/hooks/useUsers';
+import { useMe } from '@/lib/hooks/useAuth';
 import { useAuthStore } from '@/lib/store/authStore';
 import { toast } from 'sonner';
 import { useState, Suspense } from 'react';
 import Link from 'next/link';
+import { useForm } from 'react-hook-form';
 import {
   Play, ChevronLeft, Share2, Monitor,
-  Star, Film as FilmIcon, MessageSquare, Clock, List
+  Star, Film as FilmIcon, MessageSquare, Clock, List,
+  Send, ThumbsUp, ThumbsDown
 } from 'lucide-react';
+
+// ─── Review Components ────────────────────────────────────────────────────────
+
+function ReviewUserInfo({ userId }: { userId: string }) {
+  const { data: userData } = useUserDetail(userId);
+  const user = userData?.data;
+
+  if (!user) {
+    return (
+      <div className="flex items-center gap-2">
+        <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#00dc74]/20 border border-[#00dc74]/30 flex items-center justify-center">
+          <span className="text-[#00dc74] font-bold text-sm sm:text-base">
+            {userId.substring(0, 2).toUpperCase()}
+          </span>
+        </div>
+        <div>
+          <p className="text-white font-medium text-sm sm:text-base">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex items-center gap-2">
+      <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#00dc74]/20 border border-[#00dc74]/30 flex items-center justify-center">
+        <span className="text-[#00dc74] font-bold text-sm sm:text-base">
+          {(user.personal_info?.display_name || user.personal_info?.username || 'U').substring(0, 2).toUpperCase()}
+        </span>
+      </div>
+      <div>
+        <p className="text-white font-medium text-sm sm:text-base">
+          {user.personal_info?.display_name || user.personal_info?.username || 'Anonymous'}
+        </p>
+        {user.personal_info?.bio && (
+          <p className="text-neutral-500 text-xs truncate max-w-[200px]">{user.personal_info.bio}</p>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function StarRating({ value, onChange }: { value: number; onChange: (v: number) => void }) {
+  const [hover, setHover] = useState(0);
+  return (
+    <div className="flex gap-1">
+      {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(n => (
+        <button
+          key={n}
+          type="button"
+          onMouseEnter={() => setHover(n)}
+          onMouseLeave={() => setHover(0)}
+          onClick={() => onChange(n)}
+          className="transition-transform hover:scale-110"
+        >
+          <Star
+            className={`w-5 h-5 transition-colors ${
+              n <= (hover || value)
+                ? 'fill-yellow-400 text-yellow-400'
+                : 'text-neutral-600'
+            }`}
+          />
+        </button>
+      ))}
+      {value > 0 && (
+        <span className="ml-2 text-sm font-bold text-yellow-400 self-center">{value}/10</span>
+      )}
+    </div>
+  );
+}
+
+function ReviewSection({ filmId, reviews }: { filmId: string; reviews?: any[] }) {
+  const { token } = useAuthStore();
+  const { register, handleSubmit, reset, formState } = useForm<{ comment: string }>();
+  const [rating, setRating] = useState(0);
+  const { mutate: createReview, isPending } = useCreateReview(filmId);
+  const { mutate: createReaction } = useCreateReaction();
+  const { mutate: updateReaction } = useUpdateReaction();
+  
+  // Get current user data to check reactions
+  const { data: userData } = useMe();
+  const userId = userData?.data?.personal_info?.id;
+  const { data: userDetailData } = useUserDetail(userId || '', { enabled: !!userId });
+  const userReactions = userDetailData?.data?.reactions || [];
+
+  const onSubmit = (data: { comment: string }) => {
+    if (rating === 0) {
+      toast.error('Pilih rating terlebih dahulu');
+      return;
+    }
+    createReview(
+      { rating, comment: data.comment },
+      {
+        onSuccess: () => {
+          toast.success('Ulasan berhasil dikirim!');
+          reset();
+          setRating(0);
+        },
+        onError: (e: any) =>
+          toast.error(e.response?.data?.message || 'Gagal mengirim ulasan'),
+      },
+    );
+  };
+
+  const getUserReactionForReview = (reviewId: string) => {
+    return userReactions.find((r: any) => r.review_id === reviewId);
+  };
+
+  const handleReaction = (review: any, status: 'like' | 'dislike') => {
+    if (!token) {
+      toast.error('Login terlebih dahulu untuk memberi reaksi');
+      return;
+    }
+
+    const userReaction = getUserReactionForReview(review.id);
+    
+    if (userReaction) {
+      // User already reacted, use update
+      if (userReaction.status === status) {
+        // Same reaction, do nothing
+        toast.info('Anda sudah memberi reaksi ini');
+        return;
+      }
+      // Different reaction, update it
+      updateReaction(
+        { id: userReaction.id, payload: { status } },
+        {
+          onSuccess: () => {
+            toast.success(status === 'like' ? '👍 Diubah ke suka!' : '👎 Diubah ke tidak suka');
+            window.location.reload();
+          },
+          onError: (e: any) => toast.error(e.response?.data?.message || 'Gagal mengubah reaksi'),
+        }
+      );
+    } else {
+      // User hasn't reacted, create new reaction
+      createReaction(
+        { review_id: review.id, status },
+        {
+          onSuccess: () => {
+            toast.success(status === 'like' ? '👍 Disukai!' : '👎 Tidak disukai');
+            window.location.reload();
+          },
+          onError: (e: any) => toast.error(e.response?.data?.message || 'Gagal memberi reaksi'),
+        }
+      );
+    }
+  };
+
+  return (
+    <div className="space-y-6 sm:space-y-8 px-4 py-6">
+      <h2 className="text-xl sm:text-2xl font-bold text-white">Ulasan & Rating</h2>
+
+      {/* Write review form */}
+      {token ? (
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="bg-[#1b1c21] border border-white/5 rounded-xl sm:rounded-2xl p-4 sm:p-6 space-y-4 sm:space-y-5"
+        >
+          <h3 className="text-white font-bold text-base sm:text-lg">Tulis Ulasan</h3>
+
+          <div>
+            <label className="block text-xs sm:text-sm text-neutral-400 mb-2 font-medium">Rating kamu</label>
+            <StarRating value={rating} onChange={setRating} />
+          </div>
+
+          <div>
+            <label className="block text-xs sm:text-sm text-neutral-400 mb-2 font-medium">Komentar</label>
+            <textarea
+              {...register('comment', { required: true })}
+              rows={3}
+              placeholder="Bagikan pendapatmu tentang tayangan ini..."
+              className="w-full bg-[#0b0c0f] border border-white/10 rounded-lg px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm text-white focus:border-[#00dc74] outline-none resize-none"
+            />
+          </div>
+
+          <button
+            type="submit"
+            disabled={isPending}
+            className="w-full sm:w-auto px-5 sm:px-6 py-2.5 bg-[#00dc74] text-black font-bold rounded-lg hover:bg-[#00c266] transition-all flex items-center justify-center gap-2 disabled:opacity-50 text-sm sm:text-base"
+          >
+            <Send className="w-3.5 sm:w-4 h-3.5 sm:h-4" />
+            {isPending ? 'Mengirim...' : 'Kirim Ulasan'}
+          </button>
+        </form>
+      ) : (
+        <div className="bg-[#1b1c21] border border-white/5 rounded-xl sm:rounded-2xl p-4 sm:p-6 text-center text-neutral-400">
+          <p className="text-xs sm:text-sm">
+            <a href="/login" className="text-[#00dc74] font-bold hover:underline">Login</a> untuk menulis ulasan.
+          </p>
+        </div>
+      )}
+
+      {/* Display existing reviews */}
+      {reviews && reviews.length > 0 && (
+        <div className="space-y-4">
+          <h3 className="text-lg sm:text-xl font-bold text-white">Ulasan Pengguna ({reviews.length})</h3>
+          <div className="space-y-4">
+            {reviews.map((review: any) => (
+              <div key={review.id} className="bg-[#1b1c21] border border-white/5 rounded-xl sm:rounded-2xl p-4 sm:p-5 space-y-3">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-2">
+                      <ReviewUserInfo userId={review.user_id} />
+                    </div>
+                    <div className="flex items-center gap-1 mb-2">
+                      {Array.from({ length: review.rating }).map((_, i) => (
+                        <Star key={i} className="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-yellow-400 text-yellow-400" />
+                      ))}
+                      <span className="text-yellow-400 text-xs sm:text-sm font-bold ml-1">{review.rating}/10</span>
+                    </div>
+                    <p className="text-gray-300 text-sm sm:text-base leading-relaxed">{review.comment}</p>
+                  </div>
+                </div>
+                
+                {/* Reaction buttons */}
+                <div className="flex items-center gap-3 pt-2 border-t border-white/5">
+                  <button
+                    onClick={() => handleReaction(review, 'like')}
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border transition-colors text-xs sm:text-sm ${
+                      getUserReactionForReview(review.id)?.status === 'like'
+                        ? 'bg-primary/10 border-primary/30 text-primary'
+                        : 'bg-white/5 hover:bg-white/10 border-white/10 text-neutral-400'
+                    }`}
+                  >
+                    <ThumbsUp className="w-3.5 h-3.5" />
+                    <span>{review.likes || 0}</span>
+                  </button>
+                  <button
+                    onClick={() => handleReaction(review, 'dislike')}
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border transition-colors text-xs sm:text-sm ${
+                      getUserReactionForReview(review.id)?.status === 'dislike'
+                        ? 'bg-red-500/10 border-red-500/30 text-red-400'
+                        : 'bg-white/5 hover:bg-white/10 border-white/10 text-neutral-400'
+                    }`}
+                  >
+                    <ThumbsDown className="w-3.5 h-3.5" />
+                    <span>{review.dislikes || 0}</span>
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
 
 // ─── Episode Grid ─────────────────────────────────────────────────────────────
 
@@ -237,6 +490,11 @@ function WatchPageInner() {
                 </p>
               )}
             </div>
+
+            {/* Reviews Section */}
+            {film.airing_status !== 'not_yet_aired' && (
+              <ReviewSection filmId={film.id} reviews={film.reviews} />
+            )}
           </div>
 
           {/* ── RIGHT: Episode list sidebar ── */}
