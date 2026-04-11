@@ -416,8 +416,14 @@ export default function FilmDetailPage() {
                   </div>
                   <div className="flex items-center gap-1 sm:gap-1.5 md:gap-2">
                     <Calendar className="w-3.5 sm:w-4 md:w-5 h-3.5 sm:h-4 md:h-5" />
-                    <span className="hidden sm:inline">{new Date(film.release_date).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
-                    <span className="sm:hidden">{new Date(film.release_date).toLocaleDateString('id-ID', { year: 'numeric', month: 'short' })}</span>
+                    {film.release_date && !isNaN(new Date(film.release_date).getTime()) ? (
+                      <>
+                        <span className="hidden sm:inline">{new Date(film.release_date).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                        <span className="sm:hidden">{new Date(film.release_date).toLocaleDateString('id-ID', { year: 'numeric', month: 'short' })}</span>
+                      </>
+                    ) : (
+                      <span>-</span>
+                    )}
                   </div>
                 </div>
               </div>
@@ -492,7 +498,9 @@ export default function FilmDetailPage() {
                 <div className="flex justify-between">
                   <span className="text-neutral-500">Rilis</span>
                   <span className="text-white font-medium">
-                    {new Date(film.release_date).toLocaleDateString('id-ID')}
+                    {film.release_date && !isNaN(new Date(film.release_date).getTime())
+                      ? new Date(film.release_date).toLocaleDateString('id-ID')
+                      : '-'}
                   </span>
                 </div>
                 {film.average_rating > 0 && (

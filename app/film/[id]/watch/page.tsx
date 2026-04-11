@@ -516,7 +516,9 @@ function WatchPageInner() {
                 )}
                 <MetaBadge color="green">{statusMap[film.airing_status] || 'Selesai'}</MetaBadge>
                 <MetaBadge color="default">
-                  {new Date(film.release_date).getFullYear()}
+                  {film.release_date && !isNaN(new Date(film.release_date).getTime())
+                    ? new Date(film.release_date).getFullYear()
+                    : new Date().getFullYear()}
                 </MetaBadge>
                 <MetaBadge color="default">{film.total_episodes} Episode</MetaBadge>
                 {film.genres?.map((g: any) => (

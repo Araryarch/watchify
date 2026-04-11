@@ -96,7 +96,7 @@ export function FilmCard({ film }: FilmCardProps) {
                           <span className="text-[13px] border-r border-white/20 pr-2">{film.average_rating.toFixed(1)}</span>
                        </div>
                     )}
-                    {film.release_date && (
+                    {film.release_date && !isNaN(new Date(film.release_date).getTime()) && (
                       <span>{new Date(film.release_date).getFullYear()}</span>
                     )}
                     {film.total_episodes > 0 && (
