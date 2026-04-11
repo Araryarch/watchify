@@ -3,6 +3,7 @@ import { Star, Play, Bookmark, ChevronRight } from 'lucide-react';
 import { Film } from '@/lib/api/films';
 import { Typography } from '@/components/ui/typography';
 import Image from 'next/image';
+import { getYear } from '@/lib/utils/date';
 
 interface FilmCardProps {
   film: Film;
@@ -83,8 +84,8 @@ export function FilmCard({ film }: FilmCardProps) {
                           <span className="text-[13px] border-r border-white/20 pr-2">{film.average_rating.toFixed(1)}</span>
                        </div>
                     )}
-                    {film.release_date && !isNaN(new Date(film.release_date).getTime()) && (
-                      <span>{new Date(film.release_date).getFullYear()}</span>
+                    {getYear(film.release_date) && (
+                      <span>{getYear(film.release_date)}</span>
                     )}
                     {film.total_episodes > 0 && (
                       <span className="border-l border-white/20 pl-2">{film.total_episodes} Eps</span>

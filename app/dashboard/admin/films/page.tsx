@@ -6,6 +6,7 @@ import { useState, useMemo } from 'react';
 import { toast } from 'sonner';
 import { useFilms } from '@/lib/hooks/useFilms';
 import Image from 'next/image';
+import { formatDate } from '@/lib/utils/date';
 
 import {
   useReactTable,
@@ -93,7 +94,9 @@ export default function DashboardFilmsPage() {
             )}
             <div>
               <p className="font-bold text-white mb-1 line-clamp-1">{film.title}</p>
-              <p className="text-xs text-neutral-500">Rilis: {film.release_date ? new Date(film.release_date).toLocaleDateString('id-ID') : '-'}</p>
+              <p className="text-xs text-neutral-500">
+                Rilis: {formatDate(film.release_date)}
+              </p>
             </div>
           </div>
         );
@@ -216,7 +219,7 @@ export default function DashboardFilmsPage() {
                       <div className="flex-1 min-w-0">
                         <h3 className="font-bold text-white mb-1 line-clamp-2">{film.title}</h3>
                         <p className="text-xs text-neutral-500 mb-2">
-                          Rilis: {film.release_date ? new Date(film.release_date).toLocaleDateString('id-ID') : '-'}
+                          Rilis: {formatDate(film.release_date)}
                         </p>
                         <div className="flex items-center gap-2 flex-wrap">
                           <div className={`inline-flex px-2 py-0.5 rounded text-[10px] font-bold tracking-wider uppercase border ${film.airing_status === 'airing' ? 'bg-primary/10 text-primary border-primary/20' : 'bg-white/5 text-neutral-300 border-white/10'}`}>

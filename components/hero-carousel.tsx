@@ -6,6 +6,7 @@ import { Play, Bookmark, Star, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Film } from '@/lib/api/films';
 import { Typography } from '@/components/ui/typography';
 import Image from 'next/image';
+import { getYear } from '@/lib/utils/date';
 
 interface HeroCarouselProps {
   heroes: Film[];
@@ -112,11 +113,7 @@ export function HeroCarousel({ heroes }: HeroCarouselProps) {
                     </div>
                   )}
                   {film.average_rating > 0 && <span className="text-neutral-300">|</span>}
-                  <span>
-                    {film.release_date && !isNaN(new Date(film.release_date).getTime())
-                      ? new Date(film.release_date).getFullYear()
-                      : new Date().getFullYear()}
-                  </span>
+                  <span>{getYear(film.release_date) || new Date().getFullYear()}</span>
                   <span className="text-neutral-300">|</span>
                   <span>13+</span>
                   {film.total_episodes > 0 && (
