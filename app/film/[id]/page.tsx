@@ -85,7 +85,7 @@ function ReviewUserInfo({ user }: { user: any }) {
     );
   }
 
-  const displayName = user.personal_info?.display_name || user.personal_info?.username || 'Anonymous';
+  const displayName = user.display_name || user.username || 'Anonymous';
   const initials = displayName.substring(0, 2).toUpperCase();
 
   return (
@@ -95,8 +95,8 @@ function ReviewUserInfo({ user }: { user: any }) {
       </div>
       <div>
         <p className="text-white font-medium text-sm sm:text-base">{displayName}</p>
-        {user.personal_info?.bio && (
-          <p className="text-neutral-500 text-xs truncate max-w-[200px]">{user.personal_info.bio}</p>
+        {user.bio && (
+          <p className="text-neutral-500 text-xs">{user.bio}</p>
         )}
       </div>
     </div>
