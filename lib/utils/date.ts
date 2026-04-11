@@ -22,14 +22,18 @@ export function parseApiDate(dateString: string | null | undefined): Date | null
 /**
  * Format date to Indonesian locale
  */
-export function formatDate(date: Date | string | null | undefined, options?: Intl.DateTimeFormatOptions): string {
+export function formatDate(
+  date: Date | string | null | undefined, 
+  locale: string = 'id-ID',
+  options?: Intl.DateTimeFormatOptions
+): string {
   if (!date) return '-';
   
   const dateObj = typeof date === 'string' ? parseApiDate(date) : date;
   
   if (!dateObj) return '-';
   
-  return dateObj.toLocaleDateString('id-ID', options);
+  return dateObj.toLocaleDateString(locale, options);
 }
 
 /**
