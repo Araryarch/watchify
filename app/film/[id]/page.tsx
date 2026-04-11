@@ -212,7 +212,11 @@ function ReviewSection({ filmId, reviews }: { filmId: string; reviews?: any[] })
             // Refresh will happen automatically via react-query
           },
           onError: (e: any) => {
-            const errorMsg = e.response?.data?.error || e.response?.data?.message || '';
+            let errorMsg = e.response?.data?.error || e.response?.data?.message || '';
+            // Change "user has" to "you have" for better UX
+            if (errorMsg.toLowerCase().includes('user has already reacted')) {
+              errorMsg = errorMsg.replace(/user has/i, 'You have');
+            }
             toast.error(errorMsg || 'Gagal memberi reaksi');
           },
         }
