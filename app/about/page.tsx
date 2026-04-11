@@ -5,7 +5,6 @@ import {
   motion,
   useScroll,
   useTransform,
-  useMotionValueEvent,
   useSpring,
   useInView,
 } from 'framer-motion';
@@ -115,7 +114,7 @@ const staggerContainer = {
 };
 const staggerItem = {
   hidden: { opacity: 0, y: 25, filter: 'blur(6px)' },
-  show: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } },
+  show: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] as any } },
 };
 
 /* ═══════════════════════════════════════════════
@@ -163,15 +162,15 @@ export default function AboutPage() {
           <motion.div variants={staggerContainer} initial="hidden" animate="show" className="flex flex-col items-center">
             {/* Overline */}
             <motion.span variants={staggerItem} className="inline-block text-[10px] sm:text-[11px] uppercase tracking-[0.4em] text-[var(--muted-foreground)] font-medium border border-[var(--border)] px-5 py-2.5 rounded-full mb-10">
-              Est. 2020 — Jakarta, Indonesia
+              Didirikan 2020 — Jakarta, Indonesia
             </motion.span>
 
             {/* Main title */}
             <motion.h1 variants={staggerItem} className="text-[clamp(2.6rem,7.5vw,7.5rem)] font-black leading-[0.92] tracking-[-0.045em] mb-8">
-              We believe in the
+              Kami percaya pada
               <br />
               <span className="text-primary inline-block relative">
-                power of stories
+                kekuatan cerita
                 <motion.span
                   initial={{ scaleX: 0 }}
                   animate={{ scaleX: 1 }}
@@ -183,14 +182,14 @@ export default function AboutPage() {
 
             {/* Sub */}
             <motion.p variants={staggerItem} className="text-base sm:text-lg md:text-xl text-[var(--muted-foreground)] max-w-xl mx-auto leading-relaxed font-normal">
-              Watchify is a next-generation streaming platform connecting audiences with world-class cinema — from independent gems to global premieres.
+              Watchify adalah platform streaming generasi baru yang menghubungkan penonton dengan sinema berkelas dunia — dari film independen hingga premiere global.
             </motion.p>
           </motion.div>
         </motion.div>
 
         {/* Scroll hint */}
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2.2, duration: 1 }} className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 z-10">
-          <span className="text-[9px] tracking-[0.4em] uppercase text-[var(--muted-foreground)] font-medium">Scroll</span>
+          <span className="text-[9px] tracking-[0.4em] uppercase text-[var(--muted-foreground)] font-medium">Gulir</span>
           <motion.div animate={{ y: [0, 5, 0] }} transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}>
             <ArrowDown className="w-3.5 h-3.5 text-[var(--muted-foreground)]" />
           </motion.div>
@@ -203,11 +202,11 @@ export default function AboutPage() {
       <section className="relative py-40 md:py-60">
         <div className="max-w-[56rem] mx-auto px-6">
           <motion.span initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }} className="block text-[10px] sm:text-[11px] uppercase tracking-[0.4em] text-primary font-semibold mb-14">
-            Our Philosophy
+            Filosofi Kami
           </motion.span>
 
           <ScrollRevealText
-            text="We don't just stream content — we curate experiences. Every frame, every story, every emotion is handpicked to transport you into worlds beyond imagination. Technology should disappear. Only the story remains."
+            text="Kami tidak hanya menyajikan konten — kami mengkurasi pengalaman. Setiap frame, setiap cerita, setiap emosi dipilih dengan cermat untuk membawa Anda ke dunia di luar imajinasi. Teknologi harus menghilang. Hanya cerita yang tersisa."
             className="text-[clamp(1.4rem,3.8vw,3.2rem)] font-semibold leading-[1.25] tracking-[-0.02em]"
           />
         </div>
@@ -220,10 +219,10 @@ export default function AboutPage() {
         <div className="max-w-6xl mx-auto px-6">
           <div className="grid grid-cols-2 lg:grid-cols-4 border border-[var(--border)] rounded-2xl overflow-hidden">
             {[
-              { value: 10, suffix: 'M+', label: 'Users', sub: 'worldwide' },
-              { value: 50, suffix: 'K+', label: 'Titles', sub: 'films & series' },
-              { value: 190, suffix: '+', label: 'Countries', sub: 'global reach' },
-              { value: 4, suffix: '.9', label: 'Rating', sub: 'out of 5' },
+              { value: 10, suffix: 'Jt+', label: 'Pengguna', sub: 'di seluruh dunia' },
+              { value: 50, suffix: 'Rb+', label: 'Konten', sub: 'film & series' },
+              { value: 190, suffix: '+', label: 'Negara', sub: 'jangkauan global' },
+              { value: 4, suffix: '.9', label: 'Rating', sub: 'dari 5' },
             ].map((s, i) => (
               <motion.div
                 key={i}
@@ -272,9 +271,9 @@ export default function AboutPage() {
               transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
               className="text-[clamp(1.6rem,4.5vw,3.8rem)] font-bold leading-[1.1] tracking-[-0.03em] max-w-3xl text-white"
             >
-              Cinema is not just entertainment.
+              Sinema bukan hanya hiburan.
               <br />
-              <span className="text-primary">It's how we understand each other.</span>
+              <span className="text-primary">Ini cara kita memahami satu sama lain.</span>
             </motion.p>
           </div>
         </div>
@@ -288,22 +287,22 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20">
             <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-60px' }} transition={{ duration: 0.7 }}>
               <h3 className="text-xl md:text-2xl font-bold mb-5 leading-snug">
-                Built by cinephiles,<br />for cinephiles.
+                Dibuat oleh pecinta film,<br />untuk pecinta film.
               </h3>
               <p className="text-[var(--muted-foreground)] text-base leading-[1.8]">
-                Our team is made up of filmmakers, engineers, and storytellers who eat, sleep, and breathe cinema.
-                We obsess over the details — from color-accurate streaming to curated playlists that hit different at 2 AM.
-                Every pixel, every transition, every recommendation is crafted with intention.
+                Tim kami terdiri dari pembuat film, insinyur, dan pencerita yang hidup dan bernapas sinema.
+                Kami terobsesi dengan detail — dari streaming akurat warna hingga playlist yang dikurasi dengan sempurna.
+                Setiap piksel, setiap transisi, setiap rekomendasi dibuat dengan niat yang jelas.
               </p>
             </motion.div>
             <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-60px' }} transition={{ duration: 0.7, delay: 0.12 }}>
               <h3 className="text-xl md:text-2xl font-bold mb-5 leading-snug">
-                Technology that<br />gets out of the way.
+                Teknologi yang<br />tidak terlihat.
               </h3>
               <p className="text-[var(--muted-foreground)] text-base leading-[1.8]">
-                We deploy adaptive bitrate streaming, edge computing across 80+ PoPs, and on-device AI recommendations.
-                The result? Zero buffering, instant playback, and suggestions that actually understand your taste.
-                You never notice the tech — only the magic on screen.
+                Kami menggunakan adaptive bitrate streaming, edge computing di 80+ lokasi, dan rekomendasi AI yang cerdas.
+                Hasilnya? Tanpa buffering, pemutaran instan, dan saran yang benar-benar memahami selera Anda.
+                Anda tidak akan pernah menyadari teknologinya — hanya keajaiban di layar.
               </p>
             </motion.div>
           </div>

@@ -116,6 +116,14 @@ function ReviewSection({ filmId, reviews }: { filmId: string; reviews?: any[] })
     return review.reactions.find((r: any) => r.user_id === currentUserId);
   };
 
+  // Count reactions
+  const getReactionCounts = (review: any) => {
+    if (!review.reactions) return { likes: 0, dislikes: 0 };
+    const likes = review.reactions.filter((r: any) => r.status === 'like').length;
+    const dislikes = review.reactions.filter((r: any) => r.status === 'dislike').length;
+    return { likes, dislikes };
+  };
+
   const handleReaction = (review: any, status: 'like' | 'dislike') => {
     if (!token || !currentUserId) {
       toast.error('Login terlebih dahulu untuk memberi reaksi');
@@ -133,7 +141,7 @@ function ReviewSection({ filmId, reviews }: { filmId: string; reviews?: any[] })
       
       // Update to different reaction
       updateReaction(
-        { id: existingReaction.id, status },
+        { id: existingReaction.id, payload: { status } },
         {
           onSuccess: () => {
             toast.success(status === 'like' ? 'Diubah ke suka' : 'Diubah ke tidak suka');
@@ -232,30 +240,30 @@ function ReviewSection({ filmId, reviews }: { filmId: string; reviews?: any[] })
                 <div className="flex items-center gap-3 pt-2 border-t border-white/5">
                   <button
                     onClick={() => handleReaction(review, 'like')}
-                    disabled={!token || alreadyReacted.has(review.id)}
+                    disabled={!token}
                     className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border transition-colors text-xs sm:text-sm ${
-                      localReactions[review.id]?.status === 'like'
+                      getUserReaction(review)?.status === 'like'
                         ? 'bg-primary/10 border-primary/30 text-primary'
-                        : !token || alreadyReacted.has(review.id)
+                        : !token
                         ? 'bg-white/5 border-white/10 text-neutral-600 cursor-not-allowed opacity-50'
                         : 'bg-white/5 hover:bg-white/10 border-white/10 text-neutral-400'
                     }`}
-                    title={!token ? 'Login untuk memberi reaksi' : alreadyReacted.has(review.id) ? 'Anda sudah memberi reaksi' : ''}
+                    title={!token ? 'Login untuk memberi reaksi' : ''}
                   >
                     <ThumbsUp className="w-3.5 h-3.5" />
                     <span>{getReactionCounts(review).likes}</span>
                   </button>
                   <button
                     onClick={() => handleReaction(review, 'dislike')}
-                    disabled={!token || alreadyReacted.has(review.id)}
+                    disabled={!token}
                     className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border transition-colors text-xs sm:text-sm ${
-                      localReactions[review.id]?.status === 'dislike'
+                      getUserReaction(review)?.status === 'dislike'
                         ? 'bg-red-500/10 border-red-500/30 text-red-400'
-                        : !token || alreadyReacted.has(review.id)
+                        : !token
                         ? 'bg-white/5 border-white/10 text-neutral-600 cursor-not-allowed opacity-50'
                         : 'bg-white/5 hover:bg-white/10 border-white/10 text-neutral-400'
                     }`}
-                    title={!token ? 'Login untuk memberi reaksi' : alreadyReacted.has(review.id) ? 'Anda sudah memberi reaksi' : ''}
+                    title={!token ? 'Login untuk memberi reaksi' : ''}
                   >
                     <ThumbsDown className="w-3.5 h-3.5" />
                     <span>{getReactionCounts(review).dislikes}</span>

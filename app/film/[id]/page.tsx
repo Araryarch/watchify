@@ -184,7 +184,7 @@ function ReviewSection({ filmId, reviews }: { filmId: string; reviews?: any[] })
       
       // Update to different reaction
       updateReaction(
-        { id: existingReaction.id, status },
+        { id: existingReaction.id, payload: { status } },
         {
           onSuccess: () => {
             toast.success(status === 'like' ? 'Diubah ke suka' : 'Diubah ke tidak suka');
