@@ -63,7 +63,7 @@ export function Navbar() {
         <div className="flex h-16 items-center justify-between">
           {/* Logo & Desktop Nav Group */}
           <div className="flex items-center gap-8">
-            <Link href="/" className="flex items-center gap-2 group">
+            <Link href="/" className="flex items-center gap-2 group" aria-label="Watchify Home">
               <span className="text-2xl font-black tracking-widest text-primary group-hover:drop-shadow-[0_0_8px_rgba(var(--primary),0.8)] transition-all">
                 WATCHIFY
               </span>

@@ -74,7 +74,7 @@ export function HeroCarousel({ heroes }: HeroCarouselProps) {
               <div className="max-w-xl md:max-w-2xl space-y-4">
                 {/* Title */}
                 <Typography
-                  variant="h1"
+                  variant="h2"
                   className="text-4xl md:text-6xl lg:text-[5.5rem] font-bold text-white leading-[1.1] drop-shadow-lg tracking-tight border-0 pb-0"
                 >
                   {film.title}
@@ -153,12 +153,12 @@ export function HeroCarousel({ heroes }: HeroCarouselProps) {
 
                 {/* Circular Action Buttons */}
                 <div className="flex items-center gap-4 pt-4">
-                  <Link href={`/film/${film.id}`}>
-                    <button className="w-14 h-14 rounded-full bg-primary hover:brightness-90 text-primary-foreground flex items-center justify-center transition-transform hover:scale-110 active:scale-95 shadow-[0_4px_20px_rgba(var(--primary),0.4)]">
+                  <Link href={`/film/${film.id}`} aria-label={`Watch ${film.title}`}>
+                    <button className="w-14 h-14 rounded-full bg-primary hover:brightness-90 text-primary-foreground flex items-center justify-center transition-transform hover:scale-110 active:scale-95 shadow-[0_4px_20px_rgba(var(--primary),0.4)]" aria-label={`Play ${film.title}`}>
                       <Play className="w-6 h-6 fill-current translate-x-0.5" />
                     </button>
                   </Link>
-                  <button className="w-14 h-14 rounded-full bg-[#1b1c21] hover:bg-neutral-700/80 text-white flex items-center justify-center transition-transform hover:scale-110 active:scale-95">
+                  <button className="w-14 h-14 rounded-full bg-[#1b1c21] hover:bg-neutral-700/80 text-white flex items-center justify-center transition-transform hover:scale-110 active:scale-95" aria-label={`Add ${film.title} to watchlist`}>
                     <Bookmark className="w-6 h-6" />
                   </button>
                 </div>

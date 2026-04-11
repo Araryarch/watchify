@@ -64,6 +64,9 @@ export default function HomePage() {
 
   return (
     <main className="min-h-screen bg-[#0b0c0f] pb-20">
+      {/* Visually hidden h1 for SEO and accessibility */}
+      <h1 className="sr-only">Watchify - Streaming Film dan Drama Terbaik</h1>
+      
       <HeroCarousel heroes={heroes} />
 
       {/* Popular Slider */}
@@ -73,7 +76,7 @@ export default function HomePage() {
             {/* Header aligned with cards */}
             <div className="hidden lg:block shrink-0 w-12" />
             <header className="flex-1 flex items-center justify-between mb-4">
-              <Typography variant="h2" className="text-xl md:text-2xl font-bold text-white flex items-center gap-1 hover:text-primary cursor-pointer transition-colors drop-shadow-lg border-0 pb-0">
+              <Typography variant="h3" className="text-xl md:text-2xl font-bold text-white flex items-center gap-1 hover:text-primary cursor-pointer transition-colors drop-shadow-lg border-0 pb-0">
                 Popular on Watchify <ChevronRight className="w-6 h-6 text-neutral-400" aria-hidden="true" />
               </Typography>
             </header>
@@ -127,7 +130,7 @@ export default function HomePage() {
             {/* Header aligned with cards */}
             <div className="hidden lg:block shrink-0 w-12" />
             <header className="flex-1 flex items-center justify-between mb-4">
-              <Typography variant="h2" className="text-xl md:text-2xl font-bold text-white flex items-center gap-1 hover:text-primary cursor-pointer transition-colors border-0 pb-0">
+              <Typography variant="h3" className="text-xl md:text-2xl font-bold text-white flex items-center gap-1 hover:text-primary cursor-pointer transition-colors border-0 pb-0">
                 Trending Sekarang <ChevronRight className="w-6 h-6 text-neutral-400" aria-hidden="true" />
               </Typography>
             </header>

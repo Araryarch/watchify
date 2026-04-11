@@ -18,7 +18,7 @@ export function FilmCard({ film }: FilmCardProps) {
 
       {/* The actual Card container that lives absolutely over the spacer, and scales smoothly out of bounds */}
       <div className="absolute top-0 left-0 w-full transition-all duration-300 ease-out z-10 origin-bottom sm:origin-center group-hover/card:z-[100] group-hover/card:scale-105 group-hover/card:bg-[#1b1c21] group-hover/card:rounded-lg group-hover/card:shadow-[0_10px_40px_rgba(0,0,0,0.9)] outline outline-1 outline-transparent group-hover/card:outline-white/10 flex flex-col">
-          <Link href={`/film/${film.id}`} className="block relative w-full overflow-hidden rounded-md group-hover/card:rounded-b-none group-hover/card:rounded-t-lg bg-[#111216] shadow-sm">
+          <Link href={`/film/${film.id}`} className="block relative w-full overflow-hidden rounded-md group-hover/card:rounded-b-none group-hover/card:rounded-t-lg bg-[#111216] shadow-sm" aria-label={`${film.title} - View details`}>
             <div className="aspect-[4/5] relative w-full overflow-hidden transition-all duration-300 group-hover/card:aspect-[16/15]">
               {film.images && film.images[0] ? (
                 <Image
@@ -69,10 +69,10 @@ export function FilmCard({ film }: FilmCardProps) {
           {/* Expanded Details Panel -> Grows to visible on hover */}
           {/* Note: In Next.js, absolute pointer-events management isn't necessary because we are inside a Link already or wrapping it smartly. 
               The container is absolute itself, so expanding height naturally overlaps beneath cards. */}
-          <Link href={`/film/${film.id}`} className="block relative w-full">
+          <Link href={`/film/${film.id}`} className="block relative w-full" aria-label={`${film.title} - Read synopsis and reviews`}>
             <div className="max-h-0 opacity-0 overflow-hidden transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] group-hover/card:max-h-[300px] group-hover/card:opacity-100">
               <div className="p-3 sm:p-4 bg-[#1b1c21] rounded-b-lg flex flex-col justify-start">
-                 <Typography variant="h3" className="text-base sm:text-[15px] font-bold text-white mb-2 leading-tight line-clamp-1 border-0 pb-0">
+                 <Typography variant="h4" className="text-base sm:text-[15px] font-bold text-white mb-2 leading-tight line-clamp-1 border-0 pb-0">
                    {film.title}
                  </Typography>
 
