@@ -72,7 +72,7 @@ export default function HomePage() {
           <div className="w-full flex items-center gap-2">
             {/* Header aligned with cards */}
             <div className="hidden lg:block shrink-0 w-12" />
-            <header className="flex-1 flex items-center justify-between mb-4 pl-4">
+            <header className="flex-1 flex items-center justify-between mb-4">
               <Typography variant="h2" className="text-xl md:text-2xl font-bold text-white flex items-center gap-1 hover:text-primary cursor-pointer transition-colors drop-shadow-lg border-0 pb-0">
                 Popular on Watchify <ChevronRight className="w-6 h-6 text-neutral-400" aria-hidden="true" />
               </Typography>
@@ -95,7 +95,7 @@ export default function HomePage() {
             </div>
 
             {/* Carousel Content */}
-            <div ref={recScrollRef} onScroll={(e) => onScrollContainer(e, setRecScroll)} role="list" className="flex-1 flex gap-3 md:gap-4 overflow-x-auto scrollbar-hide scroll-smooth pt-10 pb-48 -mb-40 pl-4" style={{ scrollSnapType: 'x mandatory' }}>
+            <div ref={recScrollRef} onScroll={(e) => onScrollContainer(e, setRecScroll)} role="list" className="flex-1 flex gap-3 md:gap-4 overflow-x-auto scrollbar-hide scroll-smooth pt-10 pb-48 -mb-40" style={{ scrollSnapType: 'x mandatory' }}>
               {filmsData?.data?.map((film: any) => (
                 <div role="listitem" key={film.id || film.title} className="shrink-0 w-[140px] sm:w-[160px] md:w-[170px] lg:w-[190px]" style={{ scrollSnapAlign: 'start', scrollSnapStop: 'always' }}>
                   <FilmCard film={film} />
@@ -126,7 +126,7 @@ export default function HomePage() {
           <div className="w-full flex items-center gap-2">
             {/* Header aligned with cards */}
             <div className="hidden lg:block shrink-0 w-12" />
-            <header className="flex-1 flex items-center justify-between mb-4 pl-4">
+            <header className="flex-1 flex items-center justify-between mb-4">
               <Typography variant="h2" className="text-xl md:text-2xl font-bold text-white flex items-center gap-1 hover:text-primary cursor-pointer transition-colors border-0 pb-0">
                 Trending Sekarang <ChevronRight className="w-6 h-6 text-neutral-400" aria-hidden="true" />
               </Typography>
@@ -149,7 +149,7 @@ export default function HomePage() {
             </div>
 
             {/* Carousel Content */}
-            <div ref={trendScrollRef} onScroll={(e) => onScrollContainer(e, setTrendScroll)} role="list" className="flex-1 flex gap-3 md:gap-4 overflow-x-auto scrollbar-hide scroll-smooth pt-10 pb-48 -mb-40 pl-4" style={{ scrollSnapType: 'x mandatory' }}>
+            <div ref={trendScrollRef} onScroll={(e) => onScrollContainer(e, setTrendScroll)} role="list" className="flex-1 flex gap-3 md:gap-4 overflow-x-auto scrollbar-hide scroll-smooth pt-10 pb-48 -mb-40" style={{ scrollSnapType: 'x mandatory' }}>
               {filmsData?.data?.slice().reverse().map((film: any) => (
                 <div role="listitem" key={film.id || film.title} className="shrink-0 w-[140px] sm:w-[160px] md:w-[170px] lg:w-[190px]" style={{ scrollSnapAlign: 'start', scrollSnapStop: 'always' }}>
                   <FilmCard film={film} />

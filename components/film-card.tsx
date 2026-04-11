@@ -9,15 +9,6 @@ interface FilmCardProps {
 }
 
 export function FilmCard({ film }: FilmCardProps) {
-  let topBadge = '';
-  if (film.average_rating !== undefined && film.average_rating >= 8.5) {
-     topBadge = 'TOP 10';
-  } else if (film.airing_status === 'airing') {
-     topBadge = 'Watchify Only';
-  } else {
-     topBadge = 'Original';
-  }
-
   return (
     <div className="relative w-full group/card shrink-0">
       {/* Spacer to maintain the grid/carousel cell width & height so the layout doesn't break */}
@@ -43,10 +34,6 @@ export function FilmCard({ film }: FilmCardProps) {
               ) : (
                 <div className="w-full h-full bg-neutral-900" />
               )}
-              
-              <div className="absolute top-0 right-0 px-2 py-1 bg-primary text-primary-foreground text-[10px] font-bold z-10 rounded-bl-lg transition-all">
-                {topBadge}
-              </div>
 
               {/* Bottom Gradient overlay */}
               <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/90 to-transparent z-0 transition-opacity duration-300 group-hover/card:opacity-0"></div>
