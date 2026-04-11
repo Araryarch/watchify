@@ -77,7 +77,7 @@ export function DesktopNav({
                     >
                       <Tag className="w-4 h-4" />
                       Lihat Semua Genre
-                      <ChevronRight className="w-4 h-4" />
+                      <ChevronRight className="w-4 h-4" aria-hidden="true" />
                     </Link>
                   </div>
                 </div>

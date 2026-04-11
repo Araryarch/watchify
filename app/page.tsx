@@ -115,7 +115,7 @@ export default function HomePage() {
                   aria-label="Geser kanan" 
                   className="w-12 h-20 flex items-center justify-center text-white/40 hover:text-white transition-colors"
                 >
-                  <ChevronRight className="w-8 h-8" />
+                  <ChevronRight className="w-8 h-8" aria-hidden="true" />
                 </button>
               )}
             </div>
@@ -169,7 +169,7 @@ export default function HomePage() {
                   aria-label="Geser kanan" 
                   className="w-12 h-20 flex items-center justify-center text-white/40 hover:text-white transition-colors"
                 >
-                  <ChevronRight className="w-8 h-8" />
+                  <ChevronRight className="w-8 h-8" aria-hidden="true" />
                 </button>
               )}
             </div>

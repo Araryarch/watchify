@@ -113,7 +113,7 @@ export function FilmCard({ film }: FilmCardProps) {
                  {/* More info link */}
                  <div className="text-right mt-1">
                    <span className="inline-flex items-center text-[11px] text-primary font-medium hover:underline">
-                      more info <ChevronRight className="w-3 h-3" />
+                      more info <ChevronRight className="w-3 h-3" aria-hidden="true" />
                    </span>
                  </div>
               </div>

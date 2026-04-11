@@ -146,7 +146,7 @@ export default function RegisterPage() {
               className="w-full mt-4 bg-primary text-black font-bold py-3.5 rounded-lg hover:brightness-90 transition-all flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_4px_15px_rgba(var(--primary),0.3)] hover:shadow-[0_6px_20px_rgba(var(--primary),0.4)]"
             >
               {isRegistering ? 'Memproses...' : 'Buat Akun'}
-              {!isRegistering && <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />}
+              {!isRegistering && <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" aria-hidden="true" />}
             </button>
           </form>
 
