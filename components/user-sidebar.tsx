@@ -14,67 +14,39 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { LayoutDashboardIcon, FilmIcon, UsersIcon, TagIcon, ListIcon, MessageSquareIcon, UserIcon } from "lucide-react"
+import { LayoutDashboardIcon, ListIcon, MessageSquareIcon, UserIcon } from "lucide-react"
 import { useMe } from "@/lib/hooks/useAuth"
 
 const data = {
   navMain: [
     {
-      title: "Beranda Dashboard",
-      url: "/dashboard/admin",
-      icon: (
-        <LayoutDashboardIcon
-        />
-      ),
+      title: "Dashboard",
+      url: "/dashboard/user",
+      icon: <LayoutDashboardIcon />,
     },
     {
-      title: "Film & Tayangan",
-      url: "/dashboard/admin/films",
-      icon: (
-        <FilmIcon
-        />
-      ),
+      title: "My Film Lists",
+      url: "/dashboard/user/film-lists",
+      icon: <ListIcon />,
     },
     {
-      title: "Genre",
-      url: "/dashboard/admin/genres",
-      icon: (
-        <TagIcon
-        />
-      ),
-    },
-    {
-      title: "Film Lists",
-      url: "/dashboard/admin/film-lists",
-      icon: (
-        <ListIcon
-        />
-      ),
-    },
-    {
-      title: "Reviews",
-      url: "/dashboard/admin/reviews",
-      icon: (
-        <MessageSquareIcon
-        />
-      ),
+      title: "My Reviews",
+      url: "/dashboard/user/reviews",
+      icon: <MessageSquareIcon />,
     },
     {
       title: "Profile",
-      url: "/dashboard/admin/profile",
-      icon: (
-        <UserIcon
-        />
-      ),
+      url: "/dashboard/user/profile",
+      icon: <UserIcon />,
     },
   ],
 }
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function UserSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { data: userData } = useMe();
   const personalInfo = userData?.data?.personal_info;
-  const userName = personalInfo?.display_name || personalInfo?.username || "Admin";
-  const userEmail = personalInfo?.email || "admin@watchify.com";
+  const userName = personalInfo?.display_name || personalInfo?.username || "User";
+  const userEmail = personalInfo?.email || "user@watchify.com";
   
   return (
     <Sidebar collapsible="offcanvas" {...props}>

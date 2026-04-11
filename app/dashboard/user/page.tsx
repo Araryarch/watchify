@@ -8,16 +8,16 @@ import { Typography } from '@/components/ui/typography';
 
 export default function UserDashboardPage() {
   const { data: userData } = useMe();
-  const user = userData?.data?.personal_info;
-  const userId = userData?.data?.personal_info?.id;
+  const user = userData?.data;
+  const userId = userData?.data?.id;
   
   // Get detailed user data including film_lists and reviews
   const { data: userDetailData } = useUserDetail(userId || '');
   const userDetail = userDetailData?.data;
 
   return (
-    <div className="min-h-screen pt-24 pb-12 font-sans text-white px-4 lg:px-8 max-w-7xl mx-auto">
-      <div className="mb-10">
+    <div className="min-h-screen pb-12 font-sans text-white px-4 lg:px-8 max-w-7xl mx-auto">
+      <div className="mb-10 pt-8">
         <Typography variant="h2" className="text-3xl font-black mb-2 border-0 pb-0">Halo, {user?.display_name || user?.username}!</Typography>
         <Typography variant="p" className="text-neutral-400 mt-0">Selamat datang di panel dashboard personal Anda.</Typography>
       </div>
