@@ -467,34 +467,6 @@ export default function AboutPage() {
               </Magnetic>
             </div>
           </motion.div>
-            <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.4em] text-[var(--muted-foreground)] font-medium mb-10">
-              The next chapter starts with you
-            </span>
-
-            <h2 className="text-[clamp(2.2rem,6vw,6.5rem)] font-black leading-[0.92] tracking-[-0.045em] mb-8">
-              Ready to
-              <br />
-              <span className="text-primary">press play?</span>
-            </h2>
-
-            <p className="text-base md:text-lg text-[var(--muted-foreground)] max-w-lg mx-auto mb-12 leading-relaxed">
-              Join 10 million people who chose a smarter, more beautiful way to experience cinema.
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Magnetic>
-                <Link href="/register" className="group inline-flex items-center justify-center gap-2 px-8 py-4 bg-primary text-primary-foreground font-bold rounded-full transition-shadow text-sm hover:shadow-[0_0_40px_rgba(0,220,116,0.35)]">
-                  Start Watching Free
-                  <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-                </Link>
-              </Magnetic>
-              <Magnetic>
-                <Link href="/films" className="inline-flex items-center justify-center gap-2 px-8 py-4 font-semibold rounded-full transition-colors text-sm border border-[var(--border)] hover:border-[var(--foreground)]/30 hover:bg-[var(--foreground)]/[0.03]">
-                  Browse Catalog
-                </Link>
-              </Magnetic>
-            </div>
-          </motion.div>
         </div>
       </section>
     </div>
