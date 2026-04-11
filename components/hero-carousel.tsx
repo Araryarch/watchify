@@ -113,7 +113,7 @@ export function HeroCarousel({ heroes }: HeroCarouselProps) {
                   )}
                   {film.average_rating > 0 && <span className="text-neutral-300">|</span>}
                   <span>
-                    {film.release_date
+                    {film.release_date && !isNaN(new Date(film.release_date).getTime())
                       ? new Date(film.release_date).getFullYear()
                       : new Date().getFullYear()}
                   </span>

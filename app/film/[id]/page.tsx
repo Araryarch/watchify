@@ -17,6 +17,12 @@ import {
   Star, Calendar, Film as FilmIcon, Play, BookmarkPlus,
   Send, ThumbsUp, ThumbsDown
 } from 'lucide-react';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 
 import { FilmDetailSkeleton } from '@/components/skeleton-loader';
 

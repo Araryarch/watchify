@@ -17,6 +17,12 @@ import {
   Star, Film as FilmIcon, MessageSquare, Clock, List,
   Send, ThumbsUp, ThumbsDown
 } from 'lucide-react';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 
 // ─── Review Components ────────────────────────────────────────────────────────
 
@@ -238,36 +244,57 @@ function ReviewSection({ filmId, reviews }: { filmId: string; reviews?: any[] })
                 
                 {/* Reaction buttons */}
                 <div className="flex items-center gap-3 pt-2 border-t border-white/5">
-                  <button
-                    onClick={() => handleReaction(review, 'like')}
-                    disabled={!token}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border transition-colors text-xs sm:text-sm ${
-                      getUserReaction(review)?.status === 'like'
-                        ? 'bg-primary/10 border-primary/30 text-primary'
-                        : !token
-                        ? 'bg-white/5 border-white/10 text-neutral-600 cursor-not-allowed opacity-50'
-                        : 'bg-white/5 hover:bg-white/10 border-white/10 text-neutral-400'
-                    }`}
-                    title={!token ? 'Login untuk memberi reaksi' : ''}
-                  >
-                    <ThumbsUp className="w-3.5 h-3.5" />
-                    <span>{getReactionCounts(review).likes}</span>
-                  </button>
-                  <button
-                    onClick={() => handleReaction(review, 'dislike')}
-                    disabled={!token}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border transition-colors text-xs sm:text-sm ${
-                      getUserReaction(review)?.status === 'dislike'
-                        ? 'bg-red-500/10 border-red-500/30 text-red-400'
-                        : !token
-                        ? 'bg-white/5 border-white/10 text-neutral-600 cursor-not-allowed opacity-50'
-                        : 'bg-white/5 hover:bg-white/10 border-white/10 text-neutral-400'
-                    }`}
-                    title={!token ? 'Login untuk memberi reaksi' : ''}
-                  >
-                    <ThumbsDown className="w-3.5 h-3.5" />
-                    <span>{getReactionCounts(review).dislikes}</span>
-                  </button>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <button
+                          onClick={() => handleReaction(review, 'like')}
+                          disabled={!token}
+                          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border transition-colors text-xs sm:text-sm ${
+                            getUserReaction(review)?.status === 'like'
+                              ? 'bg-primary/10 border-primary/30 text-primary'
+                              : !token
+                              ? 'bg-white/5 border-white/10 text-neutral-600 cursor-not-allowed opacity-50'
+                              : 'bg-white/5 hover:bg-white/10 border-white/10 text-neutral-400'
+                          }`}
+                        >
+                          <ThumbsUp className="w-3.5 h-3.5" />
+                          <span>{getReactionCounts(review).likes}</span>
+                        </button>
+                      </TooltipTrigger>
+                      {!token && (
+                        <TooltipContent>
+                          <p>Login untuk memberi reaksi</p>
+                        </TooltipContent>
+                      )}
+                    </Tooltip>
+                  </TooltipProvider>
+
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <button
+                          onClick={() => handleReaction(review, 'dislike')}
+                          disabled={!token}
+                          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border transition-colors text-xs sm:text-sm ${
+                            getUserReaction(review)?.status === 'dislike'
+                              ? 'bg-red-500/10 border-red-500/30 text-red-400'
+                              : !token
+                              ? 'bg-white/5 border-white/10 text-neutral-600 cursor-not-allowed opacity-50'
+                              : 'bg-white/5 hover:bg-white/10 border-white/10 text-neutral-400'
+                          }`}
+                        >
+                          <ThumbsDown className="w-3.5 h-3.5" />
+                          <span>{getReactionCounts(review).dislikes}</span>
+                        </button>
+                      </TooltipTrigger>
+                      {!token && (
+                        <TooltipContent>
+                          <p>Login untuk memberi reaksi</p>
+                        </TooltipContent>
+                      )}
+                    </Tooltip>
+                  </TooltipProvider>
                 </div>
               </div>
             ))}
