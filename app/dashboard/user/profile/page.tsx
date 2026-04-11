@@ -3,8 +3,9 @@
 import { useMe } from '@/lib/hooks/useAuth';
 import { User, Mail, Shield, FileText } from 'lucide-react';
 import { Typography } from '@/components/ui/typography';
+import { Card } from '@/components/ui/card';
 
-export default function UserProfilePage() {
+export default function AdminProfilePage() {
   const { data: userData } = useMe();
   const personalInfo = userData?.data?.personal_info;
 
