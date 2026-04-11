@@ -121,6 +121,7 @@ function StarRating({ value, onChange }: { value: number; onChange: (v: number) 
           onMouseEnter={() => setHover(n)}
           onMouseLeave={() => setHover(0)}
           onClick={() => onChange(n)}
+          aria-label={`Rate ${n} out of 10`}
           className="transition-transform hover:scale-110"
         >
           <Star
@@ -237,12 +238,12 @@ function ReviewSection({ filmId, reviews }: { filmId: string; reviews?: any[] })
           <h3 className="text-white font-bold text-base sm:text-lg">Tulis Ulasan</h3>
 
           <div>
-            <label className="block text-xs sm:text-sm text-neutral-400 mb-2 font-medium">Rating kamu</label>
+            <label className="block text-xs sm:text-sm text-neutral-300 mb-2 font-medium">Rating kamu</label>
             <StarRating value={rating} onChange={setRating} />
           </div>
 
           <div>
-            <label className="block text-xs sm:text-sm text-neutral-400 mb-2 font-medium">Komentar</label>
+            <label className="block text-xs sm:text-sm text-neutral-300 mb-2 font-medium">Komentar</label>
             <textarea
               {...register('comment', { required: true })}
               rows={3}
@@ -514,15 +515,15 @@ export default function FilmDetailPage() {
               <h3 className="text-white font-bold text-base sm:text-lg mb-3 sm:mb-4">Info Tayangan</h3>
               <div className="space-y-2.5 sm:space-y-3 text-xs sm:text-sm">
                 <div className="flex justify-between">
-                  <span className="text-neutral-500">Status</span>
+                  <span className="text-neutral-300">Status</span>
                   <span className="text-white font-medium">{AIRING_STATUS_MAP[film.airing_status]}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-neutral-500">Total Episode</span>
+                  <span className="text-neutral-300">Total Episode</span>
                   <span className="text-white font-medium">{film.total_episodes} EPS</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-neutral-500">Rilis</span>
+                  <span className="text-neutral-300">Rilis</span>
                   <span className="text-white font-medium">
                     {film.release_date
                       ? formatDate(film.release_date, 'id-ID')
@@ -531,7 +532,7 @@ export default function FilmDetailPage() {
                 </div>
                 {film.average_rating > 0 && (
                   <div className="flex justify-between">
-                    <span className="text-neutral-500">Rating</span>
+                    <span className="text-neutral-300">Rating</span>
                     <span className="text-yellow-400 font-bold">{film.average_rating.toFixed(1)} / 10</span>
                   </div>
                 )}

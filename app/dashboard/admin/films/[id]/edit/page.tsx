@@ -142,7 +142,7 @@ export default function EditFilmPage() {
               <label className="block text-sm font-bold text-neutral-300 mb-2">Pilih Kategori (Genre)</label>
               <div className="flex flex-wrap gap-2">
                 {genresData?.data?.map((genre: any) => (
-                  <button type="button" key={genre.id} onClick={() => toggleGenre(genre.id)} className={`px-4 py-2 rounded-lg text-sm font-medium border transition-all ${selectedGenres.includes(genre.id) ? 'bg-[#00dc74] border-[#00dc74] text-black shadow-[0_0_10px_rgba(0,220,116,0.3)]' : 'bg-[#0b0c0f] border-white/10 text-neutral-400 hover:border-[#00dc74]/50'}`}>
+                  <button type="button" key={genre.id} onClick={() => toggleGenre(genre.id)} aria-label={`Toggle ${genre.name} genre`} aria-pressed={selectedGenres.includes(genre.id)} className={`px-4 py-2 rounded-lg text-sm font-medium border transition-all ${selectedGenres.includes(genre.id) ? 'bg-[#00dc74] border-[#00dc74] text-black shadow-[0_0_10px_rgba(0,220,116,0.3)]' : 'bg-[#0b0c0f] border-white/10 text-neutral-400 hover:border-[#00dc74]/50'}`}>
                     {genre.name}
                   </button>
                 ))}

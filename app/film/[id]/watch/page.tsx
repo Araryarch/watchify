@@ -70,6 +70,7 @@ function StarRating({ value, onChange }: { value: number; onChange: (v: number) 
           onMouseEnter={() => setHover(n)}
           onMouseLeave={() => setHover(0)}
           onClick={() => onChange(n)}
+          aria-label={`Rate ${n} out of 10`}
           className="transition-transform hover:scale-110"
         >
           <Star
@@ -194,12 +195,12 @@ function ReviewSection({ filmId, reviews }: { filmId: string; reviews?: any[] })
           <h3 className="text-white font-bold text-base sm:text-lg">Tulis Ulasan</h3>
 
           <div>
-            <label className="block text-xs sm:text-sm text-neutral-400 mb-2 font-medium">Rating kamu</label>
+            <label className="block text-xs sm:text-sm text-neutral-300 mb-2 font-medium">Rating kamu</label>
             <StarRating value={rating} onChange={setRating} />
           </div>
 
           <div>
-            <label className="block text-xs sm:text-sm text-neutral-400 mb-2 font-medium">Komentar</label>
+            <label className="block text-xs sm:text-sm text-neutral-300 mb-2 font-medium">Komentar</label>
             <textarea
               {...register('comment', { required: true })}
               rows={3}
@@ -323,6 +324,8 @@ function EpisodeGrid({ total, current, filmId }: { total: number; current: numbe
           <button
             key={ep}
             onClick={() => router.push(`/film/${filmId}/watch?ep=${ep}`)}
+            aria-label={`Episode ${ep}`}
+            aria-current={isCurrent ? 'true' : undefined}
             className={`
               aspect-square rounded-lg text-xs font-bold flex items-center justify-center
               border transition-all
@@ -350,6 +353,15 @@ function VideoPlayer({ posterUrl, title, episode }: { posterUrl?: string; title:
       className="relative w-full bg-black overflow-hidden group cursor-pointer"
       style={{ aspectRatio: '16/9' }}
       onClick={() => setPlaying(p => !p)}
+      role="button"
+      aria-label={playing ? `Pause ${title} Episode ${episode}` : `Play ${title} Episode ${episode}`}
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          setPlaying(p => !p);
+        }
+      }}
     >
       {/* Poster / backdrop */}
       {posterUrl && (
@@ -613,6 +625,7 @@ function ActionButton({ icon, label, onClick }: { icon: React.ReactNode; label: 
   return (
     <button
       onClick={onClick}
+      aria-label={label}
       className="flex items-center gap-2 px-3 py-2 text-neutral-400 hover:text-white text-xs font-medium rounded-lg hover:bg-white/5 transition-all"
     >
       {icon}
