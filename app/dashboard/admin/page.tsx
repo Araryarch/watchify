@@ -2,6 +2,7 @@
 
 import { SectionCards } from "@/components/section-cards"
 import { Typography } from "@/components/ui/typography"
+import { ChartFilmStatus } from "@/components/chart-film-status"
 
 export default function Page() {
   return (
@@ -15,7 +16,10 @@ export default function Page() {
         {/* Stats Cards */}
         <SectionCards />
 
-        {/* Note: Chart removed - waiting for real analytics data from backend */}
+        {/* Chart */}
+        <div className="mt-4">
+          <ChartFilmStatus />
+        </div>
       </div>
     </div>
   )

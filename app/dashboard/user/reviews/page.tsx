@@ -128,6 +128,7 @@ export default function ReviewsPage() {
           </TableBody>
         </Table>
       </div>
+      </div>
     </div>
   );
 }

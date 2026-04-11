@@ -2,10 +2,17 @@
 
 import { useMe } from '@/lib/hooks/useAuth';
 import { useUserDetail } from '@/lib/hooks/useUsers';
-import { Film, Trash2, Eye, EyeOff } from 'lucide-react';
+import { Film, Trash2 } from 'lucide-react';
 import { Typography } from '@/components/ui/typography';
 import { toast } from 'sonner';
 import { useUpdateFilmListVisibility } from '@/lib/hooks/useFilmLists';
+import { Switch } from '@/components/ui/switch';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 import {
   Table,
   TableBody,
@@ -32,26 +39,8 @@ const STATUS_COLORS: Record<string, string> = {
 export default function AdminFilmListsPage() {
   const { data: userData } = useMe();
   const userId = userData?.data?.personal_info?.id;
-  const { data: userDetailData, isLoading, refetch } = useUserDetail(userId || '');
+  const { data: userDetailData, isLoading } = useUserDetail(userId || '');
   const filmLists = userDetailData?.data?.film_lists || [];
-  const { mutate: updateVisibility, isPending: isUpdatingVisibility } = useUpdateFilmListVisibility();
-
-  const handleToggleVisibility = (filmListId: string, currentVisibility: string) => {
-    const newVisibility = currentVisibility === 'public' ? 'private' : 'public';
-    
-    updateVisibility(
-      { id: filmListId, payload: { visibility: newVisibility } },
-      {
-        onSuccess: () => {
-          toast.success(`Film list sekarang ${newVisibility === 'public' ? 'publik' : 'privat'}`);
-          refetch(); // Refetch data tanpa reload
-        },
-        onError: (e: any) => {
-          toast.error(e.response?.data?.message || 'Gagal mengubah visibility');
-        },
-      }
-    );
-  };
 
   return (
     <div className="flex-1 w-full bg-[#0b0c0f] font-sans text-white p-4 sm:p-6 lg:p-8 min-h-full">
@@ -137,29 +126,25 @@ export default function AdminFilmListsPage() {
                       </span>
                     </TableCell>
                     <TableCell className="py-4">
-                      <button
-                        onClick={() => handleToggleVisibility(item.id, item.visibility || 'private')}
-                        disabled={isUpdatingVisibility}
-                        className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold border transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                        aria-label={`Toggle visibility to ${item.visibility === 'public' ? 'private' : 'public'}`}
-                        style={{
-                          backgroundColor: item.visibility === 'public' ? 'rgba(0, 220, 116, 0.1)' : 'rgba(255, 255, 255, 0.05)',
-                          color: item.visibility === 'public' ? '#00dc74' : '#a3a3a3',
-                          borderColor: item.visibility === 'public' ? 'rgba(0, 220, 116, 0.2)' : 'rgba(255, 255, 255, 0.1)',
-                        }}
-                      >
-                        {item.visibility === 'public' ? (
-                          <>
-                            <Eye className="w-3.5 h-3.5" />
-                            Public
-                          </>
-                        ) : (
-                          <>
-                            <EyeOff className="w-3.5 h-3.5" />
-                            Private
-                          </>
-                        )}
-                      </button>
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <div className="flex items-center gap-3">
+                              <Switch
+                                checked={item.visibility === 'public'}
+                                disabled={true}
+                                aria-label="Toggle visibility"
+                              />
+                              <span className="text-sm text-neutral-400">
+                                {item.visibility === 'public' ? 'Public' : 'Private'}
+                              </span>
+                            </div>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>This feature is coming soon</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
                     </TableCell>
                     <TableCell className="py-4 text-right">
                       <button 
