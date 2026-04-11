@@ -25,12 +25,12 @@ export function FilmCard({ film }: FilmCardProps) {
       <div className="pt-[140%] md:pt-[135%] w-full pointer-events-none" />
 
       {/* The actual Card container that lives absolutely over the spacer, and scales smoothly out of bounds */}
-      <div className="absolute top-0 left-0 w-full transition-all duration-300 ease-out z-10 origin-bottom sm:origin-center group-hover/card:z-[100] group-hover/card:scale-[1.15] group-hover/card:bg-[#1b1c21] group-hover/card:rounded-lg group-hover/card:shadow-[0_10px_40px_rgba(0,0,0,0.9)] outline outline-1 outline-transparent group-hover/card:outline-white/10 flex flex-col">
+      <div className="absolute top-0 left-0 w-full transition-all duration-300 ease-out z-10 origin-bottom sm:origin-center group-hover/card:z-[100] group-hover/card:scale-105 group-hover/card:bg-[#1b1c21] group-hover/card:rounded-lg group-hover/card:shadow-[0_10px_40px_rgba(0,0,0,0.9)] outline outline-1 outline-transparent group-hover/card:outline-white/10 flex flex-col">
           <Link href={`/film/${film.id}`} className="block relative w-full overflow-hidden rounded-md group-hover/card:rounded-b-none group-hover/card:rounded-t-lg bg-[#111216] shadow-sm">
             <div className="aspect-[4/5] relative w-full overflow-hidden transition-all duration-300 group-hover/card:aspect-[16/15]">
               {film.images && film.images[0] ? (
                 <Image
-                  src={`https://film-management-api.labse.id/uploads/${film.images[0]}`}
+                  src={`https://film-management-api.labse.id/api/static/${film.images[0]}`}
                   alt={film.title}
                   fill
                   sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"

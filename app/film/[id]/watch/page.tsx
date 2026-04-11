@@ -20,36 +20,30 @@ import {
 
 // ─── Review Components ────────────────────────────────────────────────────────
 
-function ReviewUserInfo({ userId }: { userId: string }) {
-  const { data: userData } = useUserDetail(userId);
-  const user = userData?.data;
-
+function ReviewUserInfo({ user }: { user: any }) {
   if (!user) {
     return (
       <div className="flex items-center gap-2">
         <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#00dc74]/20 border border-[#00dc74]/30 flex items-center justify-center">
-          <span className="text-[#00dc74] font-bold text-sm sm:text-base">
-            {userId.substring(0, 2).toUpperCase()}
-          </span>
+          <span className="text-[#00dc74] font-bold text-sm sm:text-base">U</span>
         </div>
         <div>
-          <p className="text-white font-medium text-sm sm:text-base">Loading...</p>
+          <p className="text-white font-medium text-sm sm:text-base">Anonymous</p>
         </div>
       </div>
     );
   }
 
+  const displayName = user.personal_info?.display_name || user.personal_info?.username || 'Anonymous';
+  const initials = displayName.substring(0, 2).toUpperCase();
+
   return (
     <div className="flex items-center gap-2">
       <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#00dc74]/20 border border-[#00dc74]/30 flex items-center justify-center">
-        <span className="text-[#00dc74] font-bold text-sm sm:text-base">
-          {(user.personal_info?.display_name || user.personal_info?.username || 'U').substring(0, 2).toUpperCase()}
-        </span>
+        <span className="text-[#00dc74] font-bold text-sm sm:text-base">{initials}</span>
       </div>
       <div>
-        <p className="text-white font-medium text-sm sm:text-base">
-          {user.personal_info?.display_name || user.personal_info?.username || 'Anonymous'}
-        </p>
+        <p className="text-white font-medium text-sm sm:text-base">{displayName}</p>
         {user.personal_info?.bio && (
           <p className="text-neutral-500 text-xs truncate max-w-[200px]">{user.personal_info.bio}</p>
         )}
@@ -89,34 +83,13 @@ function StarRating({ value, onChange }: { value: number; onChange: (v: number) 
 
 function ReviewSection({ filmId, reviews }: { filmId: string; reviews?: any[] }) {
   const { token } = useAuthStore();
+  const { data: meData } = useMe();
+  const currentUserId = meData?.data?.id;
   const { register, handleSubmit, reset, formState } = useForm<{ comment: string }>();
   const [rating, setRating] = useState(0);
   const { mutate: createReview, isPending } = useCreateReview(filmId);
   const { mutate: createReaction } = useCreateReaction();
   const { mutate: updateReaction } = useUpdateReaction();
-  
-  // Track user reactions locally (persisted in sessionStorage)
-  const [localReactions, setLocalReactions] = useState<Record<string, { id: string; status: 'like' | 'dislike' }>>(() => {
-    if (typeof window !== 'undefined') {
-      const stored = sessionStorage.getItem(`reactions_${filmId}`);
-      return stored ? JSON.parse(stored) : {};
-    }
-    return {};
-  });
-
-  // Track reviews that user already reacted to (but we don't have the ID)
-  const [alreadyReacted, setAlreadyReacted] = useState<Set<string>>(new Set());
-
-  // Track optimistic reaction counts
-  const [optimisticCounts, setOptimisticCounts] = useState<Record<string, { likes: number; dislikes: number }>>({});
-
-  // Save to sessionStorage whenever localReactions changes
-  const updateLocalReactions = (newReactions: Record<string, { id: string; status: 'like' | 'dislike' }>) => {
-    setLocalReactions(newReactions);
-    if (typeof window !== 'undefined') {
-      sessionStorage.setItem(`reactions_${filmId}`, JSON.stringify(newReactions));
-    }
-  };
 
   const onSubmit = (data: { comment: string }) => {
     if (rating === 0) {
@@ -137,75 +110,56 @@ function ReviewSection({ filmId, reviews }: { filmId: string; reviews?: any[] })
     );
   };
 
-  const getReactionCounts = (review: any) => {
-    if (optimisticCounts[review.id]) {
-      return optimisticCounts[review.id];
-    }
-    return {
-      likes: review.likes || 0,
-      dislikes: review.dislikes || 0
-    };
+  // Get user's existing reaction for a review
+  const getUserReaction = (review: any) => {
+    if (!currentUserId || !review.reactions) return null;
+    return review.reactions.find((r: any) => r.user_id === currentUserId);
   };
 
   const handleReaction = (review: any, status: 'like' | 'dislike') => {
-    if (!token) {
+    if (!token || !currentUserId) {
       toast.error('Login terlebih dahulu untuk memberi reaksi');
       return;
     }
 
-    // Check if user already reacted (either locally or from previous session)
-    if (alreadyReacted.has(review.id)) {
-      toast.info('Anda sudah memberi reaksi pada ulasan ini');
-      return;
-    }
-
-    const localReaction = localReactions[review.id];
+    const existingReaction = getUserReaction(review);
     
-    if (localReaction) {
-      toast.info('Anda sudah memberi reaksi pada ulasan ini');
-      return;
-    }
-    
-    // Optimistic update: increment count immediately
-    const currentCounts = getReactionCounts(review);
-    const newCounts = {
-      likes: status === 'like' ? currentCounts.likes + 1 : currentCounts.likes,
-      dislikes: status === 'dislike' ? currentCounts.dislikes + 1 : currentCounts.dislikes,
-    };
-    setOptimisticCounts(prev => ({ ...prev, [review.id]: newCounts }));
-    
-    // Create new reaction
-    createReaction(
-      { review_id: review.id, status },
-      {
-        onSuccess: () => {
-          toast.success(status === 'like' ? 'Disukai' : 'Tidak disukai');
-          // Store that user reacted (without ID since API doesn't return it)
-          updateLocalReactions({
-            ...localReactions,
-            [review.id]: { id: 'local', status }
-          });
-        },
-        onError: (e: any) => {
-          // Revert optimistic update on error
-          setOptimisticCounts(prev => {
-            const newCounts = { ...prev };
-            delete newCounts[review.id];
-            return newCounts;
-          });
-          
-          const errorMsg = e.response?.data?.error || e.response?.data?.message || '';
-          
-          // If user already reacted in a previous session
-          if (errorMsg.includes('already reacted')) {
-            setAlreadyReacted(prev => new Set(prev).add(review.id));
-            toast.info('Anda sudah memberi reaksi, reaksi hanya bisa dilakukan sekali pada 1 review');
-          } else {
-            toast.error(errorMsg || 'Gagal memberi reaksi');
-          }
-        },
+    if (existingReaction) {
+      // User already reacted, update the reaction
+      if (existingReaction.status === status) {
+        toast.info('Anda sudah memberi reaksi ini');
+        return;
       }
-    );
+      
+      // Update to different reaction
+      updateReaction(
+        { id: existingReaction.id, status },
+        {
+          onSuccess: () => {
+            toast.success(status === 'like' ? 'Diubah ke suka' : 'Diubah ke tidak suka');
+            // Refresh will happen automatically via react-query
+          },
+          onError: (e: any) => {
+            toast.error(e.response?.data?.error || 'Gagal mengubah reaksi');
+          },
+        }
+      );
+    } else {
+      // Create new reaction
+      createReaction(
+        { review_id: review.id, status },
+        {
+          onSuccess: () => {
+            toast.success(status === 'like' ? 'Disukai' : 'Tidak disukai');
+            // Refresh will happen automatically via react-query
+          },
+          onError: (e: any) => {
+            const errorMsg = e.response?.data?.error || e.response?.data?.message || '';
+            toast.error(errorMsg || 'Gagal memberi reaksi');
+          },
+        }
+      );
+    }
   };
 
   return (
@@ -262,7 +216,7 @@ function ReviewSection({ filmId, reviews }: { filmId: string; reviews?: any[] })
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
-                      <ReviewUserInfo userId={review.user_id} />
+                      <ReviewUserInfo user={review.user} />
                     </div>
                     <div className="flex items-center gap-1 mb-2">
                       {Array.from({ length: review.rating }).map((_, i) => (
@@ -459,7 +413,7 @@ function WatchPageInner() {
   }
 
   const posterUrl = film.images?.[0]
-    ? `https://film-management-api.labse.id/uploads/${film.images[0]}`
+    ? `https://film-management-api.labse.id/api/static/${film.images[0]}`
     : undefined;
 
   const statusMap: Record<string, string> = {

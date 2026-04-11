@@ -11,7 +11,7 @@ interface DropzoneUploaderProps {
   uploadBaseUrl?: string;
 }
 
-export function DropzoneUploader({ onChange, existingImages = [], uploadBaseUrl = 'https://film-management-api.labse.id/uploads/' }: DropzoneUploaderProps) {
+export function DropzoneUploader({ onChange, existingImages = [], uploadBaseUrl = 'https://film-management-api.labse.id/api/static/' }: DropzoneUploaderProps) {
   const [previews, setPreviews] = useState<{ url: string; file: File }[]>([]);
 
   const onDrop = useCallback((acceptedFiles: File[]) => {

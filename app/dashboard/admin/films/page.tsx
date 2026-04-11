@@ -81,7 +81,7 @@ export default function DashboardFilmsPage() {
             {film.images?.[0] ? (
               <div className="relative w-12 h-16 rounded-md overflow-hidden shadow-md bg-black/50">
                 <Image
-                  src={`https://film-management-api.labse.id/uploads/${film.images[0]}`}
+                  src={`https://film-management-api.labse.id/api/static/${film.images[0]}`}
                   alt={film.title}
                   fill
                   sizes="48px"
@@ -201,7 +201,7 @@ export default function DashboardFilmsPage() {
                       {film.images?.[0] ? (
                         <div className="relative w-16 h-20 rounded-md overflow-hidden shadow-md bg-black/50 flex-shrink-0">
                           <Image
-                            src={`https://film-management-api.labse.id/uploads/${film.images[0]}`}
+                            src={`https://film-management-api.labse.id/api/static/${film.images[0]}`}
                             alt={film.title}
                             fill
                             sizes="64px"

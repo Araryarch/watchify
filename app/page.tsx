@@ -47,8 +47,16 @@ export default function HomePage() {
 
   const slide = (ref: React.RefObject<HTMLDivElement | null>, direction: 'left' | 'right') => {
     if (ref.current) {
-      const scrollAmount = ref.current.clientWidth * 0.75;
-      ref.current.scrollBy({ left: direction === 'left' ? -scrollAmount : scrollAmount, behavior: 'smooth' });
+      const container = ref.current;
+      const cardWidth = 190; // lg card width
+      const gap = 16; // gap-4
+      const scrollAmount = (cardWidth + gap) * 3; // scroll 3 cards at a time
+      
+      const targetScroll = direction === 'left' 
+        ? container.scrollLeft - scrollAmount 
+        : container.scrollLeft + scrollAmount;
+      
+      container.scrollTo({ left: targetScroll, behavior: 'smooth' });
     }
   };
 
@@ -61,30 +69,53 @@ export default function HomePage() {
       {/* Popular Slider */}
       <section className="relative z-30 -mt-28 md:-mt-32 w-full group/section" aria-label="Popular on Watchify">
         <div className="max-w-[1600px] mx-auto px-6 lg:px-12">
-          <header className="flex items-center justify-between mb-4">
-            <Typography variant="h2" className="text-xl md:text-2xl font-bold text-white flex items-center gap-1 hover:text-primary cursor-pointer transition-colors drop-shadow-lg border-0 pb-0">
-              Popular on Watchify <ChevronRight className="w-6 h-6 text-neutral-400" aria-hidden="true" />
-            </Typography>
-          </header>
+          <div className="w-full flex items-center gap-2">
+            {/* Header aligned with cards */}
+            <div className="hidden lg:block shrink-0 w-12" />
+            <header className="flex-1 flex items-center justify-between mb-4 pl-4">
+              <Typography variant="h2" className="text-xl md:text-2xl font-bold text-white flex items-center gap-1 hover:text-primary cursor-pointer transition-colors drop-shadow-lg border-0 pb-0">
+                Popular on Watchify <ChevronRight className="w-6 h-6 text-neutral-400" aria-hidden="true" />
+              </Typography>
+            </header>
+            <div className="hidden lg:block shrink-0 w-12" />
+          </div>
 
-          <div className="w-full relative">
-            {recScroll.left && (
-              <button onClick={() => slide(recScrollRef, 'left')} aria-label="Geser kiri" className="hidden lg:flex absolute -left-8 md:-left-12 top-[40%] -translate-y-1/2 w-12 h-20 items-center justify-center text-white/40 hover:text-white z-40 transition-colors">
-                <ChevronLeft className="w-10 h-10" />
-              </button>
-            )}
-            <div ref={recScrollRef} onScroll={(e) => onScrollContainer(e, setRecScroll)} role="list" className="flex gap-3 md:gap-4 overflow-x-auto scrollbar-hide snap-x pt-10 pb-48 -mb-40 -mx-6 px-6 lg:-mx-12 lg:px-12 scroll-smooth">
+          <div className="w-full flex items-center gap-2">
+            {/* Left Arrow Wrapper */}
+            <div className="hidden lg:block shrink-0 w-12">
+              {recScroll.left && (
+                <button 
+                  onClick={() => slide(recScrollRef, 'left')} 
+                  aria-label="Geser kiri" 
+                  className="w-12 h-20 flex items-center justify-center text-white/40 hover:text-white transition-colors"
+                >
+                  <ChevronLeft className="w-8 h-8" />
+                </button>
+              )}
+            </div>
+
+            {/* Carousel Content */}
+            <div ref={recScrollRef} onScroll={(e) => onScrollContainer(e, setRecScroll)} role="list" className="flex-1 flex gap-3 md:gap-4 overflow-x-auto scrollbar-hide scroll-smooth pt-10 pb-48 -mb-40 pl-4" style={{ scrollSnapType: 'x mandatory' }}>
               {filmsData?.data?.map((film: any) => (
-                <div role="listitem" key={film.id || film.title} className="shrink-0 w-[140px] sm:w-[160px] md:w-[170px] lg:w-[190px] snap-start">
+                <div role="listitem" key={film.id || film.title} className="shrink-0 w-[140px] sm:w-[160px] md:w-[170px] lg:w-[190px]" style={{ scrollSnapAlign: 'start', scrollSnapStop: 'always' }}>
                   <FilmCard film={film} />
                 </div>
               ))}
+              <div className="shrink-0 w-4" aria-hidden="true" />
             </div>
-            {recScroll.right && (
-              <button onClick={() => slide(recScrollRef, 'right')} aria-label="Geser kanan" className="hidden lg:flex absolute -right-8 md:-right-12 top-[40%] -translate-y-1/2 w-12 h-20 items-center justify-center text-white/40 hover:text-white z-40 transition-colors">
-                <ChevronRight className="w-10 h-10" />
-              </button>
-            )}
+
+            {/* Right Arrow Wrapper */}
+            <div className="hidden lg:block shrink-0 w-12">
+              {recScroll.right && (
+                <button 
+                  onClick={() => slide(recScrollRef, 'right')} 
+                  aria-label="Geser kanan" 
+                  className="w-12 h-20 flex items-center justify-center text-white/40 hover:text-white transition-colors"
+                >
+                  <ChevronRight className="w-8 h-8" />
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </section>
@@ -92,30 +123,53 @@ export default function HomePage() {
       {/* Trending Section */}
       <section className="pt-4 w-full relative z-10 hover:z-20" aria-label="Trending Sekarang">
         <div className="max-w-[1600px] mx-auto px-6 lg:px-12">
-          <header className="flex items-center justify-between mb-4">
-            <Typography variant="h2" className="text-xl md:text-2xl font-bold text-white flex items-center gap-1 hover:text-primary cursor-pointer transition-colors border-0 pb-0">
-              Trending Sekarang <ChevronRight className="w-6 h-6 text-neutral-400" aria-hidden="true" />
-            </Typography>
-          </header>
+          <div className="w-full flex items-center gap-2">
+            {/* Header aligned with cards */}
+            <div className="hidden lg:block shrink-0 w-12" />
+            <header className="flex-1 flex items-center justify-between mb-4 pl-4">
+              <Typography variant="h2" className="text-xl md:text-2xl font-bold text-white flex items-center gap-1 hover:text-primary cursor-pointer transition-colors border-0 pb-0">
+                Trending Sekarang <ChevronRight className="w-6 h-6 text-neutral-400" aria-hidden="true" />
+              </Typography>
+            </header>
+            <div className="hidden lg:block shrink-0 w-12" />
+          </div>
 
-          <div className="w-full relative">
-            {trendScroll.left && (
-              <button onClick={() => slide(trendScrollRef, 'left')} aria-label="Geser kiri" className="hidden lg:flex absolute -left-8 md:-left-12 top-[40%] -translate-y-1/2 w-12 h-20 items-center justify-center text-white/40 hover:text-white z-40 transition-colors">
-                <ChevronLeft className="w-10 h-10" />
-              </button>
-            )}
-            <div ref={trendScrollRef} onScroll={(e) => onScrollContainer(e, setTrendScroll)} role="list" className="flex gap-3 md:gap-4 overflow-x-auto scrollbar-hide snap-x pt-10 pb-48 -mb-40 -mx-6 px-6 lg:-mx-12 lg:px-12 scroll-smooth">
+          <div className="w-full flex items-center gap-2">
+            {/* Left Arrow Wrapper */}
+            <div className="hidden lg:block shrink-0 w-12">
+              {trendScroll.left && (
+                <button 
+                  onClick={() => slide(trendScrollRef, 'left')} 
+                  aria-label="Geser kiri" 
+                  className="w-12 h-20 flex items-center justify-center text-white/40 hover:text-white transition-colors"
+                >
+                  <ChevronLeft className="w-8 h-8" />
+                </button>
+              )}
+            </div>
+
+            {/* Carousel Content */}
+            <div ref={trendScrollRef} onScroll={(e) => onScrollContainer(e, setTrendScroll)} role="list" className="flex-1 flex gap-3 md:gap-4 overflow-x-auto scrollbar-hide scroll-smooth pt-10 pb-48 -mb-40 pl-4" style={{ scrollSnapType: 'x mandatory' }}>
               {filmsData?.data?.slice().reverse().map((film: any) => (
-                <div role="listitem" key={film.id || film.title} className="shrink-0 w-[140px] sm:w-[160px] md:w-[170px] lg:w-[190px] snap-start">
+                <div role="listitem" key={film.id || film.title} className="shrink-0 w-[140px] sm:w-[160px] md:w-[170px] lg:w-[190px]" style={{ scrollSnapAlign: 'start', scrollSnapStop: 'always' }}>
                   <FilmCard film={film} />
                 </div>
               ))}
+              <div className="shrink-0 w-4" aria-hidden="true" />
             </div>
-            {trendScroll.right && (
-              <button onClick={() => slide(trendScrollRef, 'right')} aria-label="Geser kanan" className="hidden lg:flex absolute -right-8 md:-right-12 top-[40%] -translate-y-1/2 w-12 h-20 items-center justify-center text-white/40 hover:text-white z-40 transition-colors">
-                <ChevronRight className="w-10 h-10" />
-              </button>
-            )}
+
+            {/* Right Arrow Wrapper */}
+            <div className="hidden lg:block shrink-0 w-12">
+              {trendScroll.right && (
+                <button 
+                  onClick={() => slide(trendScrollRef, 'right')} 
+                  aria-label="Geser kanan" 
+                  className="w-12 h-20 flex items-center justify-center text-white/40 hover:text-white transition-colors"
+                >
+                  <ChevronRight className="w-8 h-8" />
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </section>
