@@ -137,12 +137,12 @@ export default function AboutPage() {
   const tlXSmooth = useSpring(tlX, { stiffness: 50, damping: 20, restDelta: 0.001 });
 
   const milestones = [
-    { year: '2020', title: 'The Spark', body: 'Three engineers in a Jakarta garage dared to dream: cinema without borders, accessible to everyone.', img: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&q=80' },
-    { year: '2021', title: 'Public Beta', body: '14 months of stealth development. Then, launch day — 10 000 users in the first 72 hours.', img: 'https://images.unsplash.com/photo-1551434678-e076c223a692?w=1200&q=80' },
-    { year: '2022', title: 'One Million', body: 'The community exploded. 1M active subscribers and 200+ features shipped in a single year.', img: 'https://images.unsplash.com/photo-1557804506-669a67965ba0?w=1200&q=80' },
-    { year: '2023', title: 'Global Reach', body: '190 countries. 30 languages. From Seoul to São Paulo, stories now travel without passports.', img: 'https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?w=1200&q=80' },
-    { year: '2024', title: 'Originals', body: 'Our first original film premiered at TIFF. Three productions, two festivals, one standing ovation.', img: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=1200&q=80' },
-    { year: 'Now', title: '10 Million', body: 'A decade\'s worth of growth in five years. 10M users. 50K titles. And this is still just the opening scene.', img: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=1200&q=80' },
+    { year: '2020', title: 'Awal Mula', body: 'Tiga insinyur di garasi Jakarta berani bermimpi: sinema tanpa batas, dapat diakses oleh semua orang.', img: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&q=80' },
+    { year: '2021', title: 'Peluncuran Beta', body: '14 bulan pengembangan intensif. Lalu, hari peluncuran — 10.000 pengguna dalam 72 jam pertama.', img: 'https://images.unsplash.com/photo-1551434678-e076c223a692?w=1200&q=80' },
+    { year: '2022', title: 'Satu Juta', body: 'Komunitas meledak. 1 juta pelanggan aktif dan 200+ fitur diluncurkan dalam satu tahun.', img: 'https://images.unsplash.com/photo-1557804506-669a67965ba0?w=1200&q=80' },
+    { year: '2023', title: 'Jangkauan Global', body: '190 negara. 30 bahasa. Dari Seoul hingga São Paulo, cerita kini bepergian tanpa paspor.', img: 'https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?w=1200&q=80' },
+    { year: '2024', title: 'Konten Original', body: 'Film original pertama kami tayang perdana di TIFF. Tiga produksi, dua festival, satu standing ovation.', img: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=1200&q=80' },
+    { year: 'Sekarang', title: '10 Juta Pengguna', body: 'Pertumbuhan satu dekade dalam lima tahun. 10 juta pengguna. 50 ribu konten. Dan ini baru adegan pembuka.', img: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=1200&q=80' },
   ];
 
   return (
@@ -162,7 +162,7 @@ export default function AboutPage() {
           <motion.div variants={staggerContainer} initial="hidden" animate="show" className="flex flex-col items-center">
             {/* Overline */}
             <motion.span variants={staggerItem} className="inline-block text-[10px] sm:text-[11px] uppercase tracking-[0.4em] text-[var(--muted-foreground)] font-medium border border-[var(--border)] px-5 py-2.5 rounded-full mb-10">
-              Didirikan 2020 — Jakarta, Indonesia
+              Website by Araryarch and an AI Models
             </motion.span>
 
             {/* Main title */}
@@ -317,13 +317,13 @@ export default function AboutPage() {
         <div className="max-w-6xl mx-auto px-6 pt-24 pb-6">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="flex items-end justify-between gap-8">
             <div>
-              <span className="block text-[10px] sm:text-[11px] uppercase tracking-[0.4em] text-primary font-semibold mb-4">Timeline</span>
+              <span className="block text-[10px] sm:text-[11px] uppercase tracking-[0.4em] text-primary font-semibold mb-4">Perjalanan</span>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-[-0.03em] leading-[1.05]">
-                Every year,<br />a new chapter.
+                Setiap tahun,<br />bab baru.
               </h2>
             </div>
             <p className="hidden md:block text-[var(--muted-foreground)] text-sm max-w-[16rem] text-right leading-relaxed">
-              Scroll to travel through the milestones that shaped Watchify into what it is today.
+              Gulir untuk melihat pencapaian yang membentuk Watchify menjadi seperti sekarang.
             </p>
           </motion.div>
         </div>
@@ -387,20 +387,20 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-16 lg:gap-20">
             {/* Left sticky heading */}
             <div className="lg:sticky lg:top-32 lg:self-start">
-              <span className="block text-[10px] sm:text-[11px] uppercase tracking-[0.4em] text-primary font-semibold mb-4">Principles</span>
+              <span className="block text-[10px] sm:text-[11px] uppercase tracking-[0.4em] text-primary font-semibold mb-4">Prinsip</span>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-[-0.03em] leading-[1.05]">
-                What we<br />stand for.
+                Apa yang kami<br />perjuangkan.
               </h2>
             </div>
 
             {/* Right — values list */}
             <div>
               {[
-                { n: '01', t: 'Accessibility First', b: 'Great stories shouldn\'t be gatekept. Tiered pricing, 30+ subtitle languages, and audio descriptions ensure no one is left out.' },
-                { n: '02', t: 'Uncompromising Quality', b: '4K HDR, Dolby Atmos, color-accurate grading. We refuse to cut corners on the viewing experience. Every pixel matters.' },
-                { n: '03', t: 'Creator Empowerment', b: 'Direct partnerships with independent filmmakers and studios — fair revenue sharing and creative freedom the industry rarely provides.' },
-                { n: '04', t: 'Privacy by Design', b: 'Your watch history is yours. We don\'t sell data. Our recommendation engine prioritizes on-device processing whenever possible.' },
-                { n: '05', t: 'Community Driven', b: 'User-voted features, community film festivals, open roadmaps. Our users aren\'t subscribers — they\'re co-creators.' },
+                { n: '01', t: 'Aksesibilitas Utama', b: 'Cerita hebat tidak boleh dibatasi. Harga berjenjang, 30+ bahasa subtitle, dan deskripsi audio memastikan tidak ada yang tertinggal.' },
+                { n: '02', t: 'Kualitas Tanpa Kompromi', b: '4K HDR, Dolby Atmos, grading warna akurat. Kami menolak berkompromi pada pengalaman menonton. Setiap piksel penting.' },
+                { n: '03', t: 'Pemberdayaan Kreator', b: 'Kemitraan langsung dengan pembuat film independen dan studio — pembagian pendapatan yang adil dan kebebasan kreatif yang jarang diberikan industri.' },
+                { n: '04', t: 'Privasi Sejak Awal', b: 'Riwayat tontonan Anda adalah milik Anda. Kami tidak menjual data. Mesin rekomendasi kami memprioritaskan pemrosesan di perangkat Anda.' },
+                { n: '05', t: 'Didorong Komunitas', b: 'Fitur yang dipilih pengguna, festival film komunitas, roadmap terbuka. Pengguna kami bukan hanya pelanggan — mereka adalah co-creator.' },
               ].map((v, i) => (
                 <motion.div
                   key={i}
@@ -439,6 +439,34 @@ export default function AboutPage() {
             transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
             className="flex flex-col items-center"
           >
+            <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.4em] text-[var(--muted-foreground)] font-medium mb-10">
+              Bab selanjutnya dimulai dengan Anda
+            </span>
+
+            <h2 className="text-[clamp(2.2rem,6vw,6.5rem)] font-black leading-[0.92] tracking-[-0.045em] mb-8">
+              Siap untuk
+              <br />
+              <span className="text-primary">mulai menonton?</span>
+            </h2>
+
+            <p className="text-base md:text-lg text-[var(--muted-foreground)] max-w-lg mx-auto mb-12 leading-relaxed">
+              Bergabunglah dengan 10 juta orang yang memilih cara lebih cerdas dan indah untuk menikmati sinema.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Magnetic>
+                <Link href="/register" className="group inline-flex items-center justify-center gap-2 px-8 py-4 bg-primary text-primary-foreground font-bold rounded-full transition-shadow text-sm hover:shadow-[0_0_40px_rgba(0,220,116,0.35)]">
+                  Mulai Gratis
+                  <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                </Link>
+              </Magnetic>
+              <Magnetic>
+                <Link href="/films" className="inline-flex items-center justify-center gap-2 px-8 py-4 font-semibold rounded-full transition-colors text-sm border border-[var(--border)] hover:border-[var(--foreground)]/30 hover:bg-[var(--foreground)]/[0.03]">
+                  Jelajahi Katalog
+                </Link>
+              </Magnetic>
+            </div>
+          </motion.div>
             <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.4em] text-[var(--muted-foreground)] font-medium mb-10">
               The next chapter starts with you
             </span>
