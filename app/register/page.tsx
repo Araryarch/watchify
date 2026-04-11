@@ -60,7 +60,7 @@ export default function RegisterPage() {
           <Link href="/" className="inline-block text-3xl font-black tracking-widest text-primary mb-2 drop-shadow-[0_0_12px_rgba(0,220,116,0.5)] hover:drop-shadow-[0_0_16px_rgba(0,220,116,0.7)] transition-all">
             WATCHIFY
           </Link>
-          <Typography variant="p" className="text-neutral-400 text-sm mt-0">Daftar untuk menikmati akses streaming tanpa batas</Typography>
+          <Typography variant="p" className="text-neutral-400 text-sm mt-0 text-center">Daftar untuk menikmati akses streaming tanpa batas</Typography>
         </div>
 
         <div className="bg-[#1b1c21]/80 backdrop-blur-xl p-8 rounded-2xl border border-white/5 shadow-2xl mb-8">
