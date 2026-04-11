@@ -10,6 +10,7 @@ import { useMe } from '@/lib/hooks/useAuth';
 import { useAuthStore } from '@/lib/store/authStore';
 import { toast } from 'sonner';
 import { useState, Suspense } from 'react';
+import { getYear } from '@/lib/utils/date';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import {
@@ -131,7 +132,7 @@ function ReviewSection({ filmId, reviews }: { filmId: string; reviews?: any[] })
   };
 
   const handleReaction = (review: any, status: 'like' | 'dislike') => {
-    if (!token || !currentUserId) {
+    if (!token) {
       toast.error('Login terlebih dahulu untuk memberi reaksi');
       return;
     }
@@ -516,8 +517,8 @@ function WatchPageInner() {
                 )}
                 <MetaBadge color="green">{statusMap[film.airing_status] || 'Selesai'}</MetaBadge>
                 <MetaBadge color="default">
-                  {film.release_date && !isNaN(new Date(film.release_date).getTime())
-                    ? new Date(film.release_date).getFullYear()
+                  {film.release_date
+                    ? getYear(film.release_date)
                     : new Date().getFullYear()}
                 </MetaBadge>
                 <MetaBadge color="default">{film.total_episodes} Episode</MetaBadge>

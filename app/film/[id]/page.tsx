@@ -12,6 +12,7 @@ import { useMe } from '@/lib/hooks/useAuth';
 import { useThemeGradient } from '@/lib/hooks/useThemeGradient';
 import { useAuthStore } from '@/lib/store/authStore';
 import { toast } from 'sonner';
+import { formatDate, getYear } from '@/lib/utils/date';
 import { useForm } from 'react-hook-form';
 import {
   Star, Calendar, Film as FilmIcon, Play, BookmarkPlus,
@@ -174,7 +175,7 @@ function ReviewSection({ filmId, reviews }: { filmId: string; reviews?: any[] })
   };
 
   const handleReaction = (review: any, status: 'like' | 'dislike') => {
-    if (!token || !currentUserId) {
+    if (!token) {
       toast.error('Login terlebih dahulu untuk memberi reaksi');
       return;
     }
@@ -287,36 +288,57 @@ function ReviewSection({ filmId, reviews }: { filmId: string; reviews?: any[] })
                 
                 {/* Reaction buttons */}
                 <div className="flex items-center gap-3 pt-2 border-t border-white/5">
-                  <button
-                    onClick={() => handleReaction(review, 'like')}
-                    disabled={!token}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border transition-colors text-xs sm:text-sm ${
-                      getUserReaction(review)?.status === 'like'
-                        ? 'bg-primary/10 border-primary/30 text-primary'
-                        : !token
-                        ? 'bg-white/5 border-white/10 text-neutral-600 cursor-not-allowed opacity-50'
-                        : 'bg-white/5 hover:bg-white/10 border-white/10 text-neutral-400 hover:text-primary'
-                    }`}
-                    title={!token ? 'Login untuk memberi reaksi' : ''}
-                  >
-                    <ThumbsUp className="w-3.5 h-3.5" />
-                    <span>{review.likes || 0}</span>
-                  </button>
-                  <button
-                    onClick={() => handleReaction(review, 'dislike')}
-                    disabled={!token}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border transition-colors text-xs sm:text-sm ${
-                      getUserReaction(review)?.status === 'dislike'
-                        ? 'bg-red-500/10 border-red-500/30 text-red-400'
-                        : !token
-                        ? 'bg-white/5 border-white/10 text-neutral-600 cursor-not-allowed opacity-50'
-                        : 'bg-white/5 hover:bg-white/10 border-white/10 text-neutral-400 hover:text-red-400'
-                    }`}
-                    title={!token ? 'Login untuk memberi reaksi' : ''}
-                  >
-                    <ThumbsDown className="w-3.5 h-3.5" />
-                    <span>{review.dislikes || 0}</span>
-                  </button>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <button
+                          onClick={() => handleReaction(review, 'like')}
+                          disabled={!token}
+                          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border transition-colors text-xs sm:text-sm ${
+                            getUserReaction(review)?.status === 'like'
+                              ? 'bg-primary/10 border-primary/30 text-primary'
+                              : !token
+                              ? 'bg-white/5 border-white/10 text-neutral-600 cursor-not-allowed opacity-50'
+                              : 'bg-white/5 hover:bg-white/10 border-white/10 text-neutral-400 hover:text-primary'
+                          }`}
+                        >
+                          <ThumbsUp className="w-3.5 h-3.5" />
+                          <span>{review.likes || 0}</span>
+                        </button>
+                      </TooltipTrigger>
+                      {!token && (
+                        <TooltipContent>
+                          <p>Login untuk memberi reaksi</p>
+                        </TooltipContent>
+                      )}
+                    </Tooltip>
+                  </TooltipProvider>
+
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <button
+                          onClick={() => handleReaction(review, 'dislike')}
+                          disabled={!token}
+                          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border transition-colors text-xs sm:text-sm ${
+                            getUserReaction(review)?.status === 'dislike'
+                              ? 'bg-red-500/10 border-red-500/30 text-red-400'
+                              : !token
+                              ? 'bg-white/5 border-white/10 text-neutral-600 cursor-not-allowed opacity-50'
+                              : 'bg-white/5 hover:bg-white/10 border-white/10 text-neutral-400 hover:text-red-400'
+                          }`}
+                        >
+                          <ThumbsDown className="w-3.5 h-3.5" />
+                          <span>{review.dislikes || 0}</span>
+                        </button>
+                      </TooltipTrigger>
+                      {!token && (
+                        <TooltipContent>
+                          <p>Login untuk memberi reaksi</p>
+                        </TooltipContent>
+                      )}
+                    </Tooltip>
+                  </TooltipProvider>
                 </div>
               </div>
             ))}
@@ -416,10 +438,10 @@ export default function FilmDetailPage() {
                   </div>
                   <div className="flex items-center gap-1 sm:gap-1.5 md:gap-2">
                     <Calendar className="w-3.5 sm:w-4 md:w-5 h-3.5 sm:h-4 md:h-5" />
-                    {film.release_date && !isNaN(new Date(film.release_date).getTime()) ? (
+                    {film.release_date ? (
                       <>
-                        <span className="hidden sm:inline">{new Date(film.release_date).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
-                        <span className="sm:hidden">{new Date(film.release_date).toLocaleDateString('id-ID', { year: 'numeric', month: 'short' })}</span>
+                        <span className="hidden sm:inline">{formatDate(film.release_date, 'id-ID', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                        <span className="sm:hidden">{formatDate(film.release_date, 'id-ID', { year: 'numeric', month: 'short' })}</span>
                       </>
                     ) : (
                       <span>-</span>
@@ -498,8 +520,8 @@ export default function FilmDetailPage() {
                 <div className="flex justify-between">
                   <span className="text-neutral-500">Rilis</span>
                   <span className="text-white font-medium">
-                    {film.release_date && !isNaN(new Date(film.release_date).getTime())
-                      ? new Date(film.release_date).toLocaleDateString('id-ID')
+                    {film.release_date
+                      ? formatDate(film.release_date, 'id-ID')
                       : '-'}
                   </span>
                 </div>
