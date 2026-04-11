@@ -22,22 +22,34 @@ const data = {
     {
       title: "Dashboard",
       url: "/dashboard/user",
-      icon: <LayoutDashboardIcon />,
+      icon: (
+        <LayoutDashboardIcon
+        />
+      ),
     },
     {
       title: "My Film Lists",
       url: "/dashboard/user/film-lists",
-      icon: <ListIcon />,
+      icon: (
+        <ListIcon
+        />
+      ),
     },
     {
       title: "My Reviews",
       url: "/dashboard/user/reviews",
-      icon: <MessageSquareIcon />,
+      icon: (
+        <MessageSquareIcon
+        />
+      ),
     },
     {
       title: "Profile",
       url: "/dashboard/user/profile",
-      icon: <UserIcon />,
+      icon: (
+        <UserIcon
+        />
+      ),
     },
   ],
 }
@@ -55,7 +67,7 @@ export function UserSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) 
           <SidebarMenuItem>
             <SidebarMenuButton
               asChild
-              className="data-[slot=sidebar-menu-button]:p-1.5!"
+              className="data-[slot=sidebar-menu-button]:p-1.5! justify-center"
             >
               <Link href="/">
                 <span className="text-xl font-black tracking-widest text-primary">
