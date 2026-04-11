@@ -6,6 +6,11 @@ export const navLinks = [
     type: 'link' as const,
   },
   {
+    label: 'Tentang',
+    href: '/about',
+    type: 'link' as const,
+  },
+  {
     label: 'Film',
     href: '/films',
     type: 'link' as const,

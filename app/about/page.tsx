@@ -47,8 +47,8 @@ function ScrollRevealText({
 function RevealWord({ range, progress, word }: { range: [number, number]; progress: any; word: string }) {
   const opacity = useTransform(progress, range, [0.08, 1]);
   return (
-    <motion.span style={{ opacity }} className="mr-[0.25em] mt-1 inline-block will-change-[opacity] transition-none">
-      {word}
+    <motion.span style={{ opacity }} className="mr-[0.25em] mt-1 inline-block will-change-[opacity] transition-none whitespace-pre">
+      {word}{' '}
     </motion.span>
   );
 }
@@ -146,7 +146,7 @@ export default function AboutPage() {
   ];
 
   return (
-    <div className="relative bg-[var(--background)] text-[var(--foreground)]" style={{ fontFamily: 'var(--font-inter), Inter, system-ui, sans-serif' }}>
+    <div className="relative bg-[#0b0c0f] text-white" style={{ fontFamily: 'var(--font-inter), Inter, system-ui, sans-serif' }}>
 
       {/* ─── Scroll progress indicator ─── */}
       <motion.div className="fixed top-0 left-0 right-0 h-[2px] bg-primary z-[999] origin-left" style={{ scaleX: pageProgress }} />
@@ -161,7 +161,7 @@ export default function AboutPage() {
         <motion.div style={{ opacity: heroOpacity, y: heroY }} className="relative z-10 max-w-[64rem] mx-auto px-6 text-center">
           <motion.div variants={staggerContainer} initial="hidden" animate="show" className="flex flex-col items-center">
             {/* Overline */}
-            <motion.span variants={staggerItem} className="inline-block text-[10px] sm:text-[11px] uppercase tracking-[0.4em] text-[var(--muted-foreground)] font-medium border border-[var(--border)] px-5 py-2.5 rounded-full mb-10">
+            <motion.span variants={staggerItem} className="inline-block text-[10px] sm:text-[11px] uppercase tracking-[0.4em] text-neutral-500 font-medium border border-neutral-800 px-5 py-2.5 rounded-full mb-10">
               Website by Araryarch and an AI Models
             </motion.span>
 
@@ -181,7 +181,7 @@ export default function AboutPage() {
             </motion.h1>
 
             {/* Sub */}
-            <motion.p variants={staggerItem} className="text-base sm:text-lg md:text-xl text-[var(--muted-foreground)] max-w-xl mx-auto leading-relaxed font-normal">
+            <motion.p variants={staggerItem} className="text-base sm:text-lg md:text-xl text-neutral-400 max-w-xl mx-auto leading-relaxed font-normal">
               Watchify adalah platform streaming generasi baru yang menghubungkan penonton dengan sinema berkelas dunia — dari film independen hingga premiere global.
             </motion.p>
           </motion.div>
@@ -189,9 +189,9 @@ export default function AboutPage() {
 
         {/* Scroll hint */}
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2.2, duration: 1 }} className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 z-10">
-          <span className="text-[9px] tracking-[0.4em] uppercase text-[var(--muted-foreground)] font-medium">Gulir</span>
+          <span className="text-[9px] tracking-[0.4em] uppercase text-neutral-500 font-medium">Gulir</span>
           <motion.div animate={{ y: [0, 5, 0] }} transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}>
-            <ArrowDown className="w-3.5 h-3.5 text-[var(--muted-foreground)]" />
+            <ArrowDown className="w-3.5 h-3.5 text-neutral-500" />
           </motion.div>
         </motion.div>
       </section>
@@ -217,7 +217,7 @@ export default function AboutPage() {
           ═══════════════════════════════════ */}
       <section className="relative py-24 md:py-32">
         <div className="max-w-6xl mx-auto px-6">
-          <div className="grid grid-cols-2 lg:grid-cols-4 border border-[var(--border)] rounded-2xl overflow-hidden">
+          <div className="grid grid-cols-2 lg:grid-cols-4 border border-neutral-800 rounded-2xl overflow-hidden">
             {[
               { value: 10, suffix: 'Jt+', label: 'Pengguna', sub: 'di seluruh dunia' },
               { value: 50, suffix: 'Rb+', label: 'Konten', sub: 'film & series' },
@@ -230,13 +230,13 @@ export default function AboutPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-40px' }}
                 transition={{ duration: 0.6, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
-                className={`relative p-8 md:p-12 text-center ${i > 0 ? 'border-l border-[var(--border)]' : ''} ${i >= 2 ? 'border-t lg:border-t-0' : ''}`}
+                className={`relative p-8 md:p-12 text-center ${i > 0 ? 'border-l border-neutral-800' : ''} ${i >= 2 ? 'border-t lg:border-t-0' : ''}`}
               >
                 <div className="text-4xl sm:text-5xl md:text-6xl font-black tracking-[-0.03em] mb-2 tabular-nums">
                   <Counter target={s.value} suffix={s.suffix} />
                 </div>
                 <div className="text-sm font-semibold mb-0.5">{s.label}</div>
-                <div className="text-xs text-[var(--muted-foreground)]">{s.sub}</div>
+                <div className="text-xs text-neutral-400">{s.sub}</div>
               </motion.div>
             ))}
           </div>
@@ -289,7 +289,7 @@ export default function AboutPage() {
               <h3 className="text-xl md:text-2xl font-bold mb-5 leading-snug">
                 Dibuat oleh pecinta film,<br />untuk pecinta film.
               </h3>
-              <p className="text-[var(--muted-foreground)] text-base leading-[1.8]">
+              <p className="text-neutral-400 text-base leading-[1.8]">
                 Tim kami terdiri dari pembuat film, insinyur, dan pencerita yang hidup dan bernapas sinema.
                 Kami terobsesi dengan detail — dari streaming akurat warna hingga playlist yang dikurasi dengan sempurna.
                 Setiap piksel, setiap transisi, setiap rekomendasi dibuat dengan niat yang jelas.
@@ -299,7 +299,7 @@ export default function AboutPage() {
               <h3 className="text-xl md:text-2xl font-bold mb-5 leading-snug">
                 Teknologi yang<br />tidak terlihat.
               </h3>
-              <p className="text-[var(--muted-foreground)] text-base leading-[1.8]">
+              <p className="text-neutral-400 text-base leading-[1.8]">
                 Kami menggunakan adaptive bitrate streaming, edge computing di 80+ lokasi, dan rekomendasi AI yang cerdas.
                 Hasilnya? Tanpa buffering, pemutaran instan, dan saran yang benar-benar memahami selera Anda.
                 Anda tidak akan pernah menyadari teknologinya — hanya keajaiban di layar.
@@ -312,7 +312,7 @@ export default function AboutPage() {
       {/* ═══════════════════════════════════
           TIMELINE — Horizontal scroll journey
           ═══════════════════════════════════ */}
-      <section className="relative border-t border-[var(--border)]">
+      <section className="relative border-t border-neutral-800">
         {/* Section header */}
         <div className="max-w-6xl mx-auto px-6 pt-24 pb-6">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="flex items-end justify-between gap-8">
@@ -322,7 +322,7 @@ export default function AboutPage() {
                 Setiap tahun,<br />bab baru.
               </h2>
             </div>
-            <p className="hidden md:block text-[var(--muted-foreground)] text-sm max-w-[16rem] text-right leading-relaxed">
+            <p className="hidden md:block text-neutral-400 text-sm max-w-[16rem] text-right leading-relaxed">
               Gulir untuk melihat pencapaian yang membentuk Watchify menjadi seperti sekarang.
             </p>
           </motion.div>
@@ -332,8 +332,8 @@ export default function AboutPage() {
         <div ref={tlRef} className="relative h-[450vh]">
           <div className="sticky top-0 h-screen overflow-hidden flex items-center">
             {/* Gradient masks */}
-            <div className="absolute left-0 top-0 bottom-0 w-16 md:w-24 bg-gradient-to-r from-[var(--background)] to-transparent z-20 pointer-events-none" />
-            <div className="absolute right-0 top-0 bottom-0 w-16 md:w-24 bg-gradient-to-l from-[var(--background)] to-transparent z-20 pointer-events-none" />
+            <div className="absolute left-0 top-0 bottom-0 w-16 md:w-24 bg-gradient-to-r from-[#0b0c0f] to-transparent z-20 pointer-events-none" />
+            <div className="absolute right-0 top-0 bottom-0 w-16 md:w-24 bg-gradient-to-l from-[#0b0c0f] to-transparent z-20 pointer-events-none" />
 
             <motion.div style={{ x: tlXSmooth }} className="flex items-stretch gap-5 md:gap-7 pl-8 md:pl-24 pr-[60vw]">
               {milestones.map((m, i) => (
@@ -382,7 +382,7 @@ export default function AboutPage() {
       {/* ═══════════════════════════════════
           VALUES — Numbered list, left-right layout
           ═══════════════════════════════════ */}
-      <section className="relative py-32 md:py-48 border-t border-[var(--border)]">
+      <section className="relative py-32 md:py-48 border-t border-neutral-800">
         <div className="max-w-6xl mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-16 lg:gap-20">
             {/* Left sticky heading */}
@@ -408,13 +408,13 @@ export default function AboutPage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: '-40px' }}
                   transition={{ duration: 0.5, delay: i * 0.05 }}
-                  className="group py-8 md:py-10 border-b border-[var(--border)] first:border-t last:border-b-0"
+                  className="group py-8 md:py-10 border-b border-neutral-800 first:border-t last:border-b-0"
                 >
                   <div className="flex items-start gap-6 md:gap-8">
-                    <span className="text-xs text-[var(--muted-foreground)] font-mono pt-1.5 flex-shrink-0 w-6">{v.n}</span>
+                    <span className="text-xs text-neutral-500 font-mono pt-1.5 flex-shrink-0 w-6">{v.n}</span>
                     <div className="flex-1">
                       <h3 className="text-lg md:text-xl font-bold mb-2.5 group-hover:text-primary transition-colors duration-300">{v.t}</h3>
-                      <p className="text-[var(--muted-foreground)] text-sm md:text-base leading-[1.7] max-w-2xl">{v.b}</p>
+                      <p className="text-neutral-400 text-sm md:text-base leading-[1.7] max-w-2xl">{v.b}</p>
                     </div>
                   </div>
                 </motion.div>
