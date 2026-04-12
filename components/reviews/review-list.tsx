@@ -117,7 +117,7 @@ export function ReviewList({ reviews }: ReviewListProps) {
                             : 'bg-white/5 text-neutral-400 hover:bg-white/10 border border-white/5'
                         }`}
                       >
-                        <ThumbsUp className="w-3.5 h-3.5" />
+                        <ThumbsUp className={`w-3.5 h-3.5 ${userReaction?.status === 'like' ? 'fill-current' : ''}`} />
                         <span>{likeCount}</span>
                       </button>
                     </TooltipTrigger>
@@ -138,7 +138,7 @@ export function ReviewList({ reviews }: ReviewListProps) {
                             : 'bg-white/5 text-neutral-400 hover:bg-white/10 border border-white/5'
                         }`}
                       >
-                        <ThumbsDown className="w-3.5 h-3.5" />
+                        <ThumbsDown className={`w-3.5 h-3.5 ${userReaction?.status === 'dislike' ? 'fill-current' : ''}`} />
                         <span>{dislikeCount}</span>
                       </button>
                     </TooltipTrigger>
