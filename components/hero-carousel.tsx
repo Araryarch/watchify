@@ -106,13 +106,15 @@ export function HeroCarousel({ heroes }: HeroCarouselProps) {
 
                 {/* Metadata Row 2 */}
                 <div className="flex items-center gap-3 text-white text-sm font-medium">
-                  {film.average_rating !== undefined && film.average_rating > 0 && (
-                    <div className="flex items-center gap-1 text-primary">
-                      <Star className="w-4 h-4 fill-primary" />
-                      <span className="text-base">{film.average_rating.toFixed(1)}</span>
-                    </div>
+                  {film.average_rating && film.average_rating > 0 && (
+                    <>
+                      <div className="flex items-center gap-1 text-primary">
+                        <Star className="w-4 h-4 fill-primary" />
+                        <span className="text-base">{film.average_rating.toFixed(1)}</span>
+                      </div>
+                      <span className="text-neutral-300">|</span>
+                    </>
                   )}
-                  {film.average_rating > 0 && <span className="text-neutral-300">|</span>}
                   <span>{getYear(film.release_date) || new Date().getFullYear()}</span>
                   <span className="text-neutral-300">|</span>
                   <span>13+</span>
