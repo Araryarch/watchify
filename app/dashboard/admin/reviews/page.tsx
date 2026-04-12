@@ -2,8 +2,9 @@
 
 import { useMe } from '@/lib/hooks/useAuth';
 import { useUserDetail } from '@/lib/hooks/useUsers';
-import { MessageSquare, Star, Trash2, Film } from 'lucide-react';
+import { MessageSquare, Star, Film } from 'lucide-react';
 import { Typography } from '@/components/ui/typography';
+import { StatsCard } from '@/components/dashboard/stats-card';
 import {
   Table,
   TableBody,
@@ -19,7 +20,6 @@ export default function AdminReviewsPage() {
   const { data: userDetailData, isLoading } = useUserDetail(userId || '');
   const reviews = userDetailData?.data?.reviews || [];
 
-  // Calculate stats
   const totalReviews = reviews.length;
   const avgRating = totalReviews > 0 
     ? (reviews.reduce((sum: number, r: any) => sum + r.rating, 0) / totalReviews).toFixed(1)
@@ -34,20 +34,17 @@ export default function AdminReviewsPage() {
           <Typography variant="p" className="text-neutral-400 mt-0">Lihat semua ulasan yang sudah Anda tulis</Typography>
         </div>
 
-        {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-          <div className="bg-[#1b1c21] border border-white/5 rounded-xl p-6">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-neutral-400 text-sm font-medium">Total Reviews</span>
-              <MessageSquare className="w-5 h-5 text-primary" />
-            </div>
-            <p className="text-3xl font-black text-white">{totalReviews}</p>
-          </div>
-          <div className="bg-[#1b1c21] border border-white/5 rounded-xl p-6">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-neutral-400 text-sm font-medium">Avg Rating</span>
-              <Star className="w-5 h-5 text-yellow-400" />
-            </div>
+          <StatsCard label="Total Reviews" value={totalReviews} icon={MessageSquare} />
+          <StatsCard label="Avg Rating" value={avgRating} icon={Star} iconColor="text-yellow-400" />
+          <StatsCard label="Total Likes" value={totalLikes} icon={Star} iconColor="text-green-400" />
+        </div>
+
+        <ReviewsTable reviews={reviews} isLoading={isLoading} />
+      </div>
+    </div>
+  );
+}
             <p className="text-3xl font-black text-white">{avgRating}</p>
           </div>
           <div className="bg-[#1b1c21] border border-white/5 rounded-xl p-6">
@@ -132,3 +129,5 @@ export default function AdminReviewsPage() {
     </div>
   );
 }
+
+import { ReviewsTable } from '@/components/dashboard/reviews-table';

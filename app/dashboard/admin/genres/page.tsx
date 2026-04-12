@@ -1,14 +1,10 @@
 'use client';
 
-import { Tag, Plus, Pencil, Search } from 'lucide-react';
+import { Tag, Plus, Pencil } from 'lucide-react';
 import { useState, useMemo } from 'react';
-import { toast } from 'sonner';
-import { useForm } from 'react-hook-form';
-import {
-  useGenresPaginated,
-  useCreateGenre,
-  useUpdateGenre,
-} from '@/lib/hooks/useGenres';
+import { useGenresPaginated } from '@/lib/hooks/useGenres';
+import { GenreModal } from '@/components/genres/genre-modal';
+import { TableSearch } from '@/components/dashboard/table-search';
 import {
   useReactTable,
   getCoreRowModel,
@@ -31,23 +27,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination';
-
 import { TableSkeleton } from '@/components/skeleton-loader';
-
-// Modal for Create / Edit genre
-function GenreModal({
-  open,
-  onClose,
-  genre,
-}: {
-  open: boolean;
-  onClose: () => void;
-  genre?: { id: string; name: string } | null;
-}) {
-  const { register, handleSubmit, reset } = useForm({
-    defaultValues: { name: genre?.name || '' },
-  });
-  const { mutate: createGenre, isPending: isCreating } = useCreateGenre();
   const { mutate: updateGenre, isPending: isUpdating } = useUpdateGenre();
   const isPending = isCreating || isUpdating;
 
