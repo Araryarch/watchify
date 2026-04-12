@@ -6,10 +6,11 @@ export { formatDateForApi };
 
 // ─── Queries ─────────────────────────────────────────────────────────────────
 
-export function useFilms(params?: FilmListParams) {
+export function useFilms(params?: FilmListParams, options?: { enabled?: boolean }) {
   return useQuery({
     queryKey: ['films', params],
     queryFn: () => filmsApi.getAll(params),
+    enabled: options?.enabled ?? true,
     staleTime: 5 * 60 * 1000, // 5 minutes
     gcTime: 10 * 60 * 1000, // 10 minutes
   });

@@ -7,7 +7,7 @@ export const apiClient = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  timeout: 5000,
+  timeout: 30000, // Increase to 30 seconds
   decompress: true,
 });
 
@@ -24,6 +24,11 @@ apiClient.interceptors.request.use((config) => {
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
+    // Handle timeout errors
+    if (error.code === 'ECONNABORTED' || error.code === 'ETIMEDOUT') {
+      console.error('Request timeout:', error.config?.url);
+    }
+    
     if (error.response?.status === 401 && typeof window !== 'undefined') {
       useAuthStore.getState().clearAuth();
       window.location.href = '/login';

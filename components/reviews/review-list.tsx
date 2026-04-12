@@ -36,11 +36,13 @@ export function ReviewList({ reviews }: ReviewListProps) {
     const existingReaction = getUserReaction(review);
     
     if (existingReaction) {
+      // If clicking the same reaction, show info message
       if (existingReaction.status === status) {
         toast.info('Anda sudah memberi reaksi ini');
         return;
       }
       
+      // Update to different reaction using PUT /api/v1/reactions/:id
       updateReaction(
         { id: existingReaction.id, payload: { status } },
         {
@@ -53,6 +55,7 @@ export function ReviewList({ reviews }: ReviewListProps) {
         }
       );
     } else {
+      // Create new reaction using POST /api/v1/reactions
       createReaction(
         { review_id: review.id, status },
         {

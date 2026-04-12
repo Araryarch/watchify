@@ -26,13 +26,18 @@ export function SearchBar({ isSearchFocused, setIsSearchFocused, popularSearches
     return () => clearTimeout(timer);
   }, [searchQuery]);
 
-  // Fetch search results
-  const { data: searchResults, isLoading } = useFilms({
-    take: 5,
-    page: 1,
-    filter: debouncedQuery,
-    filter_by: 'title',
-  });
+  // Fetch search results only when there's a query
+  const { data: searchResults, isLoading } = useFilms(
+    {
+      take: 5,
+      page: 1,
+      filter: debouncedQuery,
+      filter_by: 'title',
+    },
+    {
+      enabled: debouncedQuery.length > 0, // Only fetch when there's a search query
+    }
+  );
 
   const handleClear = () => {
     setSearchQuery('');
