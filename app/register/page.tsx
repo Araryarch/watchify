@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -10,6 +10,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { User, Mail, Lock, UserCircle, ChevronRight, AlertCircle } from 'lucide-react';
 import { toast } from 'sonner';
+import { useAuthStore } from '@/lib/store/authStore';
 
 const registerSchema = z.object({
   username: z.string().min(3, 'Username minimal 3 karakter').max(20, 'Username maksimal 20 karakter'),
@@ -25,6 +26,14 @@ export default function RegisterPage() {
   const { register: registerUser, isRegistering } = useAuth();
   const router = useRouter();
   const [errorMsg, setErrorMsg] = useState('');
+  const { token } = useAuthStore();
+
+  // Redirect if already logged in
+  useEffect(() => {
+    if (token) {
+      router.push('/');
+    }
+  }, [token, router]);
 
   const { register, handleSubmit, formState: { errors } } = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),

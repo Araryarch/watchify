@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -10,6 +10,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Lock, Mail, ChevronRight, AlertCircle } from 'lucide-react';
 import { toast } from 'sonner';
+import { useAuthStore } from '@/lib/store/authStore';
 
 const loginSchema = z.object({
   email: z.string().email('Format email tidak valid'),
@@ -22,6 +23,14 @@ export default function LoginPage() {
   const { login, isLoggingIn } = useAuth();
   const router = useRouter();
   const [errorMsg, setErrorMsg] = useState('');
+  const { token } = useAuthStore();
+
+  // Redirect if already logged in
+  useEffect(() => {
+    if (token) {
+      router.push('/');
+    }
+  }, [token, router]);
 
   const { register, handleSubmit, formState: { errors } } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
