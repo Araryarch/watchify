@@ -43,9 +43,9 @@ export function HeroCarousel({ heroes }: HeroCarouselProps) {
           {/* Background Image Container */}
           <div className="absolute inset-0 w-full h-full">
             {/* Left gradient for text readability */}
-            <div className="absolute inset-0 bg-gradient-to-r from-[#0b0c0f]/90 via-[#0b0c0f]/40 to-transparent z-10 w-full md:w-3/5" />
+            <div className="absolute inset-0 bg-linear-to-r from-[#0b0c0f]/90 via-[#0b0c0f]/40 to-transparent z-10 w-full md:w-3/5" />
             {/* Bottom gradient to blend into content rows smoothly */}
-            <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-[#0b0c0f] via-[#0b0c0f]/80 to-transparent z-10" />
+            <div className="absolute inset-x-0 bottom-0 h-48 bg-linear-to-t from-[#0b0c0f] via-[#0b0c0f]/80 to-transparent z-10" />
             <Image
               src={
                 film.images && film.images.length > 0
@@ -70,7 +70,7 @@ export function HeroCarousel({ heroes }: HeroCarouselProps) {
 
           {/* Hero Content (Vertically Centered on Left) */}
           <div className="absolute inset-0 z-20 flex flex-col justify-center">
-            <div className="max-w-[1600px] w-full mx-auto px-6 lg:px-12 mt-16 md:mt-20">
+            <div className="max-w-400 w-full mx-auto px-6 lg:px-12 mt-16 md:mt-20">
               <div className="max-w-xl md:max-w-2xl space-y-4">
                 {/* Title */}
                 <Typography
@@ -87,19 +87,14 @@ export function HeroCarousel({ heroes }: HeroCarouselProps) {
                       TOP RATED
                     </span>
                   )}
-                  {film.airing_status === 'airing' && (
+                  {film.airing_status && film.airing_status === 'airing' && (
                     <span className="px-2 py-0.5 bg-white/20 text-neutral-200 text-xs font-semibold rounded-sm backdrop-blur-sm">
                       Sedang Tayang
                     </span>
                   )}
-                  {film.airing_status === 'finished' && (
+                  {film.airing_status && film.airing_status === 'finished' && (
                     <span className="px-2 py-0.5 bg-primary/20 text-primary text-xs font-bold rounded-sm border border-primary/30">
                       Completed
-                    </span>
-                  )}
-                  {!film.airing_status && (
-                    <span className="px-2 py-0.5 bg-primary/20 text-primary text-xs font-bold rounded-sm border border-primary/30">
-                      Original
                     </span>
                   )}
                 </div>
@@ -115,10 +110,14 @@ export function HeroCarousel({ heroes }: HeroCarouselProps) {
                       <span className="text-neutral-300">|</span>
                     </>
                   )}
-                  <span>{getYear(film.release_date) || new Date().getFullYear()}</span>
-                  <span className="text-neutral-300">|</span>
+                  {(getYear(film.release_date) || new Date().getFullYear()) && (
+                    <>
+                      <span>{getYear(film.release_date) || new Date().getFullYear()}</span>
+                      <span className="text-neutral-300">|</span>
+                    </>
+                  )}
                   <span>13+</span>
-                  {film.total_episodes > 0 && (
+                  {film.total_episodes && film.total_episodes > 0 && (
                     <>
                       <span className="text-neutral-300">|</span>
                       <span>
