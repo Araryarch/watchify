@@ -99,34 +99,52 @@ export function HeroCarousel({ heroes }: HeroCarouselProps) {
                   )}
                 </div>
 
-                {/* Metadata Row 2 */}
-                <div className="flex items-center gap-3 text-white text-sm font-medium">
-                  {film.average_rating && film.average_rating > 0 && (
-                    <>
-                      <div className="flex items-center gap-1 text-primary">
+                {/* Metadata Row 2 - Only show items with valid values */}
+                {(() => {
+                  const hasRating = film.average_rating && film.average_rating > 0;
+                  const year = getYear(film.release_date);
+                  const hasYear = year && year > 0;
+                  const hasEpisodes = film.total_episodes && film.total_episodes > 0;
+                  
+                  const items = [];
+                  
+                  if (hasRating) {
+                    items.push(
+                      <div key="rating" className="flex items-center gap-1 text-primary">
                         <Star className="w-4 h-4 fill-primary" />
                         <span className="text-base">{film.average_rating.toFixed(1)}</span>
                       </div>
-                      <span className="text-neutral-300">|</span>
-                    </>
-                  )}
-                  {(getYear(film.release_date) || new Date().getFullYear()) && (
-                    <>
-                      <span>{getYear(film.release_date) || new Date().getFullYear()}</span>
-                      <span className="text-neutral-300">|</span>
-                    </>
-                  )}
-                  <span>13+</span>
-                  {film.total_episodes && film.total_episodes > 0 && (
-                    <>
-                      <span className="text-neutral-300">|</span>
-                      <span>
+                    );
+                  }
+                  
+                  if (hasYear) {
+                    items.push(<span key="year">{year}</span>);
+                  }
+                  
+                  items.push(<span key="rating-label">13+</span>);
+                  
+                  if (hasEpisodes) {
+                    items.push(
+                      <span key="episodes">
                         {film.total_episodes}{' '}
                         {film.total_episodes === 1 ? 'Episode' : 'Episodes'}
                       </span>
-                    </>
-                  )}
-                </div>
+                    );
+                  }
+                  
+                  return (
+                    <div className="flex items-center gap-3 text-white text-sm font-medium">
+                      {items.map((item, index) => (
+                        <div key={index} className="flex items-center gap-3">
+                          {item}
+                          {index < items.length - 1 && (
+                            <span className="text-neutral-300">|</span>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  );
+                })()}
 
                 {/* Synopsis */}
                 {film.synopsis && (
