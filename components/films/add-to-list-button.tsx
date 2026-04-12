@@ -5,13 +5,15 @@ import { useAuthStore } from '@/lib/store/authStore';
 
 interface AddToListButtonProps {
   filmId: string;
+  airingStatus?: string;
 }
 
-export function AddToListButton({ filmId }: AddToListButtonProps) {
+export function AddToListButton({ filmId, airingStatus }: AddToListButtonProps) {
   const { token } = useAuthStore();
   const { mutate: addToList, isPending } = useAddToFilmList();
 
-  if (!token) return null;
+  // Don't show button if not logged in or film not yet aired
+  if (!token || airingStatus === 'not_yet_aired') return null;
 
   const handleAdd = () => {
     addToList(

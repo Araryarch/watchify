@@ -117,7 +117,7 @@ export default function FilmDetailPage() {
                   <Play className="w-3.5 sm:w-4 md:w-5 h-3.5 sm:h-4 md:h-5 fill-black" />
                   <span>Tonton Sekarang</span>
                 </Link>
-                <AddToListButton filmId={film.id} />
+                <AddToListButton filmId={film.id} airingStatus={film.airing_status} />
               </div>
             </div>
           </div>

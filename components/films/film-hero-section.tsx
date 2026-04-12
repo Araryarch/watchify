@@ -71,7 +71,7 @@ export function FilmHeroSection({ film, gradientStyle }: FilmHeroSectionProps) {
                 <Play className="w-4 sm:w-5 h-4 sm:h-5 fill-current" />
                 <span className="text-sm sm:text-base">Tonton Sekarang</span>
               </Link>
-              <AddToListButton filmId={film.id} />
+              <AddToListButton filmId={film.id} airingStatus={film.airing_status} />
             </div>
           </div>
         </div>
