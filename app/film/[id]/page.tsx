@@ -96,17 +96,17 @@ function ReviewUserInfo({ user }: { user: any }) {
   const initials = displayName.substring(0, 2).toUpperCase();
 
   return (
-    <div className="flex items-center gap-2">
-      <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#00dc74]/20 border border-[#00dc74]/30 flex items-center justify-center">
+    <Link href={`/user/${user.id}`} className="flex items-center gap-2 hover:opacity-80 transition-opacity group">
+      <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#00dc74]/20 border border-[#00dc74]/30 flex items-center justify-center group-hover:border-[#00dc74]/50 transition-colors cursor-pointer">
         <span className="text-[#00dc74] font-bold text-sm sm:text-base">{initials}</span>
       </div>
       <div>
-        <p className="text-white font-medium text-sm sm:text-base">{displayName}</p>
+        <p className="text-white font-medium text-sm sm:text-base group-hover:text-[#00dc74] transition-colors">{displayName}</p>
         {user.bio && (
-          <p className="text-neutral-500 text-xs">{user.bio}</p>
+          <p className="text-neutral-500 text-xs line-clamp-1">{user.bio}</p>
         )}
       </div>
-    </div>
+    </Link>
   );
 }
 

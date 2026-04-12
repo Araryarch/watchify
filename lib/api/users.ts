@@ -9,6 +9,7 @@ export interface UserDetail {
   bio: string;
   film_lists: Array<{
     id: string;
+    film_id?: string;
     film_title: string;
     list_status: string;
     visibility: string;

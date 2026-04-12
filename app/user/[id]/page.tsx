@@ -71,7 +71,15 @@ export default function UserProfilePage() {
             {user.film_lists && user.film_lists.length > 0 ? (
               <div className="space-y-3">
                 {user.film_lists.map((item: any, i: number) => (
-                  <div key={i} className="bg-[#1b1c21] border border-white/5 rounded-xl px-5 py-4 flex items-center justify-between">
+                  <Link
+                    key={i}
+                    href={item.film_id ? `/film/${item.film_id}` : '#'}
+                    className={`bg-[#1b1c21] border border-white/5 rounded-xl px-5 py-4 flex items-center justify-between transition-all ${
+                      item.film_id 
+                        ? 'hover:bg-[#22232a] hover:border-[#00dc74]/20 cursor-pointer' 
+                        : 'cursor-not-allowed opacity-60'
+                    }`}
+                  >
                     <span className="font-medium text-white text-sm line-clamp-1">{item.film_title}</span>
                     <span className={`text-xs font-bold px-2.5 py-1 rounded-full border ml-3 flex-shrink-0 ${
                       item.list_status === 'watching'
@@ -87,7 +95,7 @@ export default function UserProfilePage() {
                         : item.list_status === 'plan_to_watch' ? 'Ingin Nonton'
                         : 'Berhenti'}
                     </span>
-                  </div>
+                  </Link>
                 ))}
               </div>
             ) : (
