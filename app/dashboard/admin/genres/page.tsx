@@ -1,10 +1,9 @@
 'use client';
 
-import { Tag, Plus, Pencil } from 'lucide-react';
+import { Tag, Plus, Pencil, Search } from 'lucide-react';
 import { useState, useMemo } from 'react';
 import { useGenresPaginated } from '@/lib/hooks/useGenres';
 import { GenreModal } from '@/components/genres/genre-modal';
-import { TableSearch } from '@/components/dashboard/table-search';
 import {
   useReactTable,
   getCoreRowModel,
@@ -28,62 +27,6 @@ import {
   PaginationPrevious,
 } from '@/components/ui/pagination';
 import { TableSkeleton } from '@/components/skeleton-loader';
-  const { mutate: updateGenre, isPending: isUpdating } = useUpdateGenre();
-  const isPending = isCreating || isUpdating;
-
-  const onSubmit = (data: { name: string }) => {
-    if (genre) {
-      updateGenre({ id: genre.id, name: data.name }, {
-        onSuccess: () => { toast.success('Genre berhasil diperbarui'); reset(); onClose(); },
-        onError: (e: any) => toast.error(e.response?.data?.message || 'Gagal memperbarui genre'),
-      });
-    } else {
-      createGenre(data.name, {
-        onSuccess: () => { toast.success('Genre berhasil dibuat'); reset(); onClose(); },
-        onError: (e: any) => toast.error(e.response?.data?.message || 'Gagal membuat genre'),
-      });
-    }
-  };
-
-  if (!open) return null;
-
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-      <div className="bg-[#1b1c21] border border-white/10 rounded-2xl p-6 w-full max-w-md shadow-2xl max-h-[90vh] overflow-y-auto">
-        <h2 className="text-xl font-bold text-white mb-6">
-          {genre ? 'Edit Genre' : 'Tambah Genre Baru'}
-        </h2>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <div>
-            <label className="block text-sm font-bold text-neutral-300 mb-2">Nama Genre</label>
-            <input
-              {...register('name', { required: true })}
-              defaultValue={genre?.name}
-              className="w-full bg-[#0b0c0f] border border-white/10 rounded-lg px-4 py-3 text-sm text-white focus:border-primary outline-none"
-              placeholder="Contoh: thriller, horror, comedy..."
-            />
-          </div>
-          <div className="flex gap-3 pt-2">
-            <button
-              type="button"
-              onClick={() => { reset(); onClose(); }}
-              className="flex-1 py-3 rounded-lg font-bold border border-white/10 text-neutral-300 hover:bg-white/5 transition-all"
-            >
-              Batal
-            </button>
-            <button
-              type="submit"
-              disabled={isPending}
-              className="flex-1 py-3 rounded-lg font-bold bg-primary text-black hover:brightness-90 transition-all shadow-[0_4px_15px_rgba(var(--primary),0.3)] disabled:opacity-50"
-            >
-              {isPending ? 'Menyimpan...' : (genre ? 'Simpan Perubahan' : 'Tambah Genre')}
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  );
-}
 
 export default function GenresPage() {
   const [pageIndex, setPageIndex] = useState(1);
@@ -182,7 +125,6 @@ export default function GenresPage() {
           </div>
 
           <div className="bg-[#1b1c21] border border-white/5 rounded-2xl shadow-xl flex flex-col overflow-hidden">
-            {/* Mobile Card View */}
             <div className="block lg:hidden">
               {isLoading ? (
                 <div className="p-4 space-y-3">
@@ -201,7 +143,7 @@ export default function GenresPage() {
                   {filtered.map((genre: any) => (
                     <div key={genre.id} className="p-4 hover:bg-white/2 transition-colors flex items-center justify-between">
                       <div className="flex items-center gap-3 flex-1 min-w-0">
-                        <div className="w-10 h-10 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center flex-shrink-0">
+                        <div className="w-10 h-10 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
                           <Tag className="w-5 h-5 text-primary" />
                         </div>
                         <div className="flex-1 min-w-0">
@@ -211,7 +153,7 @@ export default function GenresPage() {
                       </div>
                       <button
                         onClick={() => { setEditGenre(genre); setModalOpen(true); }}
-                        className="p-2 text-neutral-500 hover:text-primary hover:bg-primary/10 rounded-lg transition-colors flex-shrink-0"
+                        className="p-2 text-neutral-500 hover:text-primary hover:bg-primary/10 rounded-lg transition-colors shrink-0"
                       >
                         <Pencil className="w-4 h-4" />
                       </button>
@@ -225,10 +167,9 @@ export default function GenresPage() {
               )}
             </div>
 
-            {/* Desktop Table View */}
             <div className="hidden lg:block overflow-x-auto flex-1">
               <Table>
-                <TableHeader className="bg-white/[0.02] border-b border-white/5">
+                <TableHeader className="bg-white/2 border-b border-white/5">
                   {table.getHeaderGroups().map((headerGroup) => (
                     <TableRow key={headerGroup.id} className="border-b-white/5 hover:bg-transparent">
                       {headerGroup.headers.map((header) => (
@@ -248,7 +189,7 @@ export default function GenresPage() {
                     </TableRow>
                   ) : table.getRowModel().rows?.length ? (
                     table.getRowModel().rows.map((row) => (
-                      <TableRow key={row.id} className="border-b-white/5 hover:bg-white/[0.02] transition-colors">
+                      <TableRow key={row.id} className="border-b-white/5 hover:bg-white/2 transition-colors">
                         {row.getVisibleCells().map((cell) => (
                           <TableCell key={cell.id} className="py-4">
                             {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -268,7 +209,7 @@ export default function GenresPage() {
             </div>
 
             {totalPages > 1 && (
-              <div className="p-4 border-t border-white/5 bg-white/[0.01]">
+              <div className="p-4 border-t border-white/5 bg-white/1">
                 <Pagination>
                   <PaginationContent className="gap-1 sm:gap-2 flex-wrap justify-center">
                     <PaginationItem>
@@ -278,7 +219,6 @@ export default function GenresPage() {
                       />
                     </PaginationItem>
                     
-                    {/* Show limited pages on mobile */}
                     {Array.from({ length: Math.min(totalPages, 5) }).map((_, i) => {
                       const pageNum = i + 1;
                       if (totalPages <= 5 || pageNum === 1 || pageNum === totalPages || Math.abs(pageIndex - pageNum) <= 1) {
@@ -296,7 +236,6 @@ export default function GenresPage() {
                       return null;
                     })}
 
-                    {/* Mobile: Show current page only */}
                     <div className="sm:hidden px-3 py-2 text-sm text-neutral-300">
                       {pageIndex} / {totalPages}
                     </div>
