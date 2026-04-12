@@ -11,7 +11,7 @@ export function ReviewSection({ filmId, reviews = [] }: ReviewSectionProps) {
     <div className="space-y-6 sm:space-y-8">
       <h2 className="text-xl sm:text-2xl font-bold text-white">Ulasan & Rating</h2>
       <ReviewForm filmId={filmId} />
-      <ReviewList reviews={reviews} />
+      <ReviewList reviews={reviews} filmId={filmId} />
     </div>
   );
 }

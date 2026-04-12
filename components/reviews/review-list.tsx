@@ -4,6 +4,7 @@ import { ReviewUserInfo } from './review-user-info';
 import { useCreateReaction, useUpdateReaction } from '@/lib/hooks/useReactions';
 import { useMe } from '@/lib/hooks/useAuth';
 import { useAuthStore } from '@/lib/store/authStore';
+import { useQueryClient } from '@tanstack/react-query';
 import {
   Tooltip,
   TooltipContent,
@@ -13,21 +14,23 @@ import {
 
 interface ReviewListProps {
   reviews: any[];
+  filmId: string;
 }
 
-export function ReviewList({ reviews }: ReviewListProps) {
+export function ReviewList({ reviews, filmId }: ReviewListProps) {
   const { token } = useAuthStore();
   const { data: meData } = useMe();
-  const currentUserId = meData?.data?.id;
-  const { mutate: createReaction } = useCreateReaction();
-  const { mutate: updateReaction } = useUpdateReaction();
+  const currentUserId = meData?.data?.personal_info?.id;
+  const { mutate: createReaction } = useCreateReaction(filmId);
+  const { mutate: updateReaction } = useUpdateReaction(filmId);
+  const queryClient = useQueryClient();
 
   const getUserReaction = (review: any) => {
     if (!currentUserId || !review.reactions) return null;
     return review.reactions.find((r: any) => r.user_id === currentUserId);
   };
 
-  const handleReaction = (review: any, status: 'like' | 'dislike') => {
+  const handleReaction = async (review: any, status: 'like' | 'dislike') => {
     if (!token) {
       toast.error('Login terlebih dahulu untuk memberi reaksi');
       return;
@@ -42,6 +45,32 @@ export function ReviewList({ reviews }: ReviewListProps) {
         return;
       }
       
+      // Optimistic update for changing reaction
+      const previousData = queryClient.getQueryData(['film', filmId]);
+      
+      queryClient.setQueryData(['film', filmId], (old: any) => {
+        if (!old?.data?.reviews) return old;
+        return {
+          ...old,
+          data: {
+            ...old.data,
+            reviews: old.data.reviews.map((r: any) => {
+              if (r.id !== review.id) return r;
+              return {
+                ...r,
+                likes: status === 'like' ? r.likes + 1 : r.likes - 1,
+                dislikes: status === 'dislike' ? r.dislikes + 1 : r.dislikes - 1,
+                reactions: r.reactions.map((reaction: any) =>
+                  reaction.id === existingReaction.id
+                    ? { ...reaction, status }
+                    : reaction
+                ),
+              };
+            }),
+          },
+        };
+      });
+      
       // Update to different reaction using PUT /api/v1/reactions/:id
       updateReaction(
         { id: existingReaction.id, payload: { status } },
@@ -50,11 +79,44 @@ export function ReviewList({ reviews }: ReviewListProps) {
             toast.success(status === 'like' ? 'Diubah ke suka' : 'Diubah ke tidak suka');
           },
           onError: (e: any) => {
+            // Rollback on error
+            queryClient.setQueryData(['film', filmId], previousData);
             toast.error(e.response?.data?.error || 'Gagal mengubah reaksi');
           },
         }
       );
     } else {
+      // Optimistic update for new reaction
+      const previousData = queryClient.getQueryData(['film', filmId]);
+      
+      queryClient.setQueryData(['film', filmId], (old: any) => {
+        if (!old?.data?.reviews) return old;
+        return {
+          ...old,
+          data: {
+            ...old.data,
+            reviews: old.data.reviews.map((r: any) => {
+              if (r.id !== review.id) return r;
+              return {
+                ...r,
+                likes: status === 'like' ? r.likes + 1 : r.likes,
+                dislikes: status === 'dislike' ? r.dislikes + 1 : r.dislikes,
+                reactions: [
+                  ...r.reactions,
+                  {
+                    id: 'temp-' + Date.now(),
+                    review_id: review.id,
+                    user_id: currentUserId,
+                    status,
+                    user: meData?.data?.personal_info,
+                  },
+                ],
+              };
+            }),
+          },
+        };
+      });
+      
       // Create new reaction using POST /api/v1/reactions
       createReaction(
         { review_id: review.id, status },
@@ -62,12 +124,63 @@ export function ReviewList({ reviews }: ReviewListProps) {
           onSuccess: () => {
             toast.success(status === 'like' ? 'Disukai' : 'Tidak disukai');
           },
-          onError: (e: any) => {
-            let errorMsg = e.response?.data?.error || e.response?.data?.message || '';
-            if (errorMsg.toLowerCase().includes('user has already reacted')) {
-              errorMsg = errorMsg.replace(/user has/i, 'You have');
+          onError: async (e: any) => {
+            const statusCode = e.response?.status;
+            
+            // If 409 Conflict, reaction already exists - refetch and retry with update
+            if (statusCode === 409) {
+              try {
+                // Refetch film data to get the latest reactions with IDs
+                await queryClient.refetchQueries({ queryKey: ['film', filmId] });
+                
+                // Get updated film data from cache
+                const filmData: any = queryClient.getQueryData(['film', filmId]);
+                
+                if (filmData?.data?.reviews) {
+                  // Find the review and user's reaction
+                  const updatedReview = filmData.data.reviews.find((r: any) => r.id === review.id);
+                  
+                  // Try to find user ID
+                  let userId = currentUserId;
+                  if (!userId && meData) {
+                    userId = meData.data?.personal_info?.id || meData.data?.id || meData.id;
+                  }
+                  
+                  const userReaction = updatedReview?.reactions?.find((r: any) => r.user_id === userId);
+                  
+                  if (userReaction) {
+                    // Now we have the reaction ID, update it with PUT
+                    updateReaction(
+                      { id: userReaction.id, payload: { status } },
+                      {
+                        onSuccess: () => {
+                          toast.success(status === 'like' ? 'Disukai' : 'Tidak disukai');
+                        },
+                        onError: (updateError: any) => {
+                          toast.error(updateError.response?.data?.error || 'Gagal memberi reaksi');
+                        },
+                      }
+                    );
+                  } else {
+                    toast.error('Gagal menemukan reaksi. Silakan refresh halaman.');
+                  }
+                } else {
+                  toast.error('Gagal memuat data. Silakan refresh halaman.');
+                }
+              } catch (refetchError) {
+                // Rollback on error
+                queryClient.setQueryData(['film', filmId], previousData);
+                toast.error('Gagal memuat data. Silakan refresh halaman.');
+              }
+            } else {
+              // Handle other errors - rollback
+              queryClient.setQueryData(['film', filmId], previousData);
+              let errorMsg = e.response?.data?.error || e.response?.data?.message || '';
+              if (errorMsg.toLowerCase().includes('user has already reacted')) {
+                errorMsg = 'Anda sudah memberi reaksi. Silakan refresh halaman.';
+              }
+              toast.error(errorMsg || 'Gagal memberi reaksi');
             }
-            toast.error(errorMsg || 'Gagal memberi reaksi');
           },
         }
       );

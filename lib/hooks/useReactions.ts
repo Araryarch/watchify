@@ -3,19 +3,31 @@ import { reactionsApi, CreateReactionPayload, UpdateReactionPayload } from '../a
 
 // ─── Mutations ────────────────────────────────────────────────────────────────
 
-export const useCreateReaction = () => {
+export const useCreateReaction = (filmId?: string) => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (payload: CreateReactionPayload) => reactionsApi.create(payload),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['film'] }),
+    onSuccess: () => {
+      if (filmId) {
+        queryClient.invalidateQueries({ queryKey: ['film', filmId] });
+      } else {
+        queryClient.invalidateQueries({ queryKey: ['film'] });
+      }
+    },
   });
 };
 
-export const useUpdateReaction = () => {
+export const useUpdateReaction = (filmId?: string) => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({ id, payload }: { id: string; payload: UpdateReactionPayload }) =>
       reactionsApi.update(id, payload),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['film'] }),
+    onSuccess: () => {
+      if (filmId) {
+        queryClient.invalidateQueries({ queryKey: ['film', filmId] });
+      } else {
+        queryClient.invalidateQueries({ queryKey: ['film'] });
+      }
+    },
   });
 };
