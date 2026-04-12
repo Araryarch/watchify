@@ -5,9 +5,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 
 const COLORS = {
-  airing: 'hsl(var(--primary))',
-  finished_airing: 'hsl(217, 91%, 60%)',
-  upcoming: 'hsl(48, 96%, 53%)',
+  airing: '#00dc74',        // Bright green
+  finished_airing: '#3b82f6', // Bright blue
+  upcoming: '#fbbf24',      // Bright yellow/amber
 };
 
 export function ChartFilmStatus() {
