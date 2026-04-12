@@ -8,8 +8,10 @@ export interface UserDetail {
   display_name: string;
   bio: string;
   film_lists: Array<{
+    id: string;
     film_title: string;
     list_status: string;
+    visibility: string;
   }>;
   reviews: Array<{
     film: string;

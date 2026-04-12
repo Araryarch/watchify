@@ -11,8 +11,14 @@ export const useAddToFilmList = () => {
   });
 };
 
-export const useUpdateFilmListVisibility = () =>
-  useMutation({
+export const useUpdateFilmListVisibility = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
     mutationFn: ({ id, payload }: { id: string; payload: UpdateVisibilityPayload }) =>
       filmListsApi.updateVisibility(id, payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['me'] });
+      queryClient.invalidateQueries({ queryKey: ['user'] });
+    },
   });
+};
