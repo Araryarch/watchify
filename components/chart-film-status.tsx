@@ -61,8 +61,10 @@ export function ChartFilmStatus() {
                 borderRadius: '8px',
                 color: '#fff'
               }}
+              labelStyle={{ color: '#fff' }}
+              itemStyle={{ color: '#fff' }}
             />
-            <Bar dataKey="value" radius={[8, 8, 0, 0]}>
+            <Bar dataKey="value" radius={[8, 8, 0, 0]} label={{ fill: '#fff', fontSize: 14, fontWeight: 'bold' }}>
               {chartData.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={entry.fill} />
               ))}
